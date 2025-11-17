@@ -29,14 +29,68 @@ function showError(message) {
 
 // ==================== STATE MANAGEMENT ====================
 let userData = {
-    experience: null,
-    phase: null,
+    tier: null,  // 'white', 'red', 'blue', 'gold' - COACH ASSIGNED
+    phase: 'early-offseason',  // Start here, expand later
     context: null,
     equipment: null,
     currentWeek: 1,
-    currentTemplate: '4day',
-    exerciseVariations: {}, // Store user's exercise variation selections
-    maxWeeks: 6 // Maximum weeks for progression tracking
+    currentTemplate: '3day',
+    daysPerWeek: 4,  // NEW: 3, 4, or 5 based on tier
+    exerciseVariations: {},
+    maxWeeks: 4,  // 4-week blocks for early off-season
+    sessionDuration: 45  // NEW: varies by tier
+};
+
+// ==================== TIER DEFINITIONS ====================
+const TIER_SYSTEM = {
+    white: {
+        name: 'White',
+        stage: 'Stage 1 - Unconscious Incompetence',
+        focus: 'Learn the Shapes',
+        intensity: '<60% effort',
+        density: 'Low-moderate',
+        tempo: '2-1-2 or 3-0-3',
+        frequency: '3-4 days/week',
+        sessionLength: '30-45 min',
+        repRanges: '6-10 reps + isometric holds',
+        color: '#10b981'
+    },
+    red: {
+        name: 'Red',
+        stage: 'Stage 2 - Conscious Incompetence',
+        focus: 'Stabilize the Shapes',
+        intensity: '55-70% effort',
+        density: 'Moderate',
+        tempo: '2-0-2 with pauses',
+        frequency: '3-4 days/week',
+        sessionLength: '40-55 min',
+        repRanges: '6-10 reps',
+        color: '#ef4444'
+    },
+    blue: {
+        name: 'Blue',
+        stage: 'Stage 3 - Conscious Competence',
+        focus: 'Regulate the Shapes',
+        intensity: '65-80%',
+        density: 'Moderate-High (AREG)',
+        tempo: 'Self-selected',
+        frequency: '4 days/week',
+        sessionLength: '45-70 min',
+        repRanges: '4-6 reps @ RPE 7-8',
+        color: '#3b82f6'
+    },
+    gold: {
+        name: 'Gold',
+        stage: 'Stage 4 - Unconscious Competence',
+        focus: 'Own the Shapes',
+        intensity: '70-85%',
+        density: 'High, self-managed',
+        tempo: 'Autoregulated',
+        frequency: '4-5 days/week',
+        sessionLength: '50-75 min',
+        repRanges: '3-6 reps @ RPE 8',
+        color: '#f59e0b'
+    }
 };
 
 // ==================== DYNAMIC TEMPLATE EVALUATION ====================
