@@ -269,21 +269,21 @@ function showExperienceScreen() {
             </p>
             <div class="options-grid">
                 <div class="option-card" onclick="selectExperience('beginner')">
-                    <div class="option-title">Beginner</div>
+                    <div class="option-title">White</div>
                     <div class="option-desc">0-6 months to 1 year of structured training</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
                         Focus: Learning Technique, higher reps (8-12RM)
                     </div>
                 </div>
                 <div class="option-card" onclick="selectExperience('intermediate')">
-                    <div class="option-title">Intermediate</div>
+                    <div class="option-title">Red</div>
                     <div class="option-desc">1-3 years of consistent training</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
                         Focus: Solid Technique, Strength building (3-8RM)
                     </div>
                 </div>
                 <div class="option-card" onclick="selectExperience('advanced')">
-                    <div class="option-title">Advanced</div>
+                    <div class="option-title">Blue</div>
                     <div class="option-desc">3+ years consistent training </div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
                         Focus: Highly Refined Technique, Max strength (1-5RM)
