@@ -93,6 +93,15 @@ const TIER_SYSTEM = {
     }
 };
 
+// ==================== TIER TO EXPERIENCE MAPPING ====================
+// Maps new tier system to existing template structure for backwards compatibility
+const TIER_TO_EXPERIENCE_MAP = {
+    white: 'beginner',
+    red: 'intermediate',
+    blue: 'advanced',
+    gold: 'advanced'  // Will have separate templates later
+};
+
 // ==================== DYNAMIC TEMPLATE EVALUATION ====================
 /**
  * Evaluates template strings containing Block Periodization functions
@@ -107,9 +116,10 @@ function evaluateTemplateString(templateString, context = {}) {
         return templateString; // Return original if BP not loaded
     }
 
-    // Default context values
+    // Default context values - support both tier and experience for backwards compatibility
     const evalContext = {
-        experience: userData.experience || 'beginner',
+        tier: userData.tier || 'white',
+        experience: TIER_TO_EXPERIENCE_MAP[userData.tier] || 'beginner',  // For existing templates
         phase: userData.phase || 'early-offseason', 
         week: userData.currentWeek || 1,
         ...context
@@ -262,31 +272,38 @@ function showExperienceScreen() {
     const screen = document.getElementById('experienceScreen');
     screen.innerHTML = `
         <div class="card">
-            <h2>What's your training experience?</h2>
+            <h2>What's your competency tier?</h2>
             <p style="color: var(--text-secondary); margin-bottom: 16px;">
                 This determines rep ranges, intensity, and exercise complexity. 
-                <strong>For demos: Pick "Intermediate" to see typical programming.</strong>
+                <strong>For demos: Pick "Red" to see typical programming.</strong>
             </p>
             <div class="options-grid">
-                <div class="option-card" onclick="selectExperience('beginner')">
-                    <div class="option-title">White</div>
-                    <div class="option-desc">0-6 months to 1 year of structured training</div>
+                <div class="option-card" onclick="selectTier('white')">
+                    <div class="option-title">⚪ White</div>
+                    <div class="option-desc">Learn the Shapes - Movement learning & work capacity</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
-                        Focus: Learning Technique, higher reps (8-12RM)
+                        6-10 reps + holds | 30-45 min sessions
                     </div>
                 </div>
-                <div class="option-card" onclick="selectExperience('intermediate')">
-                    <div class="option-title">Red</div>
-                    <div class="option-desc">1-3 years of consistent training</div>
+                <div class="option-card" onclick="selectTier('red')">
+                    <div class="option-title">🔴 Red</div>
+                    <div class="option-desc">Stabilize the Shapes - Technique refinement & strength building</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
-                        Focus: Solid Technique, Strength building (3-8RM)
+                        6-10 reps | 40-55 min sessions
                     </div>
                 </div>
-                <div class="option-card" onclick="selectExperience('advanced')">
-                    <div class="option-title">Blue</div>
-                    <div class="option-desc">3+ years consistent training </div>
+                <div class="option-card" onclick="selectTier('blue')">
+                    <div class="option-title">🔵 Blue</div>
+                    <div class="option-desc">Regulate the Shapes - Strength-speed & power development</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
-                        Focus: Highly Refined Technique, Max strength (1-5RM)
+                        4-6 reps @ RPE 7-8 | 45-70 min sessions
+                    </div>
+                </div>
+                <div class="option-card" onclick="selectTier('gold')">
+                    <div class="option-title">🟡 Gold</div>
+                    <div class="option-desc">Own the Shapes - Maximum output & optimization</div>
+                    <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
+                        3-6 reps @ RPE 8 | 50-75 min sessions
                     </div>
                 </div>
             </div>
@@ -445,8 +462,8 @@ function goBack(screen) {
 }
 
 // ==================== SELECTORS ====================
-function selectExperience(level) {
-    userData.experience = level;
+function selectTier(tier) {
+    userData.tier = tier;
     selectCard('#experienceScreen', 'experienceContinue');
 }
 
@@ -483,14 +500,11 @@ function generateProgram() {
         'preseason': 'Pre-Season',
         'inseason': 'In-Season'
     };
-    const experienceNames = {
-        'beginner': 'Beginner',
-        'intermediate': 'Intermediate',
-        'advanced': 'Advanced'
-    };
+    
+    const tierInfo = TIER_SYSTEM[userData.tier] || TIER_SYSTEM.white;
 
     document.getElementById('programTitle').textContent =
-        `${experienceNames[userData.experience] || 'Unknown'} - ${phaseNames[userData.phase] || 'Phase'} Program`;
+        `${tierInfo.name} Tier - ${phaseNames[userData.phase] || 'Phase'} Program`;
 
     generateProgramOverview();
 
@@ -590,6 +604,7 @@ function generateProgramOverview() {
     };
 
     const phase = phaseGuidelines[userData.phase];
+    const tierInfo = TIER_SYSTEM[userData.tier] || TIER_SYSTEM.white;
     
     overview.innerHTML = `
         <h4>Your Training Plan</h4>
@@ -598,7 +613,7 @@ function generateProgramOverview() {
                 <div>
                     <h3 style="margin: 0; color: var(--primary-color);">${phase.focus}</h3>
                     <p style="margin: 4px 0 0 0; color: var(--text-secondary); font-size: 0.9rem;">
-                        ${userData.experience.charAt(0).toUpperCase() + userData.experience.slice(1)} Level | ${phase.weeks}
+                        ${tierInfo.name} Tier - ${tierInfo.focus} | ${phase.weeks}
                     </p>
                 </div>
                 <div style="background: var(--primary-color); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
@@ -619,6 +634,14 @@ function generateProgramOverview() {
                 <div style="margin: 4px 0;"><strong>Setup:</strong> ${contextNotes[userData.context]}</div>
                 <div style="margin: 4px 0;"><strong>Equipment:</strong> ${userData.equipment}</div>
             </div>
+        </div>
+        
+        <div style="background: var(--bg-secondary); padding: 12px; border-radius: 6px; margin-bottom: 12px;">
+            <h5 style="margin: 0 0 8px 0; font-size: 0.9rem; color: var(--text-secondary);">Tier Details</h5>
+            <div style="margin: 4px 0;"><strong>Intensity:</strong> ${tierInfo.intensity}</div>
+            <div style="margin: 4px 0;"><strong>Tempo:</strong> ${tierInfo.tempo}</div>
+            <div style="margin: 4px 0;"><strong>Session Length:</strong> ${tierInfo.sessionLength}</div>
+            <div style="margin: 4px 0;"><strong>Rep Ranges:</strong> ${tierInfo.repRanges}</div>
         </div>
         
         <div style="background: rgba(37, 99, 235, 0.1); border-left: 4px solid var(--primary-color); padding: 12px; border-radius: 4px;">
@@ -656,11 +679,13 @@ function renderWorkouts() {
     if (userData.context === 'retired veteran') {
         templates = window.workoutTemplates?.['Retired Veteran']?.['3day'];
     } else {
-        templates = window.workoutTemplates?.[userData.experience]?.[userData.phase]?.[userData.currentTemplate];
+        // Map tier to experience for backwards compatibility with existing templates
+        const experienceKey = TIER_TO_EXPERIENCE_MAP[userData.tier] || 'beginner';
+        templates = window.workoutTemplates?.[experienceKey]?.[userData.phase]?.[userData.currentTemplate];
     }
 
     if (!templates) {
-        showError(`No templates found for ${userData.experience} ${userData.phase} ${userData.currentTemplate}`);
+        showError(`No templates found for tier: ${userData.tier} (${TIER_TO_EXPERIENCE_MAP[userData.tier]}), phase: ${userData.phase}, template: ${userData.currentTemplate}`);
         container.innerHTML = `<div class="workout-day"><p>No templates found. Please try a different combination.</p></div>`;
         return;
     }
@@ -800,6 +825,7 @@ function renderWorkouts() {
     
     container.innerHTML = html;
 }
+
 // ==================== VARIATIONS FUNCTIONALITY ====================
 function showVariations(exerciseId, buttonElement) {
     const dropdown = document.getElementById(`variations-${exerciseId}`);
@@ -870,13 +896,16 @@ function nextWeek() {
 function resetApp() {
     if (!confirm('Start over with a new program setup?')) return;
     userData = { 
-        experience: null, 
-        phase: null, 
+        tier: null,
+        phase: 'early-offseason',
         context: null, 
         equipment: null, 
         currentWeek: 1, 
         currentTemplate: '4day',
-        exerciseVariations: {}
+        daysPerWeek: 4,
+        exerciseVariations: {},
+        maxWeeks: 4,
+        sessionDuration: 45
     };
     hideAllScreens();
     document.getElementById('welcomeScreen').classList.remove('hidden');
@@ -896,6 +925,10 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Exercise Database:', typeof exerciseDatabase !== 'undefined' ? 'Loaded' : 'Not Found');
     console.log('Workout Templates:', typeof window.workoutTemplates !== 'undefined' ? 'Loaded' : 'Not Found');
     console.log('Block Periodization:', typeof window.BlockPeriodization !== 'undefined' ? 'Loaded' : 'Not Found');
+    
+    // Test tier system
+    console.log('✅ Tier System Loaded:', TIER_SYSTEM);
+    console.log('✅ Tier Mapping:', TIER_TO_EXPERIENCE_MAP);
     
     // Test block periodization integration
     if (window.BlockPeriodization) {
