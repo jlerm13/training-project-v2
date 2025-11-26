@@ -1,460 +1,696 @@
+// ============================================================================
+// WHITE TIER TEMPLATES - JavaScript Module Format
+// ============================================================================
+// Tier: WHITE (Unconscious Incompetence)
+// Phase: Early Off-Season GPP
+// Structure: Circuit-based full body training
+// Language: Simplified for beginner athletes
+// ============================================================================
+
 (function() {
-    const beginnerTemplates = {
-        beginner: {
+    const whiteTemplates = {
+        white: {
             'early-offseason': {
-                '4day': {
-                    week1: {
-                        monday: {
-                            title: "Max-Effort Upper Body",
-                            exercises: [
-                                { type: "max-effort", exercise: "benchPress", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "supplemental", exercise: "dbBenchPress", sets: "2 x 15-20", note: "Same weight both sets" },
-                                { type: "supplemental", exercise: "barbellRows", sets: "3 x 8-12", note: "Focus on form" },
-                                { type: "assistance", exercise: "rearDeltFlyes", sets: "3 x 12-15" },
-                                { type: "assistance", exercise: "shrugs", sets: "3 x 8-15" },
-                                { type: "assistance", exercise: "barbellCurls", sets: "3 x 8-12" }
-                            ]
-                        },
-                        tuesday: {
-                            title: "Dynamic-Effort Lower Body",
-                            exercises: [
-                                { type: "dynamic", exercise: "boxJump", sets: "5 × 3", note: "20-24 inch box, focus on landing" },
-                                { type: "supplemental", exercise: "bulgarianSplitSquat", sets: "2 × 8 each", note: "Bodyweight only" },
-                                { type: "supplemental", exercise: "romanianDeadlift", sets: "3 × 10-12", note: "Light weight, feel stretch" },
-                                { type: "assistance", exercise: "weightedAbs", sets: "3 × 15-20" }
-                            ]
-                        },
-                        thursday: {
-                            title: "Repetition Upper Body",
-                            exercises: [
-                                { type: "repetition", exercise: "dbInclinePress", sets: "3 × max reps", intensity: "65% effort", note: "90 sec rest" },
-                                { type: "supplemental", exercise: "pullups", sets: "3 × 5-8", note: "Use band if needed" },
-                                { type: "assistance", exercise: "facePulls", sets: "3 × 15-20" },
-                                { type: "assistance", exercise: "lateralRaises", sets: "3 × 12-15" },
-                                { type: "assistance", exercise: "dbCurls", sets: "3 × 10-12" }
-                            ]
-                        },
-                        friday: {
-                            title: "Max-Effort Lower Body",
-                            exercises: [
-                                { type: "max-effort", exercise: "boxSquat", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "supplemental", exercise: "walkingLunges", sets: "3 × 10 each", note: "Bodyweight" },
-                                { type: "assistance", exercise: "hyperextensions", sets: "3 × 10-15" },
-                                { type: "core", exercise: "plank", sets: "3 × 30-45 seconds" }
-                            ]
-                        }
-                    },
-                    week2: {
-                        monday: {
-                            title: "Max-Effort Upper Body",
-                            exercises: [
-                                { type: "max-effort", exercise: "benchPress", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "supplemental", exercise: "dbBenchPress", sets: "2 × max reps", note: "Aim for 18-25 total reps" },
-                                { type: "supplemental", exercise: "dbRows", sets: "3 × 10-12 each" },
-                                { type: "assistance", exercise: "bandPullAparts", sets: "3 × 20-30" },
-                                { type: "assistance", exercise: "shrugs", sets: "3 × 10-12" },
-                                { type: "assistance", exercise: "barbellCurls", sets: "3 × 10-12" }
-                            ]
-                        },
-                        tuesday: {
-                            title: "Dynamic-Effort Lower Body",
-                            exercises: [
-                                { type: "dynamic", exercise: "boxJump", sets: "6 × 3", note: "Same height, better technique" },
-                                { type: "supplemental", exercise: "bulgarianSplitSquat", sets: "3 × 8 each", note: "Hold light DBs if able" },
-                                { type: "supplemental", exercise: "romanianDeadlift", sets: "3 × 10-12", note: "Increase weight slightly" },
-                                { type: "assistance", exercise: "hangingLegRaises", sets: "3 × 8-12" }
-                            ]
-                        },
-                        thursday: {
-                            title: "Repetition Upper Body",
-                            exercises: [
-                                { type: "repetition", exercise: "dbBenchPress", sets: "4 × 12-15", note: "Traditional sets, not max reps" },
-                                { type: "supplemental", exercise: "latPulldowns", sets: "3 × 10-12" },
-                                { type: "assistance", exercise: "rearDeltFlyes", sets: "3 × 15-20" },
-                                { type: "assistance", exercise: "lateralRaises", sets: "3 × 12-15" },
-                                { type: "assistance", exercise: "dbCurls", sets: "3 × 10-15" }
-                            ]
-                        },
-                        friday: {
-                            title: "Max-Effort Lower Body",
-                            exercises: [
-                                { type: "max-effort", exercise: "boxSquat", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "supplemental", exercise: "stepUps", sets: "3 × 8 each", note: "Knee height box" },
-                                { type: "assistance", exercise: "hyperextensions", sets: "3 × 12-15" },
-                                { type: "core", exercise: "weightedAbs", sets: "3 × 15-20" }
-                            ]
-                        }
-                    },
-                    week3: {
-                        monday: {
-                            title: "Max-Effort Upper Body",
-                            exercises: [
-                                { type: "max-effort", exercise: "inclineBench", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "supplemental", exercise: "dbInclinePress", sets: "2 × 15-20" },
-                                { type: "supplemental", exercise: "cableRows", sets: "3 × 10-12" },
-                                { type: "assistance", exercise: "facePulls", sets: "3 × 15-20" },
-                                { type: "assistance", exercise: "shrugs", sets: "3 × 12-15" },
-                                { type: "assistance", exercise: "barbellCurls", sets: "3 × 10-12" }
-                            ]
-                        },
-                        tuesday: {
-                            title: "Dynamic-Effort Lower Body",
-                            exercises: [
-                                { type: "dynamic", exercise: "verticalJump", sets: "5 × 3", note: "Max effort jumps" },
-                                { type: "dynamic", exercise: "broadJump", sets: "3 × 2", note: "Focus on landing" },
-                                { type: "supplemental", exercise: "bulgarianSplitSquat", sets: "3 × 10 each" },
-                                { type: "supplemental", exercise: "romanianDeadlift", sets: "3 × 8-10", note: "Heavier weight" },
-                                { type: "assistance", exercise: "weightedAbs", sets: "4 × 12-15" }
-                            ]
-                        },
-                        thursday: {
-                            title: "Repetition Upper Body",
-                            exercises: [
-                                { type: "repetition", exercise: "dbInclinePress", sets: "3 × max reps", note: "Try to beat week 1" },
-                                { type: "assistance", exercise: "pullups", sets: "3 × 6-10" },
-                                { type: "assistance", exercise: "bandPullAparts", sets: "4 × 25-30" },
-                                { type: "assistance", exercise: "lateralRaises", sets: "4 × 10-12" },
-                                { type: "assistance", exercise: "dbCurls", sets: "3 × 12-15" }
-                            ]
-                        },
-                        friday: {
-                            title: "Max-Effort Lower Body",
-                            exercises: [
-                                { type: "max-effort", exercise: "deadlift", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "supplemental", exercise: "walkingLunges", sets: "3 × 12 each" },
-                                { type: "assistance", exercise: "gluteHamRaise", sets: "3 × 6-10", note: "Or leg curls" },
-                                { type: "core", exercise: "plank", sets: "3 × 45-60 seconds" }
-                            ]
-                        }
-                    },
-                    week4: {
-                        title: "Deload Week",
-                        notes: "Reduce volume by 40%, maintain intensity at 70-80% of week 3",
-                        monday: {
-                            title: "Upper Body - Light",
-                            exercises: [
-                                { type: "main", exercise: "benchPress", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "assistance", exercise: "dbBenchPress", sets: "2 × 10" },
-                                { type: "assistance", exercise: "rows", sets: "3 × 10" },
-                                { type: "assistance", exercise: "facePulls", sets: "2 × 15" }
-                            ]
-                        },
-                        wednesday: {
-                            title: "Lower Body - Light",
-                            exercises: [
-                                { type: "main", exercise: "boxSquat", sets: "3 × 3 @ 70%", note: "Focus on explosion" },
-                                { type: "dynamic", exercise: "boxJump", sets: "3 × 3" },
-                                { type: "supplemental", exercise: "lunges", sets: "2 × 8 each" },
-                                { type: "core", exercise: "abs", sets: "2 × 15" }
-                            ]
-                        },
-                        friday: {
-                            title: "Upper Body - Recovery",
-                            exercises: [
-                                { type: "repetition", exercise: "dbPress", sets: "3 × 10" },
-                                { type: "supplemental", exercise: "pullups", sets: "3 × 5" },
-                                { type: "assistance", exercise: "arms", sets: "2 × 12" }
-                            ]
-                        }
-                    }
-                },
-                '3day': {
-                    week1: {
-                        monday: {
-                            title: "Max-Effort Upper Body",
-                            exercises: [
-                                { type: "max-effort", exercise: "benchPress", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "supplemental", exercise: "dbBenchPress", sets: "3 × 12-15" },
-                                { type: "supplemental", exercise: "barbellRows", sets: "4 × 10-12" },
-                                { type: "assistance", exercise: "facePulls", sets: "3 × 15-20" },
-                                { type: "assistance", exercise: "barbellCurls", sets: "3 × 10-12" }
-                            ]
-                        },
-                        wednesday: {
-                            title: "Max-Effort Lower Body",
-                            exercises: [
-                                { type: "max-effort", exercise: "boxSquat", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "supplemental", exercise: "walkingLunges", sets: "3 × 10 each" },
-                                { type: "supplemental", exercise: "romanianDeadlift", sets: "3 × 10-12" },
-                                { type: "core", exercise: "weightedAbs", sets: "3 × 15-20" }
-                            ]
-                        },
-                        friday: {
-                            title: "Repetition Upper Body",
-                            exercises: [
-                                { type: "repetition", exercise: "dbInclinePress", sets: "3 × max reps", note: "Leave 1-2 in tank" },
-                                { type: "supplemental", exercise: "pullups", sets: "3 × 5-10" },
-                                { type: "assistance", exercise: "rearDeltFlyes", sets: "3 × 15" },
-                                { type: "assistance", exercise: "shrugs", sets: "3 × 10-12" }
-                            ]
-                        }
-                    }
-                }
-            },
-            'mid-offseason': {
-                '4day': {
-                    week1: {
-                        monday: {
-                            title: "Max-Effort Upper Body",
-                            exercises: [
-                                { type: "max-effort", exercise: "benchPress", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "supplemental", exercise: "dbBenchPress", sets: "2 × max reps", note: "15-20 rep range" },
-                                { type: "supplemental", exercise: "barbellRows", sets: "4 × 8-10" },
-                                { type: "assistance", exercise: "rearDeltFlyes", sets: "4 × 12-15" },
-                                { type: "assistance", exercise: "shrugs", sets: "4 × 8-12" },
-                                { type: "assistance", exercise: "barbellCurls", sets: "4 × 8-12" }
-                            ]
-                        },
-                        tuesday: {
-                            title: "Dynamic-Effort Lower Body",
-                            exercises: [
-                                { type: "dynamic", exercise: "boxJump", sets: "6 × 3", note: "24-30 inch box" },
-                                { type: "dynamic", exercise: "broadJump", sets: "4 × 2", note: "Max distance" },
-                                { type: "supplemental", exercise: "bulgarianSplitSquat", sets: "3 × 8-10 each", note: "Hold DBs" },
-                                { type: "supplemental", exercise: "romanianDeadlift", sets: "3 × 8-10" },
-                                { type: "assistance", exercise: "sledDrags", sets: "3 × 30 yards", note: "Or farmer walks" },
-                                { type: "assistance", exercise: "weightedAbs", sets: "4 × 10-15" }
-                            ]
-                        },
-                        thursday: {
-                            title: "Repetition Upper Body",
-                            exercises: [
-                                { type: "repetition", exercise: "dbInclinePress", sets: "3 × max reps", note: "3 min rest between sets" },
-                                { type: "supplemental", exercise: "pullups", sets: "4 × 8-12", note: "Add weight if possible" },
-                                { type: "assistance", exercise: "facePulls", sets: "4 × 15-20" },
-                                { type: "assistance", exercise: "lateralRaises", sets: "3 × 10-12" },
-                                { type: "assistance", exercise: "dbCurls", sets: "3 × 10-12" }
-                            ]
-                        },
-                        friday: {
-                            title: "Max-Effort Lower Body",
-                            exercises: [
-                                { type: "max-effort", exercise: "deadlift", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "supplemental", exercise: "walkingLunges", sets: "3 × 8-10 each", note: "Hold DBs" },
-                                { type: "assistance", exercise: "hyperextensions", sets: "3 × 12-15" },
-                                { type: "core", exercise: "hangingLegRaises", sets: "3 × 10-15" }
-                            ]
-                        }
-                    },
-                    week2: {
-                        monday: {
-                            title: "Max-Effort Upper Body",
-                            exercises: [
-                                { type: "max-effort", exercise: "floorPress", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "supplemental", exercise: "dbFloorPress", sets: "2 × max reps" },
-                                { type: "supplemental", exercise: "dbRows", sets: "4 × 8-10 each" },
-                                { type: "assistance", exercise: "bandPullAparts", sets: "4 × 25-30" },
-                                { type: "assistance", exercise: "shrugs", sets: "4 × 10-12" },
-                                { type: "assistance", exercise: "barbellCurls", sets: "4 × 10-12" }
-                            ]
-                        },
-                        tuesday: {
-                            title: "Dynamic-Effort Lower Body",
-                            exercises: [
-                                { type: "dynamic", exercise: "boxJump", sets: "8 × 3", note: "Increase height if possible" },
-                                { type: "dynamic", exercise: "verticalJump", sets: "5 × 3", note: "Max effort" },
-                                { type: "supplemental", exercise: "bulgarianSplitSquat", sets: "3 × 10 each" },
-                                { type: "supplemental", exercise: "gluteHamRaise", sets: "3 × 8-12" },
-                                { type: "assistance", exercise: "prowlerPush", sets: "4 × 20 yards", note: "Or sled drag" },
-                                { type: "assistance", exercise: "weightedAbs", sets: "4 × 12-15" }
-                            ]
-                        },
-                        thursday: {
-                            title: "Repetition Upper Body",
-                            exercises: [
-                                { type: "repetition", exercise: "dbBenchPress", sets: "4 × 12", note: "Bodybuilding style" },
-                                { type: "assistance", exercise: "latPulldowns", sets: "4 × 10-12" },
-                                { type: "assistance", exercise: "rearDeltFlyes", sets: "4 × 15-20" },
-                                { type: "assistance", exercise: "lateralRaises", sets: "4 × 10-12" },
-                                { type: "assistance", exercise: "dbCurls", sets: "4 × 10-15" }
-                            ]
-                        },
-                        friday: {
-                            title: "Max-Effort Lower Body",
-                            exercises: [
-                                { type: "max-effort", exercise: "boxSquat", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "supplemental", exercise: "stepUps", sets: "3 × 8 each" },
-                                { type: "supplemental", exercise: "romanianDeadlift", sets: "3 × 8-10" },
-                                { type: "core", exercise: "weightedAbs", sets: "4 × 15-20" }
-                            ]
-                        }
-                    }
-                }
-            },
-            'preseason': {
-                '4day': {
-                    week1: {
-                        monday: {
-                            title: "Max-Effort Upper Body (Reduced)",
-                            exercises: [
-                                { type: "max-effort", exercise: "benchPress", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "supplemental", exercise: "dbBenchPress", sets: "2 × 12-15", note: "Moderate weight" },
-                                { type: "supplemental", exercise: "rows", sets: "3 × 10-12" },
-                                { type: "assistance", exercise: "rearDelts", sets: "3 × 12-15" },
-                                { type: "assistance", exercise: "curls", sets: "2 × 10-12" }
-                            ]
-                        },
-                        tuesday: {
-                            title: "Speed & Jump Training",
-                            exercises: [
-                                { type: "sprint", exercise: "sprint10yd", sets: "8 × 10 yards", note: "Full recovery" },
-                                { type: "dynamic", exercise: "verticalJump", sets: "5 × 3", note: "Max effort" },
-                                { type: "supplemental", exercise: "bulgarianSplitSquat", sets: "2 × 8 each" },
-                                { type: "core", exercise: "weightedAbs", sets: "3 × 15" }
-                            ]
-                        },
-                        thursday: {
-                            title: "Max-Effort Lower Body & Conditioning",
-                            exercises: [
-                                { type: "max-effort", exercise: "boxSquat", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "assistance", exercise: "hyperextensions", sets: "3 × 10" },
-                                { type: "conditioning", exercise: "prowlerPush", sets: "6 × 20 yards", note: "Or sled drags" }
-                            ]
-                        },
-                        friday: {
-                            title: "Repetition Upper Body",
-                            exercises: [
-                                { type: "repetition", exercise: "dbInclinePress", sets: "3 × 10-12", note: "Not to failure" },
-                                { type: "supplemental", exercise: "pullups", sets: "3 × 8-10" },
-                                { type: "assistance", exercise: "facePulls", sets: "3 × 15" },
-                                { type: "core", exercise: "plank", sets: "3 × 45 seconds" }
-                            ]
-                        }
-                    }
-                },
-                'speed': {
-                    week1: {
-                        monday: {
-                            title: "Max-Effort Upper (Modified)",
-                            exercises: [
-                                { type: "max-effort", exercise: "benchPress", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "assistance", exercise: "dbPress", sets: "3 × 10" },
-                                { type: "assistance", exercise: "rows", sets: "3 × 10" },
-                                { type: "assistance", exercise: "facePulls", sets: "2 × 15" }
-                            ]
-                        },
-                        tuesday: {
-                            title: "Speed Development",
-                            exercises: [
-                                { type: "warmup", exercise: "Dynamic warm-up", sets: "10 minutes" },
-                                { type: "sprint", exercise: "sprint10yd", sets: "10 × 10 yards", note: "Full recovery" },
-                                { type: "sprint", exercise: "sprint20yd", sets: "6 × 20 yards", note: "2 min rest" },
-                                { type: "sprint", exercise: "sprint40yd", sets: "3 × 40 yards", note: "Full recovery" }
-                            ]
-                        },
-                        wednesday: {
-                            title: "Recovery",
-                            exercises: [
-                                { type: "mobility", exercise: "Foam rolling", sets: "10 minutes" },
-                                { type: "mobility", exercise: "Static stretching", sets: "10 minutes" }
-                            ]
-                        },
-                        thursday: {
-                            title: "Lower Body Power",
-                            exercises: [
-                                { type: "dynamic", exercise: "boxJump", sets: "5 × 3" },
-                                { type: "max-effort", exercise: "boxSquat", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "assistance", exercise: "lunges", sets: "2 × 10 each" }
-                            ]
-                        },
-                        friday: {
-                            title: "Upper Body Repetition",
-                            exercises: [
-                                { type: "repetition", exercise: "dbPress", sets: "3 × 12" },
-                                { type: "assistance", exercise: "pullups", sets: "3 × 8" },
-                                { type: "assistance", exercise: "arms", sets: "2 × 12" }
-                            ]
-                        },
-                        saturday: {
-                            title: "Conditioning",
-                            exercises: [
-                                { type: "conditioning", exercise: "Position-specific drills", sets: "20-30 minutes" },
-                                { type: "conditioning", exercise: "Sport skills", sets: "20 minutes" }
-                            ]
-                        }
-                    }
-                }
-            },
-            'inseason': {
+                // ================================================================
+                // 2-DAY FULL BODY SPLIT
+                // ================================================================
                 '2day': {
                     week1: {
                         monday: {
-                            title: "Max-Effort Upper Body", 
+                            title: "Full Body - Day A",
+                            warmup: [
+                                { 
+                                    type: "warmup", 
+                                    exercise: "squatToStands", 
+                                    sets: "2 × 5", 
+                                    tempo: "Smooth and steady",
+                                    note: "Drop hips low, keep chest up, heels on ground",
+                                    media: {
+                                        photo: "assets/exercises/white/squat-to-stands.jpg",
+                                        video: "assets/exercises/white/squat-to-stands.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "warmup", 
+                                    exercise: "worldsGreatestStretch", 
+                                    sets: "2 × 5/side", 
+                                    tempo: "Smooth and steady",
+                                    note: "Step into deep lunge, twist your chest toward front leg",
+                                    media: {
+                                        photo: "assets/exercises/white/worlds-greatest-stretch.jpg",
+                                        video: "assets/exercises/white/worlds-greatest-stretch.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "warmup", 
+                                    exercise: "shoulderTaps", 
+                                    sets: "2 × 5/side", 
+                                    tempo: "Smooth and steady",
+                                    note: "Hold strong plank, tap each shoulder without rocking hips",
+                                    media: {
+                                        photo: "assets/exercises/white/shoulder-taps.jpg",
+                                        video: "assets/exercises/white/shoulder-taps.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "warmup", 
+                                    exercise: "jumpRopeDouble", 
+                                    sets: "2 × 60s", 
+                                    tempo: "Quick and powerful",
+                                    note: "Stay light on your toes, keep a steady rhythm",
+                                    media: {
+                                        photo: "assets/exercises/white/jump-rope-double.jpg",
+                                        video: "assets/exercises/white/jump-rope-double.mp4"
+                                    }
+                                }
+                            ],
                             exercises: [
-                                { type: "max-effort", exercise: "benchPress", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "assistance", exercise: "facePulls", sets: "2 × 15", note: "Shoulder health - simple version" },
-                                { type: "supplemental", exercise: "bulgarianSplitSquat", sets: "2 × 8 each", note: "Bodyweight unilateral work" },
-                                { type: "supplemental", exercise: "dbRows", sets: "3 × 10", note: "Single-arm DB rows" },
-                                { type: "assistance", exercise: "shrugs", sets: "3 × 10", note: "DB shrugs" },
-                                { type: "core", exercise: "plank", sets: "3 × 30 seconds", note: "Basic core stability" }
+                                // CIRCUIT A - Lower Body
+                                { 
+                                    type: "circuit-a", 
+                                    order: "A1",
+                                    exercise: "dbSlantboardGobletSquat", 
+                                    sets: "3 × 8", 
+                                    tempo: "3 seconds down, 1 second up",
+                                    rest: "30s",
+                                    note: "Heels on slant board, chest up, squat straight down",
+                                    media: {
+                                        photo: "assets/exercises/white/db-slantboard-goblet-squat.jpg",
+                                        video: "assets/exercises/white/db-slantboard-goblet-squat.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "circuit-a", 
+                                    order: "A2",
+                                    exercise: "dbRDL", 
+                                    sets: "3 × 8", 
+                                    tempo: "3 seconds down, squeeze at top",
+                                    rest: "30s",
+                                    note: "Push hips back, keep back flat, weights close to legs",
+                                    media: {
+                                        photo: "assets/exercises/white/db-rdl.jpg",
+                                        video: "assets/exercises/white/db-rdl.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "circuit-a", 
+                                    order: "A3",
+                                    exercise: "dbReverseLunge", 
+                                    sets: "3 × 8/side", 
+                                    tempo: "3 seconds down, 1 second up",
+                                    rest: "30s",
+                                    note: "Take a big step back, lower slowly, keep chest up",
+                                    media: {
+                                        photo: "assets/exercises/white/db-reverse-lunge.jpg",
+                                        video: "assets/exercises/white/db-reverse-lunge.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "circuit-a", 
+                                    order: "A4",
+                                    exercise: "dbLateralLunge", 
+                                    sets: "3 × 8/side", 
+                                    tempo: "3 seconds down, 1 second up",
+                                    rest: "75s",
+                                    note: "Slide to the side, push hips back, keep planted foot flat",
+                                    media: {
+                                        photo: "assets/exercises/white/db-lateral-lunge.jpg",
+                                        video: "assets/exercises/white/db-lateral-lunge.mp4"
+                                    }
+                                },
+                                
+                                // CIRCUIT B - Upper Body
+                                { 
+                                    type: "circuit-b", 
+                                    order: "B1",
+                                    exercise: "dbBenchPress", 
+                                    sets: "3 × 8", 
+                                    tempo: "3 seconds down, 1 second up",
+                                    rest: "30s",
+                                    note: "Lower slowly to chest, press straight up",
+                                    media: {
+                                        photo: "assets/exercises/white/db-bench-press.jpg",
+                                        video: "assets/exercises/white/db-bench-press.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "circuit-b", 
+                                    order: "B2",
+                                    exercise: "dbRows", 
+                                    sets: "3 × 8", 
+                                    tempo: "3 seconds down, squeeze at top",
+                                    rest: "30s",
+                                    note: "Place other hand on bench, pull weight to your side",
+                                    media: {
+                                        photo: "assets/exercises/white/db-rows.jpg",
+                                        video: "assets/exercises/white/db-rows.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "circuit-b", 
+                                    order: "B3",
+                                    exercise: "dbZPress", 
+                                    sets: "3 × 8", 
+                                    tempo: "3 seconds down, 1 second up",
+                                    rest: "30s",
+                                    note: "Sit up tall, press weights straight overhead",
+                                    media: {
+                                        photo: "assets/exercises/white/db-z-press.jpg",
+                                        video: "assets/exercises/white/db-z-press.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "circuit-b", 
+                                    order: "B4",
+                                    exercise: "dbShoulderRaiseComplex", 
+                                    sets: "2 × 5/variation", 
+                                    tempo: "3 seconds down, 1 second up",
+                                    rest: "60s",
+                                    note: "Do front raises, side raises, then bent-over raises. Go light",
+                                    media: {
+                                        photo: "assets/exercises/white/db-shoulder-raise-complex.jpg",
+                                        video: "assets/exercises/white/db-shoulder-raise-complex.mp4"
+                                    }
+                                },
+                                
+                                // SUPERSET C - Lower Accessories
+                                { 
+                                    type: "superset-c", 
+                                    order: "C1",
+                                    exercise: "calfRaisesDouble", 
+                                    sets: "2 × 8", 
+                                    tempo: "2 seconds down, hold at top",
+                                    rest: "20s",
+                                    note: "Go all the way up, pause at top, come down slow",
+                                    media: {
+                                        photo: "assets/exercises/white/calf-raises-double.jpg",
+                                        video: "assets/exercises/white/calf-raises-double.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "superset-c", 
+                                    order: "C2",
+                                    exercise: "wallSits", 
+                                    sets: "2 × 30s", 
+                                    tempo: "Hold steady",
+                                    rest: "45s",
+                                    note: "Sit like a chair against the wall, hold position",
+                                    media: {
+                                        photo: "assets/exercises/white/wall-sits.jpg",
+                                        video: "assets/exercises/white/wall-sits.mp4"
+                                    }
+                                },
+                                
+                                // TRI-SET D - Core
+                                { 
+                                    type: "tri-set-d", 
+                                    order: "D1",
+                                    exercise: "plankElbows", 
+                                    sets: "2 × 30s", 
+                                    tempo: "Hold steady",
+                                    rest: "20s",
+                                    note: "Elbows under shoulders, squeeze glutes, hold straight line",
+                                    media: {
+                                        photo: "assets/exercises/white/plank-elbows.jpg",
+                                        video: "assets/exercises/white/plank-elbows.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "tri-set-d", 
+                                    order: "D2",
+                                    exercise: "deadbugs", 
+                                    sets: "2 × 5/side", 
+                                    tempo: "Smooth and steady",
+                                    rest: "20s",
+                                    note: "Lower arms and legs slowly, keep back flat on ground",
+                                    media: {
+                                        photo: "assets/exercises/white/deadbugs.jpg",
+                                        video: "assets/exercises/white/deadbugs.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "tri-set-d", 
+                                    order: "D3",
+                                    exercise: "dbLowHighChop", 
+                                    sets: "2 × 10/side", 
+                                    tempo: "Smooth and steady",
+                                    rest: "45s",
+                                    note: "Start low, twist up and across your body",
+                                    media: {
+                                        photo: "assets/exercises/white/db-low-high-chop.jpg",
+                                        video: "assets/exercises/white/db-low-high-chop.mp4"
+                                    }
+                                }
                             ]
                         },
-                        wednesday: {
-                            title: "Dynamic-Effort Lower Body",
+                        friday: {
+                            title: "Full Body - Day B",
+                            warmup: [
+                                { 
+                                    type: "warmup", 
+                                    exercise: "squatForwardFold", 
+                                    sets: "2 × 5", 
+                                    tempo: "Smooth and steady",
+                                    note: "Squat down, then reach for your toes",
+                                    media: {
+                                        photo: "assets/exercises/white/squat-forward-fold.jpg",
+                                        video: "assets/exercises/white/squat-forward-fold.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "warmup", 
+                                    exercise: "hip9090Reach", 
+                                    sets: "2 × 5/side", 
+                                    tempo: "Smooth and steady",
+                                    note: "Sit in 90/90 position, rotate chest toward front knee",
+                                    media: {
+                                        photo: "assets/exercises/white/hip-90-90-reach.jpg",
+                                        video: "assets/exercises/white/hip-90-90-reach.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "warmup", 
+                                    exercise: "downwardDogToeTap", 
+                                    sets: "2 × 5/side", 
+                                    tempo: "Smooth and steady",
+                                    note: "Push hips up high, reach hand to opposite foot",
+                                    media: {
+                                        photo: "assets/exercises/white/downward-dog-toe-tap.jpg",
+                                        video: "assets/exercises/white/downward-dog-toe-tap.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "warmup", 
+                                    exercise: "jumpRopeDouble", 
+                                    sets: "2 × 60s", 
+                                    tempo: "Quick and powerful",
+                                    note: "Stay light on your toes, keep a steady rhythm",
+                                    media: {
+                                        photo: "assets/exercises/white/jump-rope-double.jpg",
+                                        video: "assets/exercises/white/jump-rope-double.mp4"
+                                    }
+                                }
+                            ],
                             exercises: [
-                                { type: "dynamic", exercise: "boxJump", sets: "3 × 3", note: "20-24 inch box, focus on landing" },
-                                { type: "speed", exercise: "boxSquat", sets: "6 × 2 @ 60%", intensity: "60% of 1RM", note: "1-minute rest, learn timing" },
-                                { type: "supplemental", exercise: "dbBenchPress", sets: "2 × 10", note: "Moderate DB bench work" },
-                                { type: "assistance", exercise: "bandPullAparts", sets: "3 × 20", note: "Simple rear delt work" },
-                                { type: "assistance", exercise: "lateralRaises", sets: "2 × 12", note: "Light DB lateral raises" },
-                                { type: "core", exercise: "abCircuit", sets: "2 × 15", note: "Basic abs + back extensions" }
+                                // CIRCUIT A - Lower Body
+                                { 
+                                    type: "circuit-a", 
+                                    order: "A1",
+                                    exercise: "dbWalkingLunges", 
+                                    sets: "3 × 8/side", 
+                                    tempo: "3 seconds down, 1 second up",
+                                    rest: "30s",
+                                    note: "Take big steps forward, back knee almost touches ground",
+                                    media: {
+                                        photo: "assets/exercises/white/db-walking-lunges.jpg",
+                                        video: "assets/exercises/white/db-walking-lunges.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "circuit-a", 
+                                    order: "A2",
+                                    exercise: "dbKbSwings", 
+                                    sets: "3 × 8", 
+                                    tempo: "Quick and powerful",
+                                    rest: "30s",
+                                    note: "Push hips back, then snap them forward fast",
+                                    media: {
+                                        photo: "assets/exercises/white/db-kb-swings.jpg",
+                                        video: "assets/exercises/white/db-kb-swings.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "circuit-a", 
+                                    order: "A3",
+                                    exercise: "dbStepDowns", 
+                                    sets: "3 × 8/side", 
+                                    tempo: "3 seconds down, 1 second up",
+                                    rest: "30s",
+                                    note: "Step down slowly, tap heel, then push back up",
+                                    media: {
+                                        photo: "assets/exercises/white/db-step-downs.jpg",
+                                        video: "assets/exercises/white/db-step-downs.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "circuit-a", 
+                                    order: "A4",
+                                    exercise: "dbCurtsyLunge", 
+                                    sets: "3 × 8/side", 
+                                    tempo: "3 seconds down, 1 second up",
+                                    rest: "75s",
+                                    note: "Step back and across, lower down, stay upright",
+                                    media: {
+                                        photo: "assets/exercises/white/db-curtsy-lunge.jpg",
+                                        video: "assets/exercises/white/db-curtsy-lunge.mp4"
+                                    }
+                                },
+                                
+                                // CIRCUIT B - Upper Body
+                                { 
+                                    type: "circuit-b", 
+                                    order: "B1",
+                                    exercise: "pushUps", 
+                                    sets: "3 × 8", 
+                                    tempo: "3 seconds down, 1 second up",
+                                    rest: "30s",
+                                    note: "Lower all the way down, keep body straight",
+                                    media: {
+                                        photo: "assets/exercises/white/push-ups.jpg",
+                                        video: "assets/exercises/white/push-ups.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "circuit-b", 
+                                    order: "B2",
+                                    exercise: "invertedRows", 
+                                    sets: "3 × 8", 
+                                    tempo: "3 seconds down, squeeze at top",
+                                    rest: "30s",
+                                    note: "Keep body straight, pull chest to the bar",
+                                    media: {
+                                        photo: "assets/exercises/white/inverted-rows.jpg",
+                                        video: "assets/exercises/white/inverted-rows.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "circuit-b", 
+                                    order: "B3",
+                                    exercise: "dbKneelingOHPress", 
+                                    sets: "3 × 8", 
+                                    tempo: "3 seconds down, 1 second up",
+                                    rest: "30s",
+                                    note: "One knee down, press weights straight overhead",
+                                    media: {
+                                        photo: "assets/exercises/white/db-kneeling-oh-press.jpg",
+                                        video: "assets/exercises/white/db-kneeling-oh-press.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "circuit-b", 
+                                    order: "B4",
+                                    exercise: "kbGorillaRows", 
+                                    sets: "3 × 8/side", 
+                                    tempo: "3 seconds down, 1 second up",
+                                    rest: "60s",
+                                    note: "Bend forward, row one weight at a time",
+                                    media: {
+                                        photo: "assets/exercises/white/kb-gorilla-rows.jpg",
+                                        video: "assets/exercises/white/kb-gorilla-rows.mp4"
+                                    }
+                                },
+                                
+                                // SUPERSET C - Lower Accessories
+                                { 
+                                    type: "superset-c", 
+                                    order: "C1",
+                                    exercise: "wallTibRaises", 
+                                    sets: "2 × 10", 
+                                    tempo: "2 seconds down, hold at top",
+                                    rest: "20s",
+                                    note: "Lean against wall, lift toes up high",
+                                    media: {
+                                        photo: "assets/exercises/white/wall-tib-raises.jpg",
+                                        video: "assets/exercises/white/wall-tib-raises.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "superset-c", 
+                                    order: "C2",
+                                    exercise: "stabilityBallHamstringCurls", 
+                                    sets: "2 × 10", 
+                                    tempo: "Smooth and steady",
+                                    rest: "45s",
+                                    note: "Bridge hips up, curl ball toward you",
+                                    media: {
+                                        photo: "assets/exercises/white/stability-ball-hamstring-curls.jpg",
+                                        video: "assets/exercises/white/stability-ball-hamstring-curls.mp4"
+                                    }
+                                },
+                                
+                                // TRI-SET D - Core
+                                { 
+                                    type: "tri-set-d", 
+                                    order: "D1",
+                                    exercise: "plankElbows", 
+                                    sets: "2 × 30s", 
+                                    tempo: "Hold steady",
+                                    rest: "20s",
+                                    note: "Elbows under shoulders, squeeze glutes, hold straight line",
+                                    media: {
+                                        photo: "assets/exercises/white/plank-elbows.jpg",
+                                        video: "assets/exercises/white/plank-elbows.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "tri-set-d", 
+                                    order: "D2",
+                                    exercise: "deadbugs", 
+                                    sets: "2 × 5/side", 
+                                    tempo: "Smooth and steady",
+                                    rest: "20s",
+                                    note: "Lower arms and legs slowly, keep back flat on ground",
+                                    media: {
+                                        photo: "assets/exercises/white/deadbugs.jpg",
+                                        video: "assets/exercises/white/deadbugs.mp4"
+                                    }
+                                },
+                                { 
+                                    type: "tri-set-d", 
+                                    order: "D3",
+                                    exercise: "dbLowHighChop", 
+                                    sets: "2 × 10/side", 
+                                    tempo: "Smooth and steady",
+                                    rest: "45s",
+                                    note: "Start low, twist up and across your body",
+                                    media: {
+                                        photo: "assets/exercises/white/db-low-high-chop.jpg",
+                                        video: "assets/exercises/white/db-low-high-chop.mp4"
+                                    }
+                                }
                             ]
                         }
                     },
+                    
                     week2: {
                         monday: {
-                            title: "Max-Effort Upper Body",
+                            title: "Full Body - Day A",
+                            warmup: [
+                                { type: "warmup", exercise: "squatToStands", sets: "2 × 5", tempo: "Smooth and steady", note: "Drop hips low, keep chest up, heels on ground", media: { photo: "assets/exercises/white/squat-to-stands.jpg", video: "assets/exercises/white/squat-to-stands.mp4" } },
+                                { type: "warmup", exercise: "worldsGreatestStretch", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Step into deep lunge, twist your chest toward front leg", media: { photo: "assets/exercises/white/worlds-greatest-stretch.jpg", video: "assets/exercises/white/worlds-greatest-stretch.mp4" } },
+                                { type: "warmup", exercise: "shoulderTaps", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Hold strong plank, tap each shoulder without rocking hips", media: { photo: "assets/exercises/white/shoulder-taps.jpg", video: "assets/exercises/white/shoulder-taps.mp4" } },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm", media: { photo: "assets/exercises/white/jump-rope-double.jpg", video: "assets/exercises/white/jump-rope-double.mp4" } }
+                            ],
                             exercises: [
-                                { type: "max-effort", exercise: "benchPress", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "assistance", exercise: "facePulls", sets: "3 × 15", note: "Increase volume slightly" },
-                                { type: "supplemental", exercise: "walkingLunges", sets: "2 × 8 each", note: "Bodyweight walking lunges" },
-                                { type: "supplemental", exercise: "barbellRows", sets: "3 × 8", note: "Bent-over barbell rows" },
-                                { type: "assistance", exercise: "shrugs", sets: "3 × 10", note: "Same weight, better form" },
-                                { type: "core", exercise: "weightedAbs", sets: "3 × 12", note: "Light weight or medicine ball" }
+                                // CIRCUIT A - Lower Body (Week 2: 10 reps)
+                                { type: "circuit-a", order: "A1", exercise: "dbSlantboardGobletSquat", sets: "3 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Same weight as week 1, focus on form", media: { photo: "assets/exercises/white/db-slantboard-goblet-squat.jpg", video: "assets/exercises/white/db-slantboard-goblet-squat.mp4" } },
+                                { type: "circuit-a", order: "A2", exercise: "dbRDL", sets: "3 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Push hips back, keep back flat, weights close to legs", media: { photo: "assets/exercises/white/db-rdl.jpg", video: "assets/exercises/white/db-rdl.mp4" } },
+                                { type: "circuit-a", order: "A3", exercise: "dbReverseLunge", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take a big step back, lower slowly, keep chest up", media: { photo: "assets/exercises/white/db-reverse-lunge.jpg", video: "assets/exercises/white/db-reverse-lunge.mp4" } },
+                                { type: "circuit-a", order: "A4", exercise: "dbLateralLunge", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Slide to the side, push hips back, keep planted foot flat", media: { photo: "assets/exercises/white/db-lateral-lunge.jpg", video: "assets/exercises/white/db-lateral-lunge.mp4" } },
+                                
+                                // CIRCUIT B - Upper Body (Week 2: 10 reps)
+                                { type: "circuit-b", order: "B1", exercise: "dbBenchPress", sets: "3 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower slowly to chest, press straight up", media: { photo: "assets/exercises/white/db-bench-press.jpg", video: "assets/exercises/white/db-bench-press.mp4" } },
+                                { type: "circuit-b", order: "B2", exercise: "dbRows", sets: "3 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Place other hand on bench, pull weight to your side", media: { photo: "assets/exercises/white/db-rows.jpg", video: "assets/exercises/white/db-rows.mp4" } },
+                                { type: "circuit-b", order: "B3", exercise: "dbZPress", sets: "3 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Sit up tall, press weights straight overhead", media: { photo: "assets/exercises/white/db-z-press.jpg", video: "assets/exercises/white/db-z-press.mp4" } },
+                                { type: "circuit-b", order: "B4", exercise: "dbShoulderRaiseComplex", sets: "2 × 8/variation", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Do front raises, side raises, then bent-over raises. Go light", media: { photo: "assets/exercises/white/db-shoulder-raise-complex.jpg", video: "assets/exercises/white/db-shoulder-raise-complex.mp4" } },
+                                
+                                // SUPERSET C - Lower Accessories (Week 2: increased reps)
+                                { type: "superset-c", order: "C1", exercise: "calfRaisesDouble", sets: "2 × 10", tempo: "2 seconds down, hold at top", rest: "20s", note: "Go all the way up, pause at top, come down slow", media: { photo: "assets/exercises/white/calf-raises-double.jpg", video: "assets/exercises/white/calf-raises-double.mp4" } },
+                                { type: "superset-c", order: "C2", exercise: "wallSits", sets: "2 × 45s", tempo: "Hold steady", rest: "45s", note: "Sit like a chair against the wall, hold position", media: { photo: "assets/exercises/white/wall-sits.jpg", video: "assets/exercises/white/wall-sits.mp4" } },
+                                
+                                // TRI-SET D - Core (Week 2: increased time/reps)
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 45s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line", media: { photo: "assets/exercises/white/plank-elbows.jpg", video: "assets/exercises/white/plank-elbows.mp4" } },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 8/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
                             ]
                         },
-                        wednesday: {
-                            title: "Dynamic-Effort Lower Body",
+                        friday: {
+                            title: "Full Body - Day B",
+                            warmup: [
+                                { type: "warmup", exercise: "squatForwardFold", sets: "2 × 5", tempo: "Smooth and steady", note: "Squat down, then reach for your toes", media: { photo: "assets/exercises/white/squat-forward-fold.jpg", video: "assets/exercises/white/squat-forward-fold.mp4" } },
+                                { type: "warmup", exercise: "hip9090Reach", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Sit in 90/90 position, rotate chest toward front knee", media: { photo: "assets/exercises/white/hip-90-90-reach.jpg", video: "assets/exercises/white/hip-90-90-reach.mp4" } },
+                                { type: "warmup", exercise: "downwardDogToeTap", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Push hips up high, reach hand to opposite foot", media: { photo: "assets/exercises/white/downward-dog-toe-tap.jpg", video: "assets/exercises/white/downward-dog-toe-tap.mp4" } },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm", media: { photo: "assets/exercises/white/jump-rope-double.jpg", video: "assets/exercises/white/jump-rope-double.mp4" } }
+                            ],
                             exercises: [
-                                { type: "dynamic", exercise: "boxJump", sets: "3 × 3", note: "Same height, better technique" },
-                                { type: "speed", exercise: "boxSquat", sets: "5 × 2 @ 70%", intensity: "70% of 1RM", note: "1-minute rest, increased load" },
-                                { type: "supplemental", exercise: "dbInclinePress", sets: "2 × 8", note: "Incline DB press variation" },
-                                { type: "assistance", exercise: "rearDeltFlyes", sets: "3 × 12", note: "DB rear delt flies" },
-                                { type: "assistance", exercise: "lateralRaises", sets: "3 × 10", note: "Consistent lateral raise work" },
-                                { type: "core", exercise: "plankSuperset", sets: "3 × 45 sec + 10 reps", note: "Plank + hyperextensions" }
+                                // CIRCUIT A - Lower Body (Week 2: 10 reps)
+                                { type: "circuit-a", order: "A1", exercise: "dbWalkingLunges", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take big steps forward, back knee almost touches ground", media: { photo: "assets/exercises/white/db-walking-lunges.jpg", video: "assets/exercises/white/db-walking-lunges.mp4" } },
+                                { type: "circuit-a", order: "A2", exercise: "dbKbSwings", sets: "3 × 10", tempo: "Quick and powerful", rest: "30s", note: "Push hips back, then snap them forward fast", media: { photo: "assets/exercises/white/db-kb-swings.jpg", video: "assets/exercises/white/db-kb-swings.mp4" } },
+                                { type: "circuit-a", order: "A3", exercise: "dbStepDowns", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Step down slowly, tap heel, then push back up", media: { photo: "assets/exercises/white/db-step-downs.jpg", video: "assets/exercises/white/db-step-downs.mp4" } },
+                                { type: "circuit-a", order: "A4", exercise: "dbCurtsyLunge", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Step back and across, lower down, stay upright", media: { photo: "assets/exercises/white/db-curtsy-lunge.jpg", video: "assets/exercises/white/db-curtsy-lunge.mp4" } },
+                                
+                                // CIRCUIT B - Upper Body (Week 2: 10 reps)
+                                { type: "circuit-b", order: "B1", exercise: "pushUps", sets: "3 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower all the way down, keep body straight", media: { photo: "assets/exercises/white/push-ups.jpg", video: "assets/exercises/white/push-ups.mp4" } },
+                                { type: "circuit-b", order: "B2", exercise: "invertedRows", sets: "3 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Keep body straight, pull chest to the bar", media: { photo: "assets/exercises/white/inverted-rows.jpg", video: "assets/exercises/white/inverted-rows.mp4" } },
+                                { type: "circuit-b", order: "B3", exercise: "dbKneelingOHPress", sets: "3 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "One knee down, press weights straight overhead", media: { photo: "assets/exercises/white/db-kneeling-oh-press.jpg", video: "assets/exercises/white/db-kneeling-oh-press.mp4" } },
+                                { type: "circuit-b", order: "B4", exercise: "kbGorillaRows", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Bend forward, row one weight at a time", media: { photo: "assets/exercises/white/kb-gorilla-rows.jpg", video: "assets/exercises/white/kb-gorilla-rows.mp4" } },
+                                
+                                // SUPERSET C - Lower Accessories (Week 2: increased reps)
+                                { type: "superset-c", order: "C1", exercise: "wallTibRaises", sets: "2 × 12", tempo: "2 seconds down, hold at top", rest: "20s", note: "Lean against wall, lift toes up high", media: { photo: "assets/exercises/white/wall-tib-raises.jpg", video: "assets/exercises/white/wall-tib-raises.mp4" } },
+                                { type: "superset-c", order: "C2", exercise: "stabilityBallHamstringCurls", sets: "2 × 12", tempo: "Smooth and steady", rest: "45s", note: "Bridge hips up, curl ball toward you", media: { photo: "assets/exercises/white/stability-ball-hamstring-curls.jpg", video: "assets/exercises/white/stability-ball-hamstring-curls.mp4" } },
+                                
+                                // TRI-SET D - Core (Week 2: increased time/reps)
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 45s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line", media: { photo: "assets/exercises/white/plank-elbows.jpg", video: "assets/exercises/white/plank-elbows.mp4" } },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 8/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
                             ]
                         }
                     },
+                    
                     week3: {
                         monday: {
-                            title: "Max-Effort Upper Body",
+                            title: "Full Body - Day A (Build Phase)",
+                            warmup: [
+                                { type: "warmup", exercise: "squatToStands", sets: "2 × 5", tempo: "Smooth and steady", note: "Drop hips low, keep chest up, heels on ground", media: { photo: "assets/exercises/white/squat-to-stands.jpg", video: "assets/exercises/white/squat-to-stands.mp4" } },
+                                { type: "warmup", exercise: "worldsGreatestStretch", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Step into deep lunge, twist your chest toward front leg", media: { photo: "assets/exercises/white/worlds-greatest-stretch.jpg", video: "assets/exercises/white/worlds-greatest-stretch.mp4" } },
+                                { type: "warmup", exercise: "shoulderTaps", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Hold strong plank, tap each shoulder without rocking hips", media: { photo: "assets/exercises/white/shoulder-taps.jpg", video: "assets/exercises/white/shoulder-taps.mp4" } },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm", media: { photo: "assets/exercises/white/jump-rope-double.jpg", video: "assets/exercises/white/jump-rope-double.mp4" } }
+                            ],
                             exercises: [
-                                { type: "max-effort", exercise: "inclineBench", sets: "Work up to ${getPhaseRM()}", intensity: "${getPhaseIntensity()}", note: "${getPhaseNote()}" },
-                                { type: "assistance", exercise: "bandPullAparts", sets: "50 reps total", note: "High-rep band work" },
-                                { type: "supplemental", exercise: "stepUps", sets: "2 × 8 each", note: "Knee-high box step-ups" },
-                                { type: "supplemental", exercise: "cableRows", sets: "3 × 10", note: "Seated cable rows" },
-                                { type: "assistance", exercise: "shrugs", sets: "3 × 8", note: "Focus on quality over quantity" },
-                                { type: "core", exercise: "abCircuit", sets: "2 circuits", note: "Mixed ab work, conservative" }
+                                // CIRCUIT A - Lower Body (Week 3: 4 sets x 10 reps)
+                                { type: "circuit-a", order: "A1", exercise: "dbSlantboardGobletSquat", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Keep week 2 weight, adding 1 more set", media: { photo: "assets/exercises/white/db-slantboard-goblet-squat.jpg", video: "assets/exercises/white/db-slantboard-goblet-squat.mp4" } },
+                                { type: "circuit-a", order: "A2", exercise: "dbRDL", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Push hips back, keep back flat, weights close to legs", media: { photo: "assets/exercises/white/db-rdl.jpg", video: "assets/exercises/white/db-rdl.mp4" } },
+                                { type: "circuit-a", order: "A3", exercise: "dbReverseLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take a big step back, lower slowly, keep chest up", media: { photo: "assets/exercises/white/db-reverse-lunge.jpg", video: "assets/exercises/white/db-reverse-lunge.mp4" } },
+                                { type: "circuit-a", order: "A4", exercise: "dbLateralLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Slide to the side, push hips back, keep planted foot flat", media: { photo: "assets/exercises/white/db-lateral-lunge.jpg", video: "assets/exercises/white/db-lateral-lunge.mp4" } },
+                                
+                                // CIRCUIT B - Upper Body (Week 3: 4 sets x 10 reps)
+                                { type: "circuit-b", order: "B1", exercise: "dbBenchPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower slowly to chest, press straight up", media: { photo: "assets/exercises/white/db-bench-press.jpg", video: "assets/exercises/white/db-bench-press.mp4" } },
+                                { type: "circuit-b", order: "B2", exercise: "dbRows", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Place other hand on bench, pull weight to your side", media: { photo: "assets/exercises/white/db-rows.jpg", video: "assets/exercises/white/db-rows.mp4" } },
+                                { type: "circuit-b", order: "B3", exercise: "dbZPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Sit up tall, press weights straight overhead", media: { photo: "assets/exercises/white/db-z-press.jpg", video: "assets/exercises/white/db-z-press.mp4" } },
+                                { type: "circuit-b", order: "B4", exercise: "dbShoulderRaiseComplex", sets: "3 × 8/variation", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Do front raises, side raises, then bent-over raises. Go light", media: { photo: "assets/exercises/white/db-shoulder-raise-complex.jpg", video: "assets/exercises/white/db-shoulder-raise-complex.mp4" } },
+                                
+                                // SUPERSET C - Lower Accessories (Week 3: increased reps)
+                                { type: "superset-c", order: "C1", exercise: "calfRaisesDouble", sets: "2 × 12", tempo: "2 seconds down, hold at top", rest: "20s", note: "Go all the way up, pause at top, come down slow", media: { photo: "assets/exercises/white/calf-raises-double.jpg", video: "assets/exercises/white/calf-raises-double.mp4" } },
+                                { type: "superset-c", order: "C2", exercise: "wallSits", sets: "2 × 60s", tempo: "Hold steady", rest: "45s", note: "Sit like a chair against the wall, hold position", media: { photo: "assets/exercises/white/wall-sits.jpg", video: "assets/exercises/white/wall-sits.mp4" } },
+                                
+                                // TRI-SET D - Core (Week 3: increased time/reps)
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 60s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line", media: { photo: "assets/exercises/white/plank-elbows.jpg", video: "assets/exercises/white/plank-elbows.mp4" } },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 12/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
                             ]
                         },
-                        wednesday: {
-                            title: "Dynamic-Effort Lower Body",
+                        friday: {
+                            title: "Full Body - Day B (Build Phase)",
+                            warmup: [
+                                { type: "warmup", exercise: "squatForwardFold", sets: "2 × 5", tempo: "Smooth and steady", note: "Squat down, then reach for your toes", media: { photo: "assets/exercises/white/squat-forward-fold.jpg", video: "assets/exercises/white/squat-forward-fold.mp4" } },
+                                { type: "warmup", exercise: "hip9090Reach", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Sit in 90/90 position, rotate chest toward front knee", media: { photo: "assets/exercises/white/hip-90-90-reach.jpg", video: "assets/exercises/white/hip-90-90-reach.mp4" } },
+                                { type: "warmup", exercise: "downwardDogToeTap", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Push hips up high, reach hand to opposite foot", media: { photo: "assets/exercises/white/downward-dog-toe-tap.jpg", video: "assets/exercises/white/downward-dog-toe-tap.mp4" } },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm", media: { photo: "assets/exercises/white/jump-rope-double.jpg", video: "assets/exercises/white/jump-rope-double.mp4" } }
+                            ],
                             exercises: [
-                                { type: "dynamic", exercise: "boxJump", sets: "3 × 3", note: "Consistent height, perfect form" },
-                                { type: "speed", exercise: "boxSquat", sets: "3 singles @ 75-80%", intensity: "75-80% of 1RM", note: "2-3 min rest, conservative singles" },
-                                { type: "supplemental", exercise: "dbBenchPress", sets: "2 × 8", note: "Back to basic DB work" },
-                                { type: "assistance", exercise: "facePulls", sets: "2 × 15", note: "Shoulder health maintenance" },
-                                { type: "assistance", exercise: "lateralRaises", sets: "2 × 10", note: "Light, consistent work" },
-                                { type: "core", exercise: "plank", sets: "2 × 45 seconds", note: "Core stability focus" }
+                                // CIRCUIT A - Lower Body (Week 3: 4 sets x 10 reps)
+                                { type: "circuit-a", order: "A1", exercise: "dbWalkingLunges", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take big steps forward, back knee almost touches ground", media: { photo: "assets/exercises/white/db-walking-lunges.jpg", video: "assets/exercises/white/db-walking-lunges.mp4" } },
+                                { type: "circuit-a", order: "A2", exercise: "dbKbSwings", sets: "4 × 10", tempo: "Quick and powerful", rest: "30s", note: "Push hips back, then snap them forward fast", media: { photo: "assets/exercises/white/db-kb-swings.jpg", video: "assets/exercises/white/db-kb-swings.mp4" } },
+                                { type: "circuit-a", order: "A3", exercise: "dbStepDowns", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Step down slowly, tap heel, then push back up", media: { photo: "assets/exercises/white/db-step-downs.jpg", video: "assets/exercises/white/db-step-downs.mp4" } },
+                                { type: "circuit-a", order: "A4", exercise: "dbCurtsyLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Step back and across, lower down, stay upright", media: { photo: "assets/exercises/white/db-curtsy-lunge.jpg", video: "assets/exercises/white/db-curtsy-lunge.mp4" } },
+                                
+                                // CIRCUIT B - Upper Body (Week 3: 4 sets x 10 reps)
+                                { type: "circuit-b", order: "B1", exercise: "pushUps", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower all the way down, keep body straight", media: { photo: "assets/exercises/white/push-ups.jpg", video: "assets/exercises/white/push-ups.mp4" } },
+                                { type: "circuit-b", order: "B2", exercise: "invertedRows", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Keep body straight, pull chest to the bar", media: { photo: "assets/exercises/white/inverted-rows.jpg", video: "assets/exercises/white/inverted-rows.mp4" } },
+                                { type: "circuit-b", order: "B3", exercise: "dbKneelingOHPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "One knee down, press weights straight overhead", media: { photo: "assets/exercises/white/db-kneeling-oh-press.jpg", video: "assets/exercises/white/db-kneeling-oh-press.mp4" } },
+                                { type: "circuit-b", order: "B4", exercise: "kbGorillaRows", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Bend forward, row one weight at a time", media: { photo: "assets/exercises/white/kb-gorilla-rows.jpg", video: "assets/exercises/white/kb-gorilla-rows.mp4" } },
+                                
+                                // SUPERSET C - Lower Accessories (Week 3: increased reps)
+                                { type: "superset-c", order: "C1", exercise: "wallTibRaises", sets: "2 × 15", tempo: "2 seconds down, hold at top", rest: "20s", note: "Lean against wall, lift toes up high", media: { photo: "assets/exercises/white/wall-tib-raises.jpg", video: "assets/exercises/white/wall-tib-raises.mp4" } },
+                                { type: "superset-c", order: "C2", exercise: "stabilityBallHamstringCurls", sets: "2 × 15", tempo: "Smooth and steady", rest: "45s", note: "Bridge hips up, curl ball toward you", media: { photo: "assets/exercises/white/stability-ball-hamstring-curls.jpg", video: "assets/exercises/white/stability-ball-hamstring-curls.mp4" } },
+                                
+                                // TRI-SET D - Core (Week 3: increased time/reps)
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 60s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line", media: { photo: "assets/exercises/white/plank-elbows.jpg", video: "assets/exercises/white/plank-elbows.mp4" } },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 12/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
                             ]
                         }
                     },
-                    autoRegulationNotes: [
-                        "Miss training if sore or tired from games",
-                        "Reduce weights by 10-15% after tough games",
-                        "Focus on perfect form over heavy weight",
-                        "Get 8+ hours of sleep during the competitive season"
-                    ]
+                    
+                    week4: {
+                        monday: {
+                            title: "Full Body - Day A (Final Week)",
+                            warmup: [
+                                { type: "warmup", exercise: "squatToStands", sets: "2 × 5", tempo: "Smooth and steady", note: "Drop hips low, keep chest up, heels on ground", media: { photo: "assets/exercises/white/squat-to-stands.jpg", video: "assets/exercises/white/squat-to-stands.mp4" } },
+                                { type: "warmup", exercise: "worldsGreatestStretch", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Step into deep lunge, twist your chest toward front leg", media: { photo: "assets/exercises/white/worlds-greatest-stretch.jpg", video: "assets/exercises/white/worlds-greatest-stretch.mp4" } },
+                                { type: "warmup", exercise: "shoulderTaps", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Hold strong plank, tap each shoulder without rocking hips", media: { photo: "assets/exercises/white/shoulder-taps.jpg", video: "assets/exercises/white/shoulder-taps.mp4" } },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm", media: { photo: "assets/exercises/white/jump-rope-double.jpg", video: "assets/exercises/white/jump-rope-double.mp4" } }
+                            ],
+                            exercises: [
+                                // CIRCUIT A - Lower Body (Week 4: same as week 3, option to add 2.5-5 lbs)
+                                { type: "circuit-a", order: "A1", exercise: "dbSlantboardGobletSquat", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Same as week 3, or add 2.5-5 lbs if feeling strong", media: { photo: "assets/exercises/white/db-slantboard-goblet-squat.jpg", video: "assets/exercises/white/db-slantboard-goblet-squat.mp4" } },
+                                { type: "circuit-a", order: "A2", exercise: "dbRDL", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Push hips back, keep back flat, weights close to legs", media: { photo: "assets/exercises/white/db-rdl.jpg", video: "assets/exercises/white/db-rdl.mp4" } },
+                                { type: "circuit-a", order: "A3", exercise: "dbReverseLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take a big step back, lower slowly, keep chest up", media: { photo: "assets/exercises/white/db-reverse-lunge.jpg", video: "assets/exercises/white/db-reverse-lunge.mp4" } },
+                                { type: "circuit-a", order: "A4", exercise: "dbLateralLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Slide to the side, push hips back, keep planted foot flat", media: { photo: "assets/exercises/white/db-lateral-lunge.jpg", video: "assets/exercises/white/db-lateral-lunge.mp4" } },
+                                
+                                // CIRCUIT B - Upper Body (Week 4: same as week 3)
+                                { type: "circuit-b", order: "B1", exercise: "dbBenchPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower slowly to chest, press straight up", media: { photo: "assets/exercises/white/db-bench-press.jpg", video: "assets/exercises/white/db-bench-press.mp4" } },
+                                { type: "circuit-b", order: "B2", exercise: "dbRows", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Place other hand on bench, pull weight to your side", media: { photo: "assets/exercises/white/db-rows.jpg", video: "assets/exercises/white/db-rows.mp4" } },
+                                { type: "circuit-b", order: "B3", exercise: "dbZPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Sit up tall, press weights straight overhead", media: { photo: "assets/exercises/white/db-z-press.jpg", video: "assets/exercises/white/db-z-press.mp4" } },
+                                { type: "circuit-b", order: "B4", exercise: "dbShoulderRaiseComplex", sets: "3 × 8/variation", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Do front raises, side raises, then bent-over raises. Go light", media: { photo: "assets/exercises/white/db-shoulder-raise-complex.jpg", video: "assets/exercises/white/db-shoulder-raise-complex.mp4" } },
+                                
+                                // SUPERSET C - Lower Accessories (Week 4: maintain week 3)
+                                { type: "superset-c", order: "C1", exercise: "calfRaisesDouble", sets: "2 × 12", tempo: "2 seconds down, hold at top", rest: "20s", note: "Go all the way up, pause at top, come down slow", media: { photo: "assets/exercises/white/calf-raises-double.jpg", video: "assets/exercises/white/calf-raises-double.mp4" } },
+                                { type: "superset-c", order: "C2", exercise: "wallSits", sets: "2 × 60s", tempo: "Hold steady", rest: "45s", note: "Sit like a chair against the wall, hold position", media: { photo: "assets/exercises/white/wall-sits.jpg", video: "assets/exercises/white/wall-sits.mp4" } },
+                                
+                                // TRI-SET D - Core (Week 4: maintain week 3)
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 60s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line", media: { photo: "assets/exercises/white/plank-elbows.jpg", video: "assets/exercises/white/plank-elbows.mp4" } },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 12/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
+                            ]
+                        },
+                        friday: {
+                            title: "Full Body - Day B (Final Week)",
+                            warmup: [
+                                { type: "warmup", exercise: "squatForwardFold", sets: "2 × 5", tempo: "Smooth and steady", note: "Squat down, then reach for your toes", media: { photo: "assets/exercises/white/squat-forward-fold.jpg", video: "assets/exercises/white/squat-forward-fold.mp4" } },
+                                { type: "warmup", exercise: "hip9090Reach", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Sit in 90/90 position, rotate chest toward front knee", media: { photo: "assets/exercises/white/hip-90-90-reach.jpg", video: "assets/exercises/white/hip-90-90-reach.mp4" } },
+                                { type: "warmup", exercise: "downwardDogToeTap", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Push hips up high, reach hand to opposite foot", media: { photo: "assets/exercises/white/downward-dog-toe-tap.jpg", video: "assets/exercises/white/downward-dog-toe-tap.mp4" } },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm", media: { photo: "assets/exercises/white/jump-rope-double.jpg", video: "assets/exercises/white/jump-rope-double.mp4" } }
+                            ],
+                            exercises: [
+                                // CIRCUIT A - Lower Body (Week 4: same as week 3, option to add 2.5-5 lbs)
+                                { type: "circuit-a", order: "A1", exercise: "dbWalkingLunges", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Same as week 3, or add 2.5-5 lbs if feeling strong", media: { photo: "assets/exercises/white/db-walking-lunges.jpg", video: "assets/exercises/white/db-walking-lunges.mp4" } },
+                                { type: "circuit-a", order: "A2", exercise: "dbKbSwings", sets: "4 × 10", tempo: "Quick and powerful", rest: "30s", note: "Push hips back, then snap them forward fast", media: { photo: "assets/exercises/white/db-kb-swings.jpg", video: "assets/exercises/white/db-kb-swings.mp4" } },
+                                { type: "circuit-a", order: "A3", exercise: "dbStepDowns", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Step down slowly, tap heel, then push back up", media: { photo: "assets/exercises/white/db-step-downs.jpg", video: "assets/exercises/white/db-step-downs.mp4" } },
+                                { type: "circuit-a", order: "A4", exercise: "dbCurtsyLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Step back and across, lower down, stay upright", media: { photo: "assets/exercises/white/db-curtsy-lunge.jpg", video: "assets/exercises/white/db-curtsy-lunge.mp4" } },
+                                
+                                // CIRCUIT B - Upper Body (Week 4: same as week 3)
+                                { type: "circuit-b", order: "B1", exercise: "pushUps", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower all the way down, keep body straight", media: { photo: "assets/exercises/white/push-ups.jpg", video: "assets/exercises/white/push-ups.mp4" } },
+                                { type: "circuit-b", order: "B2", exercise: "invertedRows", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Keep body straight, pull chest to the bar", media: { photo: "assets/exercises/white/inverted-rows.jpg", video: "assets/exercises/white/inverted-rows.mp4" } },
+                                { type: "circuit-b", order: "B3", exercise: "dbKneelingOHPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "One knee down, press weights straight overhead", media: { photo: "assets/exercises/white/db-kneeling-oh-press.jpg", video: "assets/exercises/white/db-kneeling-oh-press.mp4" } },
+                                { type: "circuit-b", order: "B4", exercise: "kbGorillaRows", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Bend forward, row one weight at a time", media: { photo: "assets/exercises/white/kb-gorilla-rows.jpg", video: "assets/exercises/white/kb-gorilla-rows.mp4" } },
+                                
+                                // SUPERSET C - Lower Accessories (Week 4: maintain week 3)
+                                { type: "superset-c", order: "C1", exercise: "wallTibRaises", sets: "2 × 15", tempo: "2 seconds down, hold at top", rest: "20s", note: "Lean against wall, lift toes up high", media: { photo: "assets/exercises/white/wall-tib-raises.jpg", video: "assets/exercises/white/wall-tib-raises.mp4" } },
+                                { type: "superset-c", order: "C2", exercise: "stabilityBallHamstringCurls", sets: "2 × 15", tempo: "Smooth and steady", rest: "45s", note: "Bridge hips up, curl ball toward you", media: { photo: "assets/exercises/white/stability-ball-hamstring-curls.jpg", video: "assets/exercises/white/stability-ball-hamstring-curls.mp4" } },
+                                
+                                // TRI-SET D - Core (Week 4: maintain week 3)
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 60s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line", media: { photo: "assets/exercises/white/plank-elbows.jpg", video: "assets/exercises/white/plank-elbows.mp4" } },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 12/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
+                            ]
+                        }
+                    }
+                },
+                
+                // ================================================================
+                // 3-DAY FULL BODY SPLIT (ABA/BAB ROTATION)
+                // ================================================================
+                '3day': {
+                    description: "3-day program rotating between Day A and Day B. Week 1&3: Mon=A, Wed=B, Fri=A. Week 2&4: Mon=B, Wed=A, Fri=B",
+                    note: "Uses identical exercises and progressions as 2-day template. Reference 2day template for full exercise details.",
+                    weeklyPattern: {
+                        week1: "Monday: Day A, Wednesday: Day B, Friday: Day A",
+                        week2: "Monday: Day B, Wednesday: Day A, Friday: Day B",
+                        week3: "Monday: Day A, Wednesday: Day B, Friday: Day A",
+                        week4: "Monday: Day B, Wednesday: Day A, Friday: Day B"
+                    }
+                },
+                
+                // ================================================================
+                // 4-DAY FULL BODY SPLIT (ABAB PATTERN)
+                // ================================================================
+                '4day': {
+                    description: "4-day program alternating Day A and Day B every week. Pattern: Mon=A, Tue=B, Thu=A, Fri=B",
+                    note: "Uses identical exercises and progressions as 2-day template. Reference 2day template for full exercise details.",
+                    weeklyPattern: {
+                        allWeeks: "Monday: Day A, Tuesday: Day B, Thursday: Day A, Friday: Day B"
+                    }
                 }
             }
         }
@@ -462,7 +698,7 @@
 
     // Properly call the loading function
     if (typeof loadTemplateModule === 'function') {
-        loadTemplateModule('beginner', beginnerTemplates);
+        loadTemplateModule('white', whiteTemplates);
     } else {
         console.error('loadTemplateModule function not available');
     }
