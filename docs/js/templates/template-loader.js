@@ -58,7 +58,7 @@ function validateTemplateLoading() {
 }
 
 window.TemplateHelpers = {
-    getWorkoutTemplate: function(experience, phase, templateType, week) {
+    getWorkoutTemplate: function(tier, phase, templateType, week) {
         try {
             const weekKey = `week${week}`;
             if (experience === 'washed-up-meathead') {
