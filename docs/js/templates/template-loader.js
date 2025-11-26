@@ -1,10 +1,10 @@
 // Template Loader Module
 window.workoutTemplates = {};
 window.templateLoadingStatus = {
-    beginner: false,
-    intermediate: false,
-    advanced: false,
-    special: false,
+    white: false,
+    red: false,
+    blue: false,
+    gold: false,
     errors: []
 };
 
