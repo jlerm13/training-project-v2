@@ -59,20 +59,17 @@ function validateTemplateLoading() {
 
 window.TemplateHelpers = {
     getWorkoutTemplate: function(tier, phase, templateType, week) {
-        try {
+            const tierTemplates = window.workoutTemplates[tier];
+            if (!tierTemplates) return null;
+            }
+            const phaseTemplates = tierTemplates[phase];
+            if (!phaseTemplates) return null;
+            }
+            const template = phaseTemplates[templateType];
+            if (!template) return null;
+            }
             const weekKey = `week${week}`;
-            if (experience === 'washed-up-meathead') {
-                return window.workoutTemplates['washed-up-meathead']?.['3day']?.[weekKey];
-            }
-            const experienceTemplates = window.workoutTemplates[experience];
-            if (!experienceTemplates) {
-                console.warn(`No templates for experience level: ${experience}`);
-                return null;
-            }
-            const phaseTemplates = experienceTemplates[phase];
-            if (!phaseTemplates) {
-                console.warn(`No templates for phase: ${phase} at ${experience} level`);
-                return null;
+            return template[weekKey] || template['week1'];
             }
             const template = phaseTemplates[templateType];
             if (!template) {
