@@ -681,7 +681,7 @@ function renderWorkouts() {
     } else {
         // Map tier to experience for backwards compatibility with existing templates
         const experienceKey = TIER_TO_EXPERIENCE_MAP[userData.tier] || 'beginner';
-        templates = window.workoutTemplates?.[experienceKey]?.[userData.phase]?.[userData.currentTemplate];
+        templates = window.workoutTemplates?.[userData.phase]?.[userData.currentTemplate];
     }
 
     if (!templates) {
