@@ -29,20 +29,21 @@ function loadTemplateModule(moduleName, moduleData) {
 }
 
 function validateTemplateLoading() {
-    const required = ['beginner', 'intermediate', 'advanced'];
+    const required = ['white', 'red', 'blue', 'gold'];
     const loaded = required.filter(m => window.templateLoadingStatus[m]);
     if (loaded.length === 0) {
         console.error('❌ No templates loaded successfully!');
         window.workoutTemplates = {
-            beginner: {},
-            intermediate: {},
-            advanced: {}
+            white: {},
+            red: {},
+            blue: {},
+            gold: {}
         };
     } else if (loaded.length < required.length) {
         console.warn(`⚠️ Only partially loaded: ${loaded.join(', ')}`);
-        required.forEach(level => {
-            if (!window.workoutTemplates[level]) {
-                window.workoutTemplates[level] = {};
+        required.forEach(tier => {
+            if (!window.workoutTemplates[tier]) {
+                window.workoutTemplates[tier] = {};
             }
         });
     } else {
@@ -59,28 +60,26 @@ function validateTemplateLoading() {
 
 window.TemplateHelpers = {
     getWorkoutTemplate: function(tier, phase, templateType, week) {
+        try {
             const tierTemplates = window.workoutTemplates[tier];
             if (!tierTemplates) return null;
-            }
+            
             const phaseTemplates = tierTemplates[phase];
             if (!phaseTemplates) return null;
-            }
-            const template = phaseTemplates[templateType];
-            if (!template) return null;
-            }
-            const weekKey = `week${week}`;
-            return template[weekKey] || template['week1'];
-            }
+            
             const template = phaseTemplates[templateType];
             if (!template) {
-                console.warn(`No ${templateType} template for ${experience} ${phase}`);
-                const fallback = phaseTemplates['4day'];
+                console.warn(`No ${templateType} template for ${tier} ${phase}`);
+                const fallback = phaseTemplates['2day'];
                 if (fallback) {
-                    console.log(`Using 4day template as fallback`);
+                    console.log(`Using 2day template as fallback`);
+                    const weekKey = `week${week}`;
                     return fallback[weekKey] || fallback['week1'];
                 }
                 return null;
             }
+            
+            const weekKey = `week${week}`;
             return template[weekKey] || template['week1'];
         } catch (error) {
             console.error('Error getting workout template:', error);
@@ -89,12 +88,12 @@ window.TemplateHelpers = {
     },
     getAvailableTemplates: function(phase) {
         const templateAvailability = {
-            'early-offseason': ['4day', '3day'],
-            'mid-offseason': ['4day', '3day'],
-            'preseason': ['4day', '3day', 'speed'],
+            'early-offseason': ['2day', '3day', '4day'],
+            'mid-offseason': ['2day', '3day', '4day'],
+            'preseason': ['2day', '3day', '4day'],
             'inseason': ['2day']
         };
-        return templateAvailability[phase] || ['4day', '3day'];
+        return templateAvailability[phase] || ['2day', '3day', '4day'];
     }
 };
 
@@ -103,3 +102,6 @@ window.initializeTemplates = function() {
     console.log('Template system initialized');
     console.log('Available templates:', Object.keys(window.workoutTemplates));
 };
+
+window.loadTemplateModule = loadTemplateModule;
+console.log('Template Loader System Ready');
