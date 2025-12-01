@@ -674,19 +674,18 @@ function renderWorkouts() {
 
     const container = document.getElementById('workoutDays');
     const weekKey = `week${userData.currentWeek}`;
-    let templates;
-
-        const experienceKey = TIER_TO_EXPERIENCE_MAP[userData.tier] || 'white';
-         templates = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.[userData.currentTemplate];
-        
+    
+    // FIX: Access templates by TIER -> PHASE -> TEMPLATE TYPE
+    const templates = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.[userData.currentTemplate];
+    
     // DEBUG LOGGING - Remove after confirming it works
-        console.log('🔍 Template Lookup:', {
-            tier: userData.tier,
-            phase: userData.phase,
-            currentTemplate: userData.currentTemplate,
-            found: !!templates
-        });
-    }
+    console.log('🔍 Template Lookup:', {
+        tier: userData.tier,
+        phase: userData.phase,
+        currentTemplate: userData.currentTemplate,
+        found: !!templates,
+        availableTemplates: window.workoutTemplates ? Object.keys(window.workoutTemplates) : 'none'
+    });
 
     if (!templates) {
         showError(`No templates found for tier: ${userData.tier}, phase: ${userData.phase}, template: ${userData.currentTemplate}`);
