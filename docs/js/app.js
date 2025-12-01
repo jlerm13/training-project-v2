@@ -35,10 +35,10 @@ let userData = {
     equipment: null,
     currentWeek: 1,
     currentTemplate: '3day',
-    daysPerWeek: 4,  // NEW: 3, 4, or 5 based on tier
+    daysPerWeek: 4,
     exerciseVariations: {},
     maxWeeks: 4,  // 4-week blocks for early off-season
-    sessionDuration: 45  // NEW: varies by tier
+    sessionDuration: 45
 };
 
 // ==================== TIER DEFINITIONS ====================
@@ -275,7 +275,7 @@ function showExperienceScreen() {
             <h2>What's your competency tier?</h2>
             <p style="color: var(--text-secondary); margin-bottom: 16px;">
                 This determines rep ranges, intensity, and exercise complexity. 
-                <strong>For demos: Pick "Red" to see typical programming.</strong>
+                <strong>For demos: Pick "White" or "Red" to see typical programming.</strong>
             </p>
             <div class="options-grid">
                 <div class="option-card" onclick="selectTier('white')">
@@ -368,10 +368,6 @@ function showContextScreen() {
                 <div class="option-card" onclick="selectContext('team')">
                     <div class="option-title">Team Setting</div>
                     <div class="option-desc">Coaching athletes with mixed abilities</div>
-                </div>
-                <div class="option-card" onclick="selectContext('retired veteran')">
-                    <div class="option-title">Retired Veteran</div>
-                    <div class="option-desc"> Strength-focused former athlete with health consideration</div>
                 </div>
             </div>
             <div class="btn-group">
@@ -508,11 +504,9 @@ function generateProgram() {
 
     generateProgramOverview();
 
-    // Set default template based on phase and context
+    // Set default template based on phase
     if (userData.phase === 'inseason') {
         userData.currentTemplate = '2day';
-    } else if (userData.context === 'retired veteran') {
-        userData.currentTemplate = '3day';
     } else {
         userData.currentTemplate = '4day';
     }
@@ -540,25 +534,21 @@ function generateTemplateTabs() {
 }
 
 function getAvailableTemplatesForPhase(phase) {
-    // Special case for retired veteran
-    if (userData.context === 'retired veteran') {
-        return [{ key: '3day', name: 'Retired Veteran 3-Day' }];
-    }
-    
     const templateOptions = {
         'early-offseason': [
             { key: '4day', name: '4-Day' },
-            { key: '3day', name: '3-Day' }
+            { key: '3day', name: '3-Day' },
+            { key: '2day', name: '2-Day' }
         ],
         'mid-offseason': [
             { key: '4day', name: '4-Day' },
             { key: '3day', name: '3-Day' },
-            { key: 'speed', name: 'With Speed' }
+            { key: '2day', name: '2-Day' }
         ],
         'preseason': [
             { key: '4day', name: '4-Day' },
             { key: '3day', name: '3-Day' },
-            { key: 'speed', name: 'With Speed' }
+            { key: '2day', name: '2-Day' }
         ],
         'inseason': [
             { key: '2day', name: 'In-Season (2-Day)' }
@@ -599,8 +589,7 @@ function generateProgramOverview() {
     const contextNotes = {
         'franchise': 'Adapted for group training with mixed abilities',
         'remote': 'Flexible for variable equipment access during travel',
-        'team': 'Designed for team settings with shared facilities',
-        'retired veteran': 'Strength-focused with joint health considerations'
+        'team': 'Designed for team settings with shared facilities'
     };
 
     const phase = phaseGuidelines[userData.phase];
@@ -675,16 +664,16 @@ function renderWorkouts() {
     const container = document.getElementById('workoutDays');
     const weekKey = `week${userData.currentWeek}`;
     
-    // FIX: Access templates by TIER -> PHASE -> TEMPLATE TYPE
+    // CRITICAL FIX: Access templates by TIER -> PHASE -> TEMPLATE TYPE
     const templates = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.[userData.currentTemplate];
     
-    // DEBUG LOGGING - Remove after confirming it works
+    // DEBUG LOGGING
     console.log('🔍 Template Lookup:', {
         tier: userData.tier,
         phase: userData.phase,
         currentTemplate: userData.currentTemplate,
         found: !!templates,
-        availableTemplates: window.workoutTemplates ? Object.keys(window.workoutTemplates) : 'none'
+        availableStructure: window.workoutTemplates ? Object.keys(window.workoutTemplates) : 'none'
     });
 
     if (!templates) {
@@ -746,10 +735,10 @@ function renderWorkouts() {
                     </div>
                 </div>
             `;
-            return; // Exit early for conditioning guidelines
+            return;
         }
         
-        // Regular workout day rendering continues here...
+        // Regular workout day rendering
         html += `
             <div class="workout-day">
                 <div class="workout-header">
@@ -793,7 +782,7 @@ function renderWorkouts() {
 
                 const exerciseId = `${exercise.exercise}-${dayKey}-${index}`;
 
-                // **KEY ENHANCEMENT: Dynamic evaluation of template strings**
+                // Dynamic evaluation of template strings
                 const evaluatedSets = evaluateTemplateString(exercise.sets);
                 const evaluatedIntensity = evaluateTemplateString(exercise.intensity);
                 const evaluatedNote = evaluateTemplateString(exercise.note);
@@ -932,6 +921,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Test tier system
     console.log('✅ Tier System Loaded:', TIER_SYSTEM);
     console.log('✅ Tier Mapping:', TIER_TO_EXPERIENCE_MAP);
+    
+    // Debug: Show actual template structure
+    if (window.workoutTemplates) {
+        console.log('📦 Template Structure:', Object.keys(window.workoutTemplates));
+        Object.keys(window.workoutTemplates).forEach(tier => {
+            console.log(`  - ${tier}:`, Object.keys(window.workoutTemplates[tier] || {}));
+        });
+    }
     
     // Test block periodization integration
     if (window.BlockPeriodization) {
