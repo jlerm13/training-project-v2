@@ -676,16 +676,20 @@ function renderWorkouts() {
     const weekKey = `week${userData.currentWeek}`;
     let templates;
 
-    if (userData.context === 'retired veteran') {
-        templates = window.workoutTemplates?.['Retired Veteran']?.['3day'];
-    } else {
-        // Map tier to experience for backwards compatibility with existing templates
-        const experienceKey = TIER_TO_EXPERIENCE_MAP[userData.tier] || 'beginner';
-        templates = window.workoutTemplates?.[userData.tier]?.[userData.currentTemplate];
+        const experienceKey = TIER_TO_EXPERIENCE_MAP[userData.tier] || 'white';
+         templates = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.[userData.currentTemplate];
+        
+    // DEBUG LOGGING - Remove after confirming it works
+        console.log('🔍 Template Lookup:', {
+            tier: userData.tier,
+            phase: userData.phase,
+            currentTemplate: userData.currentTemplate,
+            found: !!templates
+        });
     }
 
     if (!templates) {
-        showError(`No templates found for tier: ${userData.tier} (${TIER_TO_EXPERIENCE_MAP[userData.tier]}), phase: ${userData.phase}, template: ${userData.currentTemplate}`);
+        showError(`No templates found for tier: ${userData.tier}, phase: ${userData.phase}, template: ${userData.currentTemplate}`);
         container.innerHTML = `<div class="workout-day"><p>No templates found. Please try a different combination.</p></div>`;
         return;
     }
