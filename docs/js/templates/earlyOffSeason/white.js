@@ -703,3 +703,11 @@
         console.error('loadTemplateModule function not available');
     }
 })();
+
+// DEBUG: Log the actual structure after loading
+console.log('🎯 WHITE TEMPLATES STRUCTURE CHECK:');
+console.log('- Has white tier?', !!whiteTemplates.white);
+console.log('- Has early-offseason?', !!whiteTemplates.white?.['early-offseason']);
+console.log('- Has 2day?', !!whiteTemplates.white?.['early-offseason']?.['2day']);
+console.log('- Has 3day?', !!whiteTemplates.white?.['early-offseason']?.['3day']);
+console.log('- Has 4day?', !!whiteTemplates.white?.['early-offseason']?.['4day']);
