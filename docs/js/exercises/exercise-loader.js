@@ -1,26 +1,21 @@
-// Exercise Loader Module - Combines all modular exercise files into exerciseDatabase
-window.exerciseDatabase = {};
+// Exercise Loader Module
+// Manages exercise library loading and lookup
+
+window.exerciseLibrary = {};
 window.exerciseLoadingStatus = {
-    maxEffortUpper: false,
-    maxEffortLower: false,
-    dynamicUpper: false,
-    dynamicLower: false,
-    repetitionUpper: false,
-    repetitionLower: false,
-    assistanceUpper: false,
-    assistanceLower: false,
-    coreAndGrip: false,
-    athleticMovements: false,
-    conditioning: false,
+    loaded: [],
     errors: []
 };
 
+/**
+ * Load an exercise module into the global library
+ */
 function loadExerciseModule(moduleName, moduleData) {
     try {
         if (moduleData && typeof moduleData === 'object') {
-            // Merge the module data into the global exercise database
-            Object.assign(window.exerciseDatabase, moduleData);
-            window.exerciseLoadingStatus[moduleName] = true;
+            // Merge exercises into the global library
+            Object.assign(window.exerciseLibrary, moduleData);
+            window.exerciseLoadingStatus.loaded.push(moduleName);
             console.log(`✅ Loaded ${moduleName} exercises (${Object.keys(moduleData).length} exercises)`);
             return true;
         } else {
@@ -36,38 +31,124 @@ function loadExerciseModule(moduleName, moduleData) {
     }
 }
 
-function validateExerciseLoading() {
-    const required = ['maxEffortUpper', 'maxEffortLower', 'assistanceUpper', 'assistanceLower'];
-    const loaded = required.filter(m => window.exerciseLoadingStatus[m]);
-    
-    if (loaded.length === 0) {
-        console.error('❌ No exercise modules loaded successfully!');
-        // Create minimal fallback
-        window.exerciseDatabase = {
-            benchPress: {
-                name: "Bench Press",
-                classification: "primary",
-                effort: "ME",
-                category: "max-effort",
-                movementPattern: "horizontal-push",
-                equipmentMap: {
-                    full: "Barbell Bench Press",
-                    commercial: "DB Bench Press", 
-                    minimal: "Push-ups",
-                    bodyweight: "Push-ups"
-                },
-                coachingCues: ["Maintain tight upper back", "Drive feet into floor"],
-                athleticCarryover: "Develops pushing power",
-                indicator: { isIndicator: true, type: "absolute" }
-            }
-        };
-    } else if (loaded.length < required.length) {
-        console.warn(`⚠️ Only partially loaded exercise modules: ${loaded.join(', ')}`);
-    } else {
-        console.log('✅ All core exercise modules loaded successfully!');
+/**
+ * Get exercise info from library
+ * Returns the full exercise object or null if not found
+ */
+function getExercise(exerciseKey) {
+    return window.exerciseLibrary[exerciseKey] || null;
+}
+
+/**
+ * Get exercise display name
+ * Falls back to formatting the key if not in library
+ */
+function getExerciseName(exerciseKey) {
+    const exercise = window.exerciseLibrary[exerciseKey];
+    if (exercise && exercise.name) {
+        return exercise.name;
+    }
+    // Fallback: convert camelCase to Title Case
+    return exerciseKey
+        .replace(/([A-Z])/g, ' $1')  // Add space before capitals
+        .replace(/^./, str => str.toUpperCase())  // Capitalize first letter
+        .replace(/Db /g, 'DB ')  // Fix common abbreviations
+        .replace(/Kb /g, 'KB ')
+        .replace(/Bb /g, 'BB ')
+        .replace(/Oh /g, 'OH ')
+        .replace(/Rdl/g, 'RDL')
+        .trim();
+}
+
+/**
+ * Get equipment-adapted exercise name based on user's equipment level
+ */
+function getEquipmentAdaptedExercise(exerciseKey, equipmentLevel) {
+    const exercise = window.exerciseLibrary[exerciseKey];
+    if (!exercise) {
+        return { name: getExerciseName(exerciseKey), adapted: false };
     }
     
-    // Report any errors
+    // Check if there's an equipment map with an adaptation
+    if (exercise.equipmentMap && exercise.equipmentMap[equipmentLevel]) {
+        return { 
+            name: exercise.equipmentMap[equipmentLevel], 
+            adapted: exercise.equipmentMap[equipmentLevel] !== exercise.name,
+            original: exercise.name
+        };
+    }
+    
+    return { name: exercise.name, adapted: false };
+}
+
+/**
+ * Get coaching cues for an exercise
+ */
+function getExerciseCues(exerciseKey) {
+    const exercise = window.exerciseLibrary[exerciseKey];
+    if (exercise && exercise.coachingCues) {
+        return exercise.coachingCues;
+    }
+    return [];
+}
+
+/**
+ * Get tool variations for an exercise
+ */
+function getExerciseVariations(exerciseKey) {
+    const exercise = window.exerciseLibrary[exerciseKey];
+    if (exercise && exercise.toolVariations) {
+        return exercise.toolVariations;
+    }
+    if (exercise && exercise.equipmentMap) {
+        return exercise.equipmentMap;
+    }
+    return null;
+}
+
+/**
+ * Validate that all exercises in a template exist in the library
+ */
+function validateTemplateExercises(templateData) {
+    const missing = [];
+    const found = [];
+    
+    function scanForExercises(obj) {
+        if (Array.isArray(obj)) {
+            obj.forEach(item => scanForExercises(item));
+        } else if (obj && typeof obj === 'object') {
+            if (obj.exercise && typeof obj.exercise === 'string') {
+                if (window.exerciseLibrary[obj.exercise]) {
+                    found.push(obj.exercise);
+                } else {
+                    missing.push(obj.exercise);
+                }
+            }
+            Object.values(obj).forEach(val => scanForExercises(val));
+        }
+    }
+    
+    scanForExercises(templateData);
+    
+    return {
+        found: [...new Set(found)],
+        missing: [...new Set(missing)],
+        coverage: found.length / (found.length + missing.length) * 100
+    };
+}
+
+/**
+ * Initialize the exercise system
+ */
+function initializeExercises() {
+    const loadedCount = Object.keys(window.exerciseLibrary).length;
+    
+    if (loadedCount === 0) {
+        console.warn('⚠️ No exercises loaded into library');
+    } else {
+        console.log(`✅ Exercise library initialized with ${loadedCount} exercises`);
+    }
+    
     if (window.exerciseLoadingStatus.errors.length > 0) {
         console.group('Exercise Loading Errors:');
         window.exerciseLoadingStatus.errors.forEach(err => {
@@ -77,135 +158,15 @@ function validateExerciseLoading() {
     }
 }
 
-// Exercise helper functions
-window.ExerciseHelpers = {
-    /**
-     * Get exercise data by key with equipment and phase adaptation
-     */
-    getExercise: function(exerciseKey, equipmentLevel = 'full', trainingPhase = null) {
-        const exercise = window.exerciseDatabase[exerciseKey];
-        if (!exercise) {
-            console.warn(`Exercise ${exerciseKey} not found in database`);
-            return null;
-        }
-        
-        // Clone the exercise to avoid modifying original
-        const adaptedExercise = { ...exercise };
-        
-        // Apply equipment adaptation
-        if (exercise.equipmentMap) {
-            if (trainingPhase && exercise.equipmentMap[trainingPhase]) {
-                // Phase-specific equipment mapping
-                adaptedExercise.adaptedName = exercise.equipmentMap[trainingPhase][equipmentLevel] ||
-                                            exercise.equipmentMap[trainingPhase].commercial ||
-                                            exercise.equipmentMap[trainingPhase].minimal ||
-                                            exercise.equipmentMap[trainingPhase].bodyweight ||
-                                            exercise.name;
-            } else {
-                // Simple equipment mapping  
-                adaptedExercise.adaptedName = exercise.equipmentMap[equipmentLevel] ||
-                                            exercise.equipmentMap.commercial ||
-                                            exercise.equipmentMap.minimal ||
-                                            exercise.equipmentMap.bodyweight ||
-                                            exercise.name;
-            }
-            adaptedExercise.isSubstituted = adaptedExercise.adaptedName !== exercise.name;
-        } else {
-            adaptedExercise.adaptedName = exercise.name;
-            adaptedExercise.isSubstituted = false;
-        }
-        
-        return adaptedExercise;
-    },
-
-    /**
-     * Get all exercises by category
-     */
-    getExercisesByCategory: function(category) {
-        return Object.entries(window.exerciseDatabase)
-            .filter(([key, exercise]) => exercise.category === category)
-            .reduce((acc, [key, exercise]) => {
-                acc[key] = exercise;
-                return acc;
-            }, {});
-    },
-
-    /**
-     * Get all indicator exercises for progress tracking
-     */
-    getIndicatorExercises: function() {
-        return Object.entries(window.exerciseDatabase)
-            .filter(([key, exercise]) => exercise.indicator && exercise.indicator.isIndicator)
-            .reduce((acc, [key, exercise]) => {
-                acc[key] = exercise;
-                return acc;
-            }, {});
-    },
-
-    /**
-     * Search exercises by name or movement pattern
-     */
-    searchExercises: function(searchTerm) {
-        const term = searchTerm.toLowerCase();
-        return Object.entries(window.exerciseDatabase)
-            .filter(([key, exercise]) => 
-                exercise.name.toLowerCase().includes(term) ||
-                exercise.movementPattern.toLowerCase().includes(term) ||
-                key.toLowerCase().includes(term)
-            )
-            .reduce((acc, [key, exercise]) => {
-                acc[key] = exercise;
-                return acc;
-            }, {});
-    }
-};
-
-/**
- * Initialize the exercise system after all modules have loaded
- */
-window.initializeExercises = function() {
-    validateExerciseLoading();
-    console.log('Exercise system initialized');
-    console.log(`Total exercises loaded: ${Object.keys(window.exerciseDatabase).length}`);
-    console.log('Exercise categories:', [...new Set(Object.values(window.exerciseDatabase).map(e => e.category))]);
-    
-    // Test key exercises that templates will need
-    const keyExercises = ['benchPress', 'boxSquat', 'dbBenchPress', 'facePulls', 'pullups'];
-    const missing = keyExercises.filter(ex => !window.exerciseDatabase[ex]);
-    if (missing.length > 0) {
-        console.warn('⚠️ Missing key exercises:', missing);
-    }
-};
-
-/**
- * Exercise database statistics for debugging
- */
-window.ExerciseStats = {
-    getTotalCount: () => Object.keys(window.exerciseDatabase).length,
-    getByCategory: () => {
-        const stats = {};
-        Object.values(window.exerciseDatabase).forEach(ex => {
-            stats[ex.category] = (stats[ex.category] || 0) + 1;
-        });
-        return stats;
-    },
-    getByClassification: () => {
-        const stats = {};
-        Object.values(window.exerciseDatabase).forEach(ex => {
-            stats[ex.classification] = (stats[ex.classification] || 0) + 1;
-        });
-        return stats;
-    },
-    getPhaseSpecificCount: () => {
-        return Object.values(window.exerciseDatabase).filter(ex => 
-            ex.equipmentMap && typeof ex.equipmentMap === 'object' && 
-            Object.keys(ex.equipmentMap).some(key => key.includes('-'))
-        ).length;
-    }
-};
-
-// Make functions available globally for module loading
+// Export functions to global scope
 window.loadExerciseModule = loadExerciseModule;
+window.getExercise = getExercise;
+window.getExerciseName = getExerciseName;
+window.getEquipmentAdaptedExercise = getEquipmentAdaptedExercise;
+window.getExerciseCues = getExerciseCues;
+window.getExerciseVariations = getExerciseVariations;
+window.validateTemplateExercises = validateTemplateExercises;
+window.initializeExercises = initializeExercises;
 
 console.log('Exercise Loader System Ready');
-console.log('Waiting for exercise modules to load...');
+
