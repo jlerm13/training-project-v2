@@ -579,31 +579,48 @@ function generateTemplateTabs() {
 
 function generateProgramOverview() {
     const overview = document.getElementById('programOverview');
+    // Athlete-friendly phase descriptions (no jargon)
     const phaseGuidelines = {
         'early-offseason': {
-            focus: 'Recovery & Base Building',
-            goals: ['Build work capacity', 'Movement quality', 'Aerobic base'],
-            emphasis: 'Volume accumulation with moderate intensity',
-            weeks: '4-week block'
+            focus: 'Build Your Base',
+            subtitle: "Get your body ready to train hard",
+            goals: ['Build your engine (work capacity)', 'Move better before moving heavier', 'Get in shape to train'],
+            emphasis: "Focus on getting your reps in with good form — don't go heavy yet. This phase is about building the foundation.",
+            weeks: '4 weeks',
+            whatToExpect: "You might feel like you could do more. That's the point — we're building the base for what's coming next."
         },
         'mid-offseason': {
-            focus: 'Maximum Strength Development',
-            goals: ['Peak strength gains', 'Muscle mass', 'Neural efficiency'],
-            emphasis: 'Intensity progression (85-95%), reduced volume',
-            weeks: '4-6 week block'
+            focus: 'Build Strength',
+            subtitle: "Time to get stronger",
+            goals: ['Get stronger', 'Build muscle', 'Train your nervous system'],
+            emphasis: "Weights get heavier, sets get harder. You should feel challenged but able to complete your sets with good form.",
+            weeks: '4-6 weeks',
+            whatToExpect: "This is where the real strength gains happen. Expect to feel genuinely tired after sessions."
         },
         'preseason': {
-            focus: 'Power & Sport-Specific Preparation',
-            goals: ['Convert strength to power', 'Speed development', 'Competition readiness'],
-            emphasis: 'Lower volume, max velocity work, plyometrics',
-            weeks: '3-4 week block'
+            focus: 'Get Explosive',
+            subtitle: "Turn strength into speed and power",
+            goals: ['Move faster and more explosive', 'Get game-ready', 'Peak at the right time'],
+            emphasis: "Less grinding, more explosive work. Quality over quantity. Every rep should be fast and powerful.",
+            weeks: '3-4 weeks',
+            whatToExpect: "Sessions feel different — less fatigue, more neural. You're sharpening the blade."
         },
         'inseason': {
-            focus: 'Maintenance & Performance',
-            goals: ['Maintain strength', 'Manage fatigue', 'Stay game-ready'],
-            emphasis: 'Minimal effective dose, 2 days/week',
-            weeks: 'Duration of season'
+            focus: 'Stay Strong & Fresh',
+            subtitle: "Maintain what you built, perform when it counts",
+            goals: ['Keep your strength', 'Stay healthy', 'Be ready to compete'],
+            emphasis: "Minimum effective dose. Get in, get the work done, get out. Save your energy for competition.",
+            weeks: 'All season',
+            whatToExpect: "Training supports your sport, not the other way around. Less is more during the season."
         }      
+    };
+
+    // Equipment-friendly names
+    const equipmentNames = {
+        'full': 'Full Gym',
+        'commercial': 'Commercial Gym',
+        'minimal': 'Minimal Equipment',
+        'bodyweight': 'Bodyweight Only'
     };
 
     const phase = phaseGuidelines[userData.phase];
@@ -612,51 +629,61 @@ function generateProgramOverview() {
     
     overview.innerHTML = `
         <h4>Your Training Plan</h4>
+        
+        <!-- Main Phase Info -->
         <div style="background: var(--bg-tertiary); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
                 <div>
                     <h3 style="margin: 0; color: var(--primary-color);">${phase.focus}</h3>
                     <p style="margin: 4px 0 0 0; color: var(--text-secondary); font-size: 0.9rem;">
-                        ${tierInfo.name} Tier - ${tierInfo.focus} | ${phase.weeks}
+                        ${phase.subtitle} • ${phase.weeks}
                     </p>
                 </div>
-                <div style="background: var(--primary-color); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
-                    ${userData.currentTemplate.toUpperCase()}
+                <div style="background: ${tierInfo.color}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                    ${tierInfo.name} Tier
                 </div>
             </div>
             
-            <p style="margin: 0; font-weight: 500;">${phase.emphasis}</p>
+            <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">${phase.emphasis}</p>
         </div>
         
+        <!-- Goals and Setup Grid -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
             <div style="background: var(--bg-secondary); padding: 12px; border-radius: 6px;">
-                <h5 style="margin: 0 0 8px 0; font-size: 0.9rem; color: var(--text-secondary);">Primary Goals</h5>
-                ${phase.goals.map(goal => `<div style="margin: 4px 0;">• ${goal}</div>`).join('')}
+                <h5 style="margin: 0 0 8px 0; font-size: 0.9rem; color: var(--text-secondary);">What You're Working On</h5>
+                ${phase.goals.map(goal => `<div style="margin: 4px 0;">✓ ${goal}</div>`).join('')}
             </div>
             <div style="background: var(--bg-secondary); padding: 12px; border-radius: 6px;">
                 <h5 style="margin: 0 0 8px 0; font-size: 0.9rem; color: var(--text-secondary);">Your Setup</h5>
-                <div style="margin: 4px 0;"><strong>Equipment:</strong> ${userData.equipment}</div>
-                <div style="margin: 4px 0;"><strong>Available:</strong> ${availableTemplates.map(t => t.name).join(', ') || 'None'}</div>
+                <div style="margin: 4px 0;"><strong>Equipment:</strong> ${equipmentNames[userData.equipment] || userData.equipment}</div>
+                <div style="margin: 4px 0;"><strong>Days/Week:</strong> ${userData.currentTemplate.replace('day', '')}</div>
+                <div style="margin: 4px 0;"><strong>Session:</strong> ${tierInfo.sessionLength}</div>
             </div>
         </div>
         
+        <!-- How to Train -->
         <div style="background: var(--bg-secondary); padding: 12px; border-radius: 6px; margin-bottom: 12px;">
-            <h5 style="margin: 0 0 8px 0; font-size: 0.9rem; color: var(--text-secondary);">Tier Details</h5>
-            <div style="margin: 4px 0;"><strong>Intensity:</strong> ${tierInfo.intensity}</div>
-            <div style="margin: 4px 0;"><strong>Tempo:</strong> ${tierInfo.tempo}</div>
-            <div style="margin: 4px 0;"><strong>Session Length:</strong> ${tierInfo.sessionLength}</div>
-            <div style="margin: 4px 0;"><strong>Rep Ranges:</strong> ${tierInfo.repRanges}</div>
+            <h5 style="margin: 0 0 8px 0; font-size: 0.9rem; color: var(--text-secondary);">How to Train</h5>
+            <div style="margin: 4px 0;"><strong>Effort Level:</strong> ${tierInfo.intensity}</div>
+            <div style="margin: 4px 0;"><strong>Speed:</strong> ${tierInfo.tempo}</div>
+            <div style="margin: 4px 0;"><strong>Reps:</strong> ${tierInfo.repRanges}</div>
         </div>
         
-        <div style="background: rgba(37, 99, 235, 0.1); border-left: 4px solid var(--primary-color); padding: 12px; border-radius: 4px;">
+        <!-- What to Expect -->
+        <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid ${tierInfo.color}; padding: 12px; border-radius: 4px;">
             <p style="margin: 0; font-size: 0.9rem;">
-                <strong>🎯 Demo Note:</strong> This shows how the periodization engine adapts to your profile. 
-                Navigate through weeks to see progression. Click "Variations" on exercises to see equipment adaptations.
+                <strong>💡 What to Expect:</strong> ${phase.whatToExpect}
             </p>
         </div>
     `;
 }
 
+function selectTemplate(template) {
+    userData.currentTemplate = template;
+    generateTemplateTabs(); // Regenerate tabs to update active state
+    updateWeekDisplay(); // Update week display
+    renderWorkouts();
+}
 function selectTemplate(template) {
     userData.currentTemplate = template;
     generateTemplateTabs(); // Regenerate tabs to update active state
