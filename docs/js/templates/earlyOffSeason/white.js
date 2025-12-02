@@ -670,24 +670,313 @@
                 
                 // ================================================================
                 // 3-DAY FULL BODY SPLIT (ABA/BAB ROTATION)
+                // Week 1 & 3: A-B-A pattern | Week 2 & 4: B-A-B pattern
                 // ================================================================
                 '3day': {
-                    description: "3-day program rotating between Day A and Day B. Week 1&3: Mon=A, Wed=B, Fri=A. Week 2&4: Mon=B, Wed=A, Fri=B",
-                    note: "Uses identical exercises and progressions as 2-day template. Reference 2day template for full exercise details.",
-                    weeklyPattern: {
-                        week1: "Monday: Day A, Wednesday: Day B, Friday: Day A",
-                        week2: "Monday: Day B, Wednesday: Day A, Friday: Day B",
-                        week3: "Monday: Day A, Wednesday: Day B, Friday: Day A",
-                        week4: "Monday: Day B, Wednesday: Day A, Friday: Day B"
+                    week1: {
+                        monday: {
+                            title: "Full Body - Day A",
+                            warmup: [
+                                { type: "warmup", exercise: "squatToStands", sets: "2 × 5", tempo: "Smooth and steady", note: "Drop hips low, keep chest up, heels on ground" },
+                                { type: "warmup", exercise: "worldsGreatestStretch", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Step into deep lunge, twist your chest toward front leg" },
+                                { type: "warmup", exercise: "shoulderTaps", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Hold strong plank, tap each shoulder without rocking hips" },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm" }
+                            ],
+                            exercises: [
+                                { type: "circuit-a", order: "A1", exercise: "dbSlantboardGobletSquat", sets: "3 × 8", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Heels on slant board, chest up, squat straight down" },
+                                { type: "circuit-a", order: "A2", exercise: "dbRDL", sets: "3 × 8", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Push hips back, keep back flat, weights close to legs" },
+                                { type: "circuit-a", order: "A3", exercise: "dbReverseLunge", sets: "3 × 8/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take a big step back, lower slowly, keep chest up" },
+                                { type: "circuit-a", order: "A4", exercise: "dbLateralLunge", sets: "3 × 8/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Slide to the side, push hips back, keep planted foot flat" },
+                                { type: "circuit-b", order: "B1", exercise: "dbBenchPress", sets: "3 × 8", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower slowly to chest, press straight up" },
+                                { type: "circuit-b", order: "B2", exercise: "dbRows", sets: "3 × 8", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Place other hand on bench, pull weight to your side" },
+                                { type: "circuit-b", order: "B3", exercise: "dbZPress", sets: "3 × 8", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Sit up tall, press weights straight overhead" },
+                                { type: "circuit-b", order: "B4", exercise: "dbShoulderRaiseComplex", sets: "2 × 5/variation", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Do front raises, side raises, then bent-over raises" },
+                                { type: "superset-c", order: "C1", exercise: "calfRaisesDouble", sets: "2 × 8", tempo: "2 seconds down, hold at top", rest: "20s", note: "Go all the way up, pause at top, come down slow" },
+                                { type: "superset-c", order: "C2", exercise: "wallSits", sets: "2 × 30s", tempo: "Hold steady", rest: "45s", note: "Sit like a chair against the wall, hold position" },
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 30s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line" },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 5/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground" },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body" }
+                            ]
+                        },
+                        wednesday: {
+                            title: "Full Body - Day B",
+                            warmup: [
+                                { type: "warmup", exercise: "squatForwardFold", sets: "2 × 5", tempo: "Smooth and steady", note: "Squat down, then reach for your toes" },
+                                { type: "warmup", exercise: "hip9090Reach", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Sit in 90/90 position, rotate chest toward front knee" },
+                                { type: "warmup", exercise: "downwardDogToeTap", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Push hips up high, reach hand to opposite foot" },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm" }
+                            ],
+                            exercises: [
+                                { type: "circuit-a", order: "A1", exercise: "dbWalkingLunges", sets: "3 × 8/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take big steps forward, back knee almost touches ground" },
+                                { type: "circuit-a", order: "A2", exercise: "dbKbSwings", sets: "3 × 8", tempo: "Quick and powerful", rest: "30s", note: "Push hips back, then snap them forward fast" },
+                                { type: "circuit-a", order: "A3", exercise: "dbStepDowns", sets: "3 × 8/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Step down slowly, tap heel, then push back up" },
+                                { type: "circuit-a", order: "A4", exercise: "dbCurtsyLunge", sets: "3 × 8/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Step back and across, lower down, stay upright" },
+                                { type: "circuit-b", order: "B1", exercise: "pushUps", sets: "3 × 8", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower all the way down, keep body straight" },
+                                { type: "circuit-b", order: "B2", exercise: "invertedRows", sets: "3 × 8", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Keep body straight, pull chest to the bar" },
+                                { type: "circuit-b", order: "B3", exercise: "dbKneelingOHPress", sets: "3 × 8", tempo: "3 seconds down, 1 second up", rest: "30s", note: "One knee down, press weights straight overhead" },
+                                { type: "circuit-b", order: "B4", exercise: "kbGorillaRows", sets: "3 × 8/side", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Bend forward, row one weight at a time" },
+                                { type: "superset-c", order: "C1", exercise: "wallTibRaises", sets: "2 × 10", tempo: "2 seconds down, hold at top", rest: "20s", note: "Lean against wall, lift toes up high" },
+                                { type: "superset-c", order: "C2", exercise: "stabilityBallHamstringCurls", sets: "2 × 10", tempo: "Smooth and steady", rest: "45s", note: "Bridge hips up, curl ball toward you" },
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 30s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line" },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 5/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground" },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body" }
+                            ]
+                        },
+                        friday: {
+                            title: "Full Body - Day A",
+                            warmup: [
+                                { type: "warmup", exercise: "squatToStands", sets: "2 × 5", tempo: "Smooth and steady", note: "Drop hips low, keep chest up, heels on ground" },
+                                { type: "warmup", exercise: "worldsGreatestStretch", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Step into deep lunge, twist your chest toward front leg" },
+                                { type: "warmup", exercise: "shoulderTaps", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Hold strong plank, tap each shoulder without rocking hips" },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm" }
+                            ],
+                            exercises: [
+                                { type: "circuit-a", order: "A1", exercise: "dbSlantboardGobletSquat", sets: "3 × 8", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Heels on slant board, chest up, squat straight down" },
+                                { type: "circuit-a", order: "A2", exercise: "dbRDL", sets: "3 × 8", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Push hips back, keep back flat, weights close to legs" },
+                                { type: "circuit-a", order: "A3", exercise: "dbReverseLunge", sets: "3 × 8/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take a big step back, lower slowly, keep chest up" },
+                                { type: "circuit-a", order: "A4", exercise: "dbLateralLunge", sets: "3 × 8/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Slide to the side, push hips back, keep planted foot flat" },
+                                { type: "circuit-b", order: "B1", exercise: "dbBenchPress", sets: "3 × 8", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower slowly to chest, press straight up" },
+                                { type: "circuit-b", order: "B2", exercise: "dbRows", sets: "3 × 8", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Place other hand on bench, pull weight to your side" },
+                                { type: "circuit-b", order: "B3", exercise: "dbZPress", sets: "3 × 8", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Sit up tall, press weights straight overhead" },
+                                { type: "circuit-b", order: "B4", exercise: "dbShoulderRaiseComplex", sets: "2 × 5/variation", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Do front raises, side raises, then bent-over raises" },
+                                { type: "superset-c", order: "C1", exercise: "calfRaisesDouble", sets: "2 × 8", tempo: "2 seconds down, hold at top", rest: "20s", note: "Go all the way up, pause at top, come down slow" },
+                                { type: "superset-c", order: "C2", exercise: "wallSits", sets: "2 × 30s", tempo: "Hold steady", rest: "45s", note: "Sit like a chair against the wall, hold position" },
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 30s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line" },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 5/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground" },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body" }
+                            ]
+                        }
+                    },
+                    week2: {
+                        monday: {
+                            title: "Full Body - Day B",
+                            warmup: [
+                                { type: "warmup", exercise: "squatForwardFold", sets: "2 × 5", tempo: "Smooth and steady", note: "Squat down, then reach for your toes" },
+                                { type: "warmup", exercise: "hip9090Reach", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Sit in 90/90 position, rotate chest toward front knee" },
+                                { type: "warmup", exercise: "downwardDogToeTap", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Push hips up high, reach hand to opposite foot" },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm" }
+                            ],
+                            exercises: [
+                                { type: "circuit-a", order: "A1", exercise: "dbWalkingLunges", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take big steps forward, back knee almost touches ground" },
+                                { type: "circuit-a", order: "A2", exercise: "dbKbSwings", sets: "3 × 10", tempo: "Quick and powerful", rest: "30s", note: "Push hips back, then snap them forward fast" },
+                                { type: "circuit-a", order: "A3", exercise: "dbStepDowns", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Step down slowly, tap heel, then push back up" },
+                                { type: "circuit-a", order: "A4", exercise: "dbCurtsyLunge", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Step back and across, lower down, stay upright" },
+                                { type: "circuit-b", order: "B1", exercise: "pushUps", sets: "3 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower all the way down, keep body straight" },
+                                { type: "circuit-b", order: "B2", exercise: "invertedRows", sets: "3 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Keep body straight, pull chest to the bar" },
+                                { type: "circuit-b", order: "B3", exercise: "dbKneelingOHPress", sets: "3 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "One knee down, press weights straight overhead" },
+                                { type: "circuit-b", order: "B4", exercise: "kbGorillaRows", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Bend forward, row one weight at a time" },
+                                { type: "superset-c", order: "C1", exercise: "wallTibRaises", sets: "2 × 12", tempo: "2 seconds down, hold at top", rest: "20s", note: "Lean against wall, lift toes up high" },
+                                { type: "superset-c", order: "C2", exercise: "stabilityBallHamstringCurls", sets: "2 × 12", tempo: "Smooth and steady", rest: "45s", note: "Bridge hips up, curl ball toward you" },
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 45s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line" },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 8/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground" },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body" }
+                            ]
+                        },
+                        wednesday: {
+                            title: "Full Body - Day A",
+                            warmup: [
+                                { type: "warmup", exercise: "squatToStands", sets: "2 × 5", tempo: "Smooth and steady", note: "Drop hips low, keep chest up, heels on ground" },
+                                { type: "warmup", exercise: "worldsGreatestStretch", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Step into deep lunge, twist your chest toward front leg" },
+                                { type: "warmup", exercise: "shoulderTaps", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Hold strong plank, tap each shoulder without rocking hips" },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm" }
+                            ],
+                            exercises: [
+                                { type: "circuit-a", order: "A1", exercise: "dbSlantboardGobletSquat", sets: "3 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Heels on slant board, chest up, squat straight down" },
+                                { type: "circuit-a", order: "A2", exercise: "dbRDL", sets: "3 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Push hips back, keep back flat, weights close to legs" },
+                                { type: "circuit-a", order: "A3", exercise: "dbReverseLunge", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take a big step back, lower slowly, keep chest up" },
+                                { type: "circuit-a", order: "A4", exercise: "dbLateralLunge", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Slide to the side, push hips back, keep planted foot flat" },
+                                { type: "circuit-b", order: "B1", exercise: "dbBenchPress", sets: "3 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower slowly to chest, press straight up" },
+                                { type: "circuit-b", order: "B2", exercise: "dbRows", sets: "3 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Place other hand on bench, pull weight to your side" },
+                                { type: "circuit-b", order: "B3", exercise: "dbZPress", sets: "3 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Sit up tall, press weights straight overhead" },
+                                { type: "circuit-b", order: "B4", exercise: "dbShoulderRaiseComplex", sets: "2 × 8/variation", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Do front raises, side raises, then bent-over raises" },
+                                { type: "superset-c", order: "C1", exercise: "calfRaisesDouble", sets: "2 × 10", tempo: "2 seconds down, hold at top", rest: "20s", note: "Go all the way up, pause at top, come down slow" },
+                                { type: "superset-c", order: "C2", exercise: "wallSits", sets: "2 × 45s", tempo: "Hold steady", rest: "45s", note: "Sit like a chair against the wall, hold position" },
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 45s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line" },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 8/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground" },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body" }
+                            ]
+                        },
+                        friday: {
+                            title: "Full Body - Day B",
+                            warmup: [
+                                { type: "warmup", exercise: "squatForwardFold", sets: "2 × 5", tempo: "Smooth and steady", note: "Squat down, then reach for your toes" },
+                                { type: "warmup", exercise: "hip9090Reach", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Sit in 90/90 position, rotate chest toward front knee" },
+                                { type: "warmup", exercise: "downwardDogToeTap", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Push hips up high, reach hand to opposite foot" },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm" }
+                            ],
+                            exercises: [
+                                { type: "circuit-a", order: "A1", exercise: "dbWalkingLunges", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take big steps forward, back knee almost touches ground" },
+                                { type: "circuit-a", order: "A2", exercise: "dbKbSwings", sets: "3 × 10", tempo: "Quick and powerful", rest: "30s", note: "Push hips back, then snap them forward fast" },
+                                { type: "circuit-a", order: "A3", exercise: "dbStepDowns", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Step down slowly, tap heel, then push back up" },
+                                { type: "circuit-a", order: "A4", exercise: "dbCurtsyLunge", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Step back and across, lower down, stay upright" },
+                                { type: "circuit-b", order: "B1", exercise: "pushUps", sets: "3 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower all the way down, keep body straight" },
+                                { type: "circuit-b", order: "B2", exercise: "invertedRows", sets: "3 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Keep body straight, pull chest to the bar" },
+                                { type: "circuit-b", order: "B3", exercise: "dbKneelingOHPress", sets: "3 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "One knee down, press weights straight overhead" },
+                                { type: "circuit-b", order: "B4", exercise: "kbGorillaRows", sets: "3 × 10/side", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Bend forward, row one weight at a time" },
+                                { type: "superset-c", order: "C1", exercise: "wallTibRaises", sets: "2 × 12", tempo: "2 seconds down, hold at top", rest: "20s", note: "Lean against wall, lift toes up high" },
+                                { type: "superset-c", order: "C2", exercise: "stabilityBallHamstringCurls", sets: "2 × 12", tempo: "Smooth and steady", rest: "45s", note: "Bridge hips up, curl ball toward you" },
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 45s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line" },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 8/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground" },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body" }
+                            ]
+                        }
+                    },
+                    week3: {
+                        monday: {
+                            title: "Full Body - Day A (Build Phase)",
+                            warmup: [
+                                { type: "warmup", exercise: "squatToStands", sets: "2 × 5", tempo: "Smooth and steady", note: "Drop hips low, keep chest up, heels on ground" },
+                                { type: "warmup", exercise: "worldsGreatestStretch", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Step into deep lunge, twist your chest toward front leg" },
+                                { type: "warmup", exercise: "shoulderTaps", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Hold strong plank, tap each shoulder without rocking hips" },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm" }
+                            ],
+                            exercises: [
+                                { type: "circuit-a", order: "A1", exercise: "dbSlantboardGobletSquat", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Heels on slant board, chest up, squat straight down" },
+                                { type: "circuit-a", order: "A2", exercise: "dbRDL", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Push hips back, keep back flat, weights close to legs" },
+                                { type: "circuit-a", order: "A3", exercise: "dbReverseLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take a big step back, lower slowly, keep chest up" },
+                                { type: "circuit-a", order: "A4", exercise: "dbLateralLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Slide to the side, push hips back, keep planted foot flat" },
+                                { type: "circuit-b", order: "B1", exercise: "dbBenchPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower slowly to chest, press straight up" },
+                                { type: "circuit-b", order: "B2", exercise: "dbRows", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Place other hand on bench, pull weight to your side" },
+                                { type: "circuit-b", order: "B3", exercise: "dbZPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Sit up tall, press weights straight overhead" },
+                                { type: "circuit-b", order: "B4", exercise: "dbShoulderRaiseComplex", sets: "3 × 8/variation", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Do front raises, side raises, then bent-over raises" },
+                                { type: "superset-c", order: "C1", exercise: "calfRaisesDouble", sets: "2 × 12", tempo: "2 seconds down, hold at top", rest: "20s", note: "Go all the way up, pause at top, come down slow" },
+                                { type: "superset-c", order: "C2", exercise: "wallSits", sets: "2 × 60s", tempo: "Hold steady", rest: "45s", note: "Sit like a chair against the wall, hold position" },
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 60s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line" },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground" },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 12/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body" }
+                            ]
+                        },
+                        wednesday: {
+                            title: "Full Body - Day B (Build Phase)",
+                            warmup: [
+                                { type: "warmup", exercise: "squatForwardFold", sets: "2 × 5", tempo: "Smooth and steady", note: "Squat down, then reach for your toes" },
+                                { type: "warmup", exercise: "hip9090Reach", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Sit in 90/90 position, rotate chest toward front knee" },
+                                { type: "warmup", exercise: "downwardDogToeTap", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Push hips up high, reach hand to opposite foot" },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm" }
+                            ],
+                            exercises: [
+                                { type: "circuit-a", order: "A1", exercise: "dbWalkingLunges", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take big steps forward, back knee almost touches ground" },
+                                { type: "circuit-a", order: "A2", exercise: "dbKbSwings", sets: "4 × 10", tempo: "Quick and powerful", rest: "30s", note: "Push hips back, then snap them forward fast" },
+                                { type: "circuit-a", order: "A3", exercise: "dbStepDowns", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Step down slowly, tap heel, then push back up" },
+                                { type: "circuit-a", order: "A4", exercise: "dbCurtsyLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Step back and across, lower down, stay upright" },
+                                { type: "circuit-b", order: "B1", exercise: "pushUps", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower all the way down, keep body straight" },
+                                { type: "circuit-b", order: "B2", exercise: "invertedRows", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Keep body straight, pull chest to the bar" },
+                                { type: "circuit-b", order: "B3", exercise: "dbKneelingOHPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "One knee down, press weights straight overhead" },
+                                { type: "circuit-b", order: "B4", exercise: "kbGorillaRows", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Bend forward, row one weight at a time" },
+                                { type: "superset-c", order: "C1", exercise: "wallTibRaises", sets: "2 × 15", tempo: "2 seconds down, hold at top", rest: "20s", note: "Lean against wall, lift toes up high" },
+                                { type: "superset-c", order: "C2", exercise: "stabilityBallHamstringCurls", sets: "2 × 15", tempo: "Smooth and steady", rest: "45s", note: "Bridge hips up, curl ball toward you" },
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 60s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line" },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground" },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 12/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body" }
+                            ]
+                        },
+                        friday: {
+                            title: "Full Body - Day A (Build Phase)",
+                            warmup: [
+                                { type: "warmup", exercise: "squatToStands", sets: "2 × 5", tempo: "Smooth and steady", note: "Drop hips low, keep chest up, heels on ground" },
+                                { type: "warmup", exercise: "worldsGreatestStretch", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Step into deep lunge, twist your chest toward front leg" },
+                                { type: "warmup", exercise: "shoulderTaps", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Hold strong plank, tap each shoulder without rocking hips" },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm" }
+                            ],
+                            exercises: [
+                                { type: "circuit-a", order: "A1", exercise: "dbSlantboardGobletSquat", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Heels on slant board, chest up, squat straight down" },
+                                { type: "circuit-a", order: "A2", exercise: "dbRDL", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Push hips back, keep back flat, weights close to legs" },
+                                { type: "circuit-a", order: "A3", exercise: "dbReverseLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take a big step back, lower slowly, keep chest up" },
+                                { type: "circuit-a", order: "A4", exercise: "dbLateralLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Slide to the side, push hips back, keep planted foot flat" },
+                                { type: "circuit-b", order: "B1", exercise: "dbBenchPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower slowly to chest, press straight up" },
+                                { type: "circuit-b", order: "B2", exercise: "dbRows", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Place other hand on bench, pull weight to your side" },
+                                { type: "circuit-b", order: "B3", exercise: "dbZPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Sit up tall, press weights straight overhead" },
+                                { type: "circuit-b", order: "B4", exercise: "dbShoulderRaiseComplex", sets: "3 × 8/variation", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Do front raises, side raises, then bent-over raises" },
+                                { type: "superset-c", order: "C1", exercise: "calfRaisesDouble", sets: "2 × 12", tempo: "2 seconds down, hold at top", rest: "20s", note: "Go all the way up, pause at top, come down slow" },
+                                { type: "superset-c", order: "C2", exercise: "wallSits", sets: "2 × 60s", tempo: "Hold steady", rest: "45s", note: "Sit like a chair against the wall, hold position" },
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 60s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line" },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground" },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 12/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body" }
+                            ]
+                        }
+                    },
+                    week4: {
+                        monday: {
+                            title: "Full Body - Day B (Maintain Phase)",
+                            warmup: [
+                                { type: "warmup", exercise: "squatForwardFold", sets: "2 × 5", tempo: "Smooth and steady", note: "Squat down, then reach for your toes" },
+                                { type: "warmup", exercise: "hip9090Reach", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Sit in 90/90 position, rotate chest toward front knee" },
+                                { type: "warmup", exercise: "downwardDogToeTap", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Push hips up high, reach hand to opposite foot" },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm" }
+                            ],
+                            exercises: [
+                                { type: "circuit-a", order: "A1", exercise: "dbWalkingLunges", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take big steps forward, back knee almost touches ground" },
+                                { type: "circuit-a", order: "A2", exercise: "dbKbSwings", sets: "4 × 10", tempo: "Quick and powerful", rest: "30s", note: "Push hips back, then snap them forward fast" },
+                                { type: "circuit-a", order: "A3", exercise: "dbStepDowns", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Step down slowly, tap heel, then push back up" },
+                                { type: "circuit-a", order: "A4", exercise: "dbCurtsyLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Step back and across, lower down, stay upright" },
+                                { type: "circuit-b", order: "B1", exercise: "pushUps", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower all the way down, keep body straight" },
+                                { type: "circuit-b", order: "B2", exercise: "invertedRows", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Keep body straight, pull chest to the bar" },
+                                { type: "circuit-b", order: "B3", exercise: "dbKneelingOHPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "One knee down, press weights straight overhead" },
+                                { type: "circuit-b", order: "B4", exercise: "kbGorillaRows", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Bend forward, row one weight at a time" },
+                                { type: "superset-c", order: "C1", exercise: "wallTibRaises", sets: "2 × 15", tempo: "2 seconds down, hold at top", rest: "20s", note: "Lean against wall, lift toes up high" },
+                                { type: "superset-c", order: "C2", exercise: "stabilityBallHamstringCurls", sets: "2 × 15", tempo: "Smooth and steady", rest: "45s", note: "Bridge hips up, curl ball toward you" },
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 60s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line" },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground" },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 12/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body" }
+                            ]
+                        },
+                        wednesday: {
+                            title: "Full Body - Day A (Maintain Phase)",
+                            warmup: [
+                                { type: "warmup", exercise: "squatToStands", sets: "2 × 5", tempo: "Smooth and steady", note: "Drop hips low, keep chest up, heels on ground" },
+                                { type: "warmup", exercise: "worldsGreatestStretch", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Step into deep lunge, twist your chest toward front leg" },
+                                { type: "warmup", exercise: "shoulderTaps", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Hold strong plank, tap each shoulder without rocking hips" },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm" }
+                            ],
+                            exercises: [
+                                { type: "circuit-a", order: "A1", exercise: "dbSlantboardGobletSquat", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Heels on slant board, chest up, squat straight down" },
+                                { type: "circuit-a", order: "A2", exercise: "dbRDL", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Push hips back, keep back flat, weights close to legs" },
+                                { type: "circuit-a", order: "A3", exercise: "dbReverseLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take a big step back, lower slowly, keep chest up" },
+                                { type: "circuit-a", order: "A4", exercise: "dbLateralLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Slide to the side, push hips back, keep planted foot flat" },
+                                { type: "circuit-b", order: "B1", exercise: "dbBenchPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower slowly to chest, press straight up" },
+                                { type: "circuit-b", order: "B2", exercise: "dbRows", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Place other hand on bench, pull weight to your side" },
+                                { type: "circuit-b", order: "B3", exercise: "dbZPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Sit up tall, press weights straight overhead" },
+                                { type: "circuit-b", order: "B4", exercise: "dbShoulderRaiseComplex", sets: "3 × 8/variation", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Do front raises, side raises, then bent-over raises" },
+                                { type: "superset-c", order: "C1", exercise: "calfRaisesDouble", sets: "2 × 12", tempo: "2 seconds down, hold at top", rest: "20s", note: "Go all the way up, pause at top, come down slow" },
+                                { type: "superset-c", order: "C2", exercise: "wallSits", sets: "2 × 60s", tempo: "Hold steady", rest: "45s", note: "Sit like a chair against the wall, hold position" },
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 60s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line" },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground" },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 12/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body" }
+                            ]
+                        },
+                        friday: {
+                            title: "Full Body - Day B (Maintain Phase)",
+                            warmup: [
+                                { type: "warmup", exercise: "squatForwardFold", sets: "2 × 5", tempo: "Smooth and steady", note: "Squat down, then reach for your toes" },
+                                { type: "warmup", exercise: "hip9090Reach", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Sit in 90/90 position, rotate chest toward front knee" },
+                                { type: "warmup", exercise: "downwardDogToeTap", sets: "2 × 5/side", tempo: "Smooth and steady", note: "Push hips up high, reach hand to opposite foot" },
+                                { type: "warmup", exercise: "jumpRopeDouble", sets: "2 × 60s", tempo: "Quick and powerful", note: "Stay light on your toes, keep a steady rhythm" }
+                            ],
+                            exercises: [
+                                { type: "circuit-a", order: "A1", exercise: "dbWalkingLunges", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Take big steps forward, back knee almost touches ground" },
+                                { type: "circuit-a", order: "A2", exercise: "dbKbSwings", sets: "4 × 10", tempo: "Quick and powerful", rest: "30s", note: "Push hips back, then snap them forward fast" },
+                                { type: "circuit-a", order: "A3", exercise: "dbStepDowns", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Step down slowly, tap heel, then push back up" },
+                                { type: "circuit-a", order: "A4", exercise: "dbCurtsyLunge", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "75s", note: "Step back and across, lower down, stay upright" },
+                                { type: "circuit-b", order: "B1", exercise: "pushUps", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "Lower all the way down, keep body straight" },
+                                { type: "circuit-b", order: "B2", exercise: "invertedRows", sets: "4 × 10", tempo: "3 seconds down, squeeze at top", rest: "30s", note: "Keep body straight, pull chest to the bar" },
+                                { type: "circuit-b", order: "B3", exercise: "dbKneelingOHPress", sets: "4 × 10", tempo: "3 seconds down, 1 second up", rest: "30s", note: "One knee down, press weights straight overhead" },
+                                { type: "circuit-b", order: "B4", exercise: "kbGorillaRows", sets: "4 × 10/side", tempo: "3 seconds down, 1 second up", rest: "60s", note: "Bend forward, row one weight at a time" },
+                                { type: "superset-c", order: "C1", exercise: "wallTibRaises", sets: "2 × 15", tempo: "2 seconds down, hold at top", rest: "20s", note: "Lean against wall, lift toes up high" },
+                                { type: "superset-c", order: "C2", exercise: "stabilityBallHamstringCurls", sets: "2 × 15", tempo: "Smooth and steady", rest: "45s", note: "Bridge hips up, curl ball toward you" },
+                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 60s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line" },
+                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground" },
+                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 12/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body" }
+                            ]
+                        }
                     }
                 },
                 
                 // ================================================================
-                // 4-DAY FULL BODY SPLIT (ABAB PATTERN)
+                // 4-DAY FULL BODY SPLIT (ABAB PATTERN) - Placeholder
                 // ================================================================
                 '4day': {
                     description: "4-day program alternating Day A and Day B every week. Pattern: Mon=A, Tue=B, Thu=A, Fri=B",
-                    note: "Uses identical exercises and progressions as 2-day template. Reference 2day template for full exercise details.",
+                    note: "Coming soon - uses identical exercises and progressions as 2-day template.",
                     weeklyPattern: {
                         allWeeks: "Monday: Day A, Tuesday: Day B, Thursday: Day A, Friday: Day B"
                     }
@@ -703,6 +992,3 @@
         console.error('loadTemplateModule function not available');
     }
 })();
-
-// Debug code removed - was causing ReferenceError outside IIFE
-// To debug, add console.log inside the IIFE before loadTemplateModule call
