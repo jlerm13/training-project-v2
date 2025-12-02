@@ -41,53 +41,63 @@ let userData = {
 };
 
 // ==================== TIER DEFINITIONS ====================
+// Athlete-friendly language - avoid jargon, be clear and actionable
 const TIER_SYSTEM = {
     white: {
         name: 'White',
-        stage: 'Stage 1 - Unconscious Incompetence',
-        focus: 'Learn the Shapes',
-        intensity: '<60% effort',
-        density: 'Low-moderate',
-        tempo: '2-1-2 or 3-0-3',
-        frequency: '3-4 days/week',
+        stage: 'Learning Phase',
+        focus: 'Learn the Movements',
+        // Athlete-friendly descriptions
+        intensity: 'Light to moderate — leave a lot in the tank',
+        intensityTechnical: '<60% effort',
+        tempo: 'Slow and controlled (3 sec down, 3 sec up)',
+        tempoTechnical: '3-0-3 or 2-1-2',
+        frequency: '2-4 days/week',
         sessionLength: '30-45 min',
-        repRanges: '6-10 reps + isometric holds',
+        repRanges: '6-10 reps per set, some holds',
+        whatToExpect: "You'll focus on moving well before moving heavy. Expect to feel like you could do more — that's the point.",
         color: '#10b981'
     },
     red: {
         name: 'Red',
-        stage: 'Stage 2 - Conscious Incompetence',
-        focus: 'Stabilize the Shapes',
-        intensity: '55-70% effort',
-        density: 'Moderate',
-        tempo: '2-0-2 with pauses',
+        stage: 'Building Phase',
+        focus: 'Build the Foundation',
+        intensity: 'Moderate — should feel challenging but doable',
+        intensityTechnical: '55-70% effort',
+        tempo: 'Controlled with pauses',
+        tempoTechnical: '2-0-2 with pauses',
         frequency: '3-4 days/week',
         sessionLength: '40-55 min',
-        repRanges: '6-10 reps',
+        repRanges: '6-10 reps per set',
+        whatToExpect: "Now you're building strength. Weights get heavier, but form stays tight.",
         color: '#ef4444'
     },
     blue: {
         name: 'Blue',
-        stage: 'Stage 3 - Conscious Competence',
-        focus: 'Regulate the Shapes',
-        intensity: '65-80%',
-        density: 'Moderate-High (AREG)',
-        tempo: 'Self-selected',
+        stage: 'Strength Phase',
+        focus: 'Build Real Strength',
+        intensity: 'Challenging — 2-3 reps left in the tank',
+        intensityTechnical: '65-80%',
+        tempo: 'You control the speed',
+        tempoTechnical: 'Self-selected',
         frequency: '4 days/week',
         sessionLength: '45-70 min',
-        repRanges: '4-6 reps @ RPE 7-8',
+        repRanges: '4-6 reps per set',
+        whatToExpect: "Time to push. Heavier weights, fewer reps, more rest between sets.",
         color: '#3b82f6'
     },
     gold: {
         name: 'Gold',
-        stage: 'Stage 4 - Unconscious Competence',
-        focus: 'Own the Shapes',
-        intensity: '70-85%',
-        density: 'High, self-managed',
-        tempo: 'Autoregulated',
+        stage: 'Peak Phase',
+        focus: 'Maximize Performance',
+        intensity: 'Heavy — 1-2 reps left in the tank',
+        intensityTechnical: '70-85%',
+        tempo: 'Based on how you feel',
+        tempoTechnical: 'Autoregulated',
         frequency: '4-5 days/week',
         sessionLength: '50-75 min',
-        repRanges: '3-6 reps @ RPE 8',
+        repRanges: '3-6 reps per set',
+        whatToExpect: "You know your body. Train hard, recover smart, perform when it counts.",
         color: '#f59e0b'
     }
 };
@@ -579,6 +589,7 @@ function generateTemplateTabs() {
 
 function generateProgramOverview() {
     const overview = document.getElementById('programOverview');
+    
     // Athlete-friendly phase descriptions (no jargon)
     const phaseGuidelines = {
         'early-offseason': {
@@ -615,6 +626,10 @@ function generateProgramOverview() {
         }      
     };
 
+    const phase = phaseGuidelines[userData.phase];
+    const tierInfo = TIER_SYSTEM[userData.tier] || TIER_SYSTEM.white;
+    const availableTemplates = getAvailableTemplatesWithData(userData.tier, userData.phase);
+    
     // Equipment-friendly names
     const equipmentNames = {
         'full': 'Full Gym',
@@ -622,10 +637,6 @@ function generateProgramOverview() {
         'minimal': 'Minimal Equipment',
         'bodyweight': 'Bodyweight Only'
     };
-
-    const phase = phaseGuidelines[userData.phase];
-    const tierInfo = TIER_SYSTEM[userData.tier] || TIER_SYSTEM.white;
-    const availableTemplates = getAvailableTemplatesWithData(userData.tier, userData.phase);
     
     overview.innerHTML = `
         <h4>Your Training Plan</h4>
@@ -678,12 +689,6 @@ function generateProgramOverview() {
     `;
 }
 
-function selectTemplate(template) {
-    userData.currentTemplate = template;
-    generateTemplateTabs(); // Regenerate tabs to update active state
-    updateWeekDisplay(); // Update week display
-    renderWorkouts();
-}
 function selectTemplate(template) {
     userData.currentTemplate = template;
     generateTemplateTabs(); // Regenerate tabs to update active state
@@ -803,8 +808,14 @@ function renderWorkouts() {
         
         if (workoutDay.exercises) {
             workoutDay.exercises.forEach((exercise, index) => {
-                const exerciseData = typeof exerciseDatabase !== 'undefined' ? exerciseDatabase?.[exercise.exercise] : null;
-                let exerciseName = exercise.exercise;
+                // Use exerciseLibrary (from exercise-loader.js) or fall back to old exerciseDatabase
+                const exerciseData = window.exerciseLibrary?.[exercise.exercise] || 
+                                    (typeof exerciseDatabase !== 'undefined' ? exerciseDatabase?.[exercise.exercise] : null);
+                
+                // Use getExerciseName helper if available, otherwise format the key
+                let exerciseName = typeof getExerciseName === 'function' 
+                    ? getExerciseName(exercise.exercise)
+                    : exercise.exercise;
                 let isSubstituted = false;
 
                 // Check if user has selected a variation for this exercise
@@ -824,9 +835,10 @@ function renderWorkouts() {
                             exerciseName = exerciseData.equipmentMap[userData.equipment] || exerciseData.name;
                         }
                         if (exerciseName !== exerciseData.name) isSubstituted = true;
-                    } else if (exerciseData) {
+                    } else if (exerciseData && exerciseData.name) {
                         exerciseName = exerciseData.name;
                     }
+                    // If no exerciseData, the getExerciseName fallback is already set above
                 }
 
                 const exerciseId = `${exercise.exercise}-${dayKey}-${index}`;
