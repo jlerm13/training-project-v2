@@ -1073,6 +1073,9 @@ function renderWorkouts() {
                 const evaluatedSets = evaluateTemplateString(exercise.sets);
                 const evaluatedIntensity = evaluateTemplateString(exercise.intensity);
                 const evaluatedNote = evaluateTemplateString(exercise.note);
+                const evaluatedTempo = evaluateTemplateString(exercise.tempo);
+                const evaluatedRest = evaluateTemplateString(exercise.rest);
+
 
                 html += `
                     <div class="exercise-block">
