@@ -980,6 +980,149 @@
                     weeklyPattern: {
                         allWeeks: "Monday: Day A, Tuesday: Day B, Thursday: Day A, Friday: Day B"
                     }
+                },
+                
+                // ================================================================
+                // CONDITIONING PLAN - 4-Week GPP (3 sessions/week)
+                // ================================================================
+                'conditioning': {
+                    overview: {
+                        frequency: "3 sessions per week",
+                        goal: "Build your aerobic base — get in shape to train hard",
+                        equipment: ["Treadmill", "Bike", "Elliptical", "Stairmaster", "Track", "Turf"],
+                        keyRules: [
+                            "Keep all running EASY — you should be able to hold a conversation",
+                            "Walk recoveries are mandatory, not optional",
+                            "Prefer turf, track, or treadmill over concrete"
+                        ]
+                    },
+                    week1: {
+                        sessionA: {
+                            title: "Conditioning A",
+                            totalTime: "30 min",
+                            runningTime: "10 min",
+                            structure: [
+                                { type: "warmup", description: "5-min easy walk" },
+                                { type: "work", description: "10 rounds: 1 min run + 1 min walk", detail: "10 × (1 min easy run → 1 min walk)" },
+                                { type: "cooldown", description: "5-min easy walk" }
+                            ],
+                            coachNote: "This should feel easy. If you're breathing hard, slow down."
+                        },
+                        sessionB: {
+                            title: "Conditioning B",
+                            totalTime: "30 min",
+                            runningTime: "14 min",
+                            structure: [
+                                { type: "warmup", description: "5-min easy walk" },
+                                { type: "work", description: "7 rounds: 2 min run + 1 min walk", detail: "7 × (2 min easy run → 1 min walk)" },
+                                { type: "cooldown", description: "5-min easy walk" }
+                            ],
+                            coachNote: "Slightly longer runs, same easy effort."
+                        },
+                        sessionC: {
+                            title: "Conditioning C",
+                            totalTime: "30 min",
+                            runningTime: "10 min",
+                            structure: [
+                                { type: "warmup", description: "5-min easy walk" },
+                                { type: "work", description: "6 rounds: 1 min run + 30 sec walk", detail: "6 × (1 min easy run → 30 sec walk)" },
+                                { type: "work", description: "8 rounds: 30 sec run + 1 min walk", detail: "8 × (30 sec easy run → 1 min walk)" },
+                                { type: "cooldown", description: "4-min easy walk" }
+                            ],
+                            coachNote: "Two different interval patterns — keeps things interesting."
+                        }
+                    },
+                    week2: {
+                        repeatWeek: 1,
+                        note: "Same as Week 1 — focus on consistency"
+                    },
+                    week3: {
+                        sessionA: {
+                            title: "Conditioning A",
+                            totalTime: "40 min",
+                            runningTime: "23 min",
+                            structure: [
+                                { type: "warmup", description: "3-min easy run + 3-min walk" },
+                                { type: "work", description: "10 rounds: 2 min run + 1 min walk", detail: "10 × (2 min easy run → 1 min walk)" },
+                                { type: "cooldown", description: "4-min easy walk" }
+                            ],
+                            coachNote: "Longer session, longer runs. Your base is building."
+                        },
+                        sessionB: {
+                            title: "Conditioning B",
+                            totalTime: "40 min",
+                            runningTime: "18 min",
+                            structure: [
+                                { type: "warmup", description: "3-min easy run + 3-min walk" },
+                                { type: "work", description: "6 rounds: 3 min run + 2 min walk", detail: "6 × (3 min easy run → 2 min walk)" },
+                                { type: "cooldown", description: "4-min easy walk" }
+                            ],
+                            coachNote: "3-minute runs are a step up — stay conversational."
+                        },
+                        sessionC: {
+                            title: "Conditioning C",
+                            totalTime: "40 min",
+                            runningTime: "20 min",
+                            structure: [
+                                { type: "warmup", description: "3-min easy run + 3-min walk" },
+                                { type: "work", description: "20 rounds: 1 min run + 30 sec walk", detail: "20 × (1 min easy run → 30 sec walk)" },
+                                { type: "cooldown", description: "4-min easy walk" }
+                            ],
+                            coachNote: "More intervals, but short rests. Great for building work capacity."
+                        }
+                    },
+                    week4: {
+                        repeatWeek: 3,
+                        note: "Same as Week 3 — solidify the gains"
+                    }
+                },
+                
+                // ================================================================
+                // WEEKLY SCHEDULE OPTIONS
+                // ================================================================
+                'weeklySchedule': {
+                    '2day': {
+                        name: "2-Day Lift + Conditioning",
+                        schedule: [
+                            { day: "Monday", activity: "Full Body Lift A", type: "lift" },
+                            { day: "Tuesday", activity: "Conditioning A", type: "conditioning" },
+                            { day: "Wednesday", activity: "Off / Mobility", type: "rest" },
+                            { day: "Thursday", activity: "Conditioning B", type: "conditioning" },
+                            { day: "Friday", activity: "Full Body Lift B", type: "lift" },
+                            { day: "Saturday", activity: "Conditioning C", type: "conditioning" },
+                            { day: "Sunday", activity: "Off", type: "rest" }
+                        ]
+                    },
+                    '3day': {
+                        name: "3-Day Lift + Conditioning",
+                        note: "Choose based on your schedule. Separate days = more recovery. Same day = more days off.",
+                        options: [
+                            {
+                                name: "Separate Days (6 training days)",
+                                schedule: [
+                                    { day: "Monday", activity: "Lift", type: "lift" },
+                                    { day: "Tuesday", activity: "Conditioning A", type: "conditioning" },
+                                    { day: "Wednesday", activity: "Lift", type: "lift" },
+                                    { day: "Thursday", activity: "Conditioning B", type: "conditioning" },
+                                    { day: "Friday", activity: "Lift", type: "lift" },
+                                    { day: "Saturday", activity: "Conditioning C", type: "conditioning" },
+                                    { day: "Sunday", activity: "Off", type: "rest" }
+                                ]
+                            },
+                            {
+                                name: "Same Day (3 training days)",
+                                schedule: [
+                                    { day: "Monday", activity: "Lift + Conditioning A", type: "both" },
+                                    { day: "Tuesday", activity: "Off / Mobility", type: "rest" },
+                                    { day: "Wednesday", activity: "Lift + Conditioning B", type: "both" },
+                                    { day: "Thursday", activity: "Off / Mobility", type: "rest" },
+                                    { day: "Friday", activity: "Lift + Conditioning C", type: "both" },
+                                    { day: "Saturday", activity: "Off", type: "rest" },
+                                    { day: "Sunday", activity: "Off", type: "rest" }
+                                ]
+                            }
+                        ]
+                    }
                 }
             }
         }
