@@ -16,7 +16,7 @@
         🏗️ Development Preview - White Tier Templates Available
     </div>
 
-    <div class="container">
+    <main class="container">
         <div class="header">
             <h1>Athletic Development Training System</h1>
             <p>Real athletic training, adapted to your reality</p>
@@ -30,7 +30,7 @@
                 <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 1.1rem;">
                     Complete athletic training that adapts to your space, equipment, and context.
                 </p>
-                <button class="btn" onclick="startOnboarding()" style="width: 100%; padding: 16px; font-size: 1.1rem;">
+                <button type="button" class="btn" onclick="startOnboarding()" style="width: 100%; padding: 16px; font-size: 1.1rem;">
                     Get Started - 2 Minutes
                 </button>
             </div>
@@ -56,7 +56,7 @@
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                     <h2 id="programTitle">Your Program</h2>
-                    <button class="btn btn-secondary" onclick="resetApp()">Start Over</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetApp()">Start Over</button>
                 </div>
 
                 <!-- Program Overview -->
@@ -72,16 +72,16 @@
 
                 <!-- Week Navigation -->
                 <div class="week-navigation">
-                    <button class="week-nav-btn" onclick="previousWeek()" id="prevWeekBtn">← Previous</button>
+                    <button type="button" class="week-nav-btn" onclick="previousWeek()" id="prevWeekBtn">← Previous</button>
                     <div id="weekDisplay">Week 1</div>
-                    <button class="week-nav-btn" onclick="nextWeek()" id="nextWeekBtn">Next →</button>
+                    <button type="button" class="week-nav-btn" onclick="nextWeek()" id="nextWeekBtn">Next →</button>
                 </div>
 
                 <!-- Workout Days -->
                 <div id="workoutDays"></div>
 
                 <!-- Debug/Error Output -->
-                <div id="errorBox" class="info-box hidden" style="color: red; margin-top: 16px;"></div>
+                <div id="errorBox" class="info-box hidden" role="status" aria-live="polite" style="color: red; margin-top: 16px;"></div>
 
                 <!-- Guidelines -->
                 <div class="info-box" style="margin-top: 24px;">
@@ -95,7 +95,13 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
+
+    <noscript>
+        <div class="info-box" style="color: orange; margin: 16px;">
+            JavaScript is required for this app to work. Please enable JavaScript in your browser.
+        </div>
+    </noscript>
 
     <!-- 
     =====================================================================
@@ -106,59 +112,70 @@
     4. Template loader
     5. Template modules (white, red, blue, gold)
     6. Main app.js LAST
-    
+
     Cache busting: ?v=2.1.0 forces browsers to reload fresh files
     =====================================================================
     -->
     
     <!-- Load the exercise loader FIRST -->
-    <script src="./js/exercises/exercise-loader.js?v=2.1.0"></script>
-    <script src="./js/exercises/whiteTemplateExercises.js?v=2.1.0"></script>
+    <script defer src="./js/exercises/exercise-loader.js?v=2.1.0"></script>
+    <script defer src="./js/exercises/whiteTemplateExercises.js?v=2.1.0"></script>
     
     <!-- Then load exercise modules -->
-    <script src="./js/exercises/maxEffortUpper.js?v=2.1.0"></script>
-    <script src="./js/exercises/maxEffortLower.js?v=2.1.0"></script>
-    <script src="./js/exercises/dynamicUpper.js?v=2.1.0"></script>
-    <script src="./js/exercises/dynamicLower.js?v=2.1.0"></script>
-    <script src="./js/exercises/repetitionUpper.js?v=2.1.0"></script>
-    <script src="./js/exercises/assistanceUpper.js?v=2.1.0"></script>
-    <script src="./js/exercises/assistanceLower.js?v=2.1.0"></script>
-    <script src="./js/exercises/coreAndGrip.js?v=2.1.0"></script>
-    <script src="./js/exercises/athletic-movements.js?v=2.1.0"></script>
-    <script src="./js/exercises/conditioning.js?v=2.1.0"></script>
+    <script defer src="./js/exercises/maxEffortUpper.js?v=2.1.0"></script>
+    <script defer src="./js/exercises/maxEffortLower.js?v=2.1.0"></script>
+    <script defer src="./js/exercises/dynamicUpper.js?v=2.1.0"></script>
+    <script defer src="./js/exercises/dynamicLower.js?v=2.1.0"></script>
+    <script defer src="./js/exercises/repetitionUpper.js?v=2.1.0"></script>
+    <script defer src="./js/exercises/assistanceUpper.js?v=2.1.0"></script>
+    <script defer src="./js/exercises/assistanceLower.js?v=2.1.0"></script>
+    <script defer src="./js/exercises/coreAndGrip.js?v=2.1.0"></script>
+    <script defer src="./js/exercises/athletic-movements.js?v=2.1.0"></script>
+    <script defer src="./js/exercises/conditioning.js?v=2.1.0"></script>
     
     <!-- Initialize exercise loader AFTER all modules are loaded -->
     <script>
-        if (typeof initializeExercises === 'function') {
-            initializeExercises();
-        } else {
-            console.error('❌ initializeExercises not defined - check loader path');
-        }
+        // Run checks after page load so deferred scripts have executed
+        window.addEventListener('load', function () {
+            if (typeof initializeExercises === 'function') {
+                initializeExercises();
+            } else {
+                console.error('❌ initializeExercises not defined - check loader path');
+                var eb = document.getElementById('errorBox');
+                if (eb) { eb.classList.remove('hidden'); eb.textContent = 'Error: exercises failed to load.'; }
+            }
+        });
     </script>
     
     <!-- Block Periodization -->
-    <script src="./js/blockPeriodization.js?v=2.1.0"></script>
+    <script defer src="./js/blockPeriodization.js?v=2.1.0"></script>
     
     <!-- Template System -->
-    <script src="./js/templates/template-loader.js?v=2.1.0"></script>
-    <script src="./js/templates/earlyOffSeason/white.js?v=2.1.0"></script>
-    <script src="./js/templates/earlyOffSeason/red.js?v=2.1.0"></script>
-    <script src="./js/templates/earlyOffSeason/blue.js?v=2.1.0"></script>
-    <script src="./js/templates/earlyOffSeason/gold.js?v=2.1.0"></script>
+    <script defer src="./js/templates/template-loader.js?v=2.1.0"></script>
+    <script defer src="./js/templates/earlyOffSeason/white.js?v=2.1.0"></script>
+    <script defer src="./js/templates/earlyOffSeason/red.js?v=2.1.0"></script>
+    <script defer src="./js/templates/earlyOffSeason/blue.js?v=2.1.0"></script>
+    <script defer src="./js/templates/earlyOffSeason/gold.js?v=2.1.0"></script>
     
     <script>
-        if (typeof initializeTemplates === 'function') {
-            initializeTemplates();
-        } else {
-            console.error('❌ initializeTemplates not defined - check template paths');
-        }
+        // Run template init after deferred scripts execute
+        window.addEventListener('load', function () {
+            if (typeof initializeTemplates === 'function') {
+                initializeTemplates();
+            } else {
+                console.error('❌ initializeTemplates not defined - check template paths');
+                var eb = document.getElementById('errorBox');
+                if (eb) { eb.classList.remove('hidden'); eb.textContent = 'Error: templates failed to load.'; }
+            }
+        });
     </script>
     
     <!-- Main app logic - MUST BE LAST -->
-    <script src="./js/app.js?v=2.1.0"></script>
+    <script defer src="./js/app.js?v=2.1.0"></script>
     
     <!-- Version logging -->
     <script>
+        // This will run immediately, version log is fine in console
         console.log('🚀 Athletic Development App v2.1.0 - Tier System');
     </script>
 </body>
