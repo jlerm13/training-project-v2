@@ -1086,6 +1086,8 @@ function renderWorkouts() {
                         <div class="exercise-name" id="exercise-${exerciseId}-name">${exerciseName}</div>
                         <div class="exercise-details">Sets/Reps: ${evaluatedSets}</div>
                         ${evaluatedIntensity ? `<div class="exercise-details">Intensity: ${evaluatedIntensity}</div>` : ''}
+                        ${evaluatedTempo ? `<div class="exercise-details">Tempo: ${evaluatedTempo}</div>` : ''}
+                        ${evaluatedRest ? `<div class="exercise-details">Rest: ${evaluatedRest}</div>` : ''}
                         ${evaluatedNote ? `<div class="exercise-details">Note: ${evaluatedNote}</div>` : ''}
                         ${isSubstituted && userData.equipment !== 'full' ? `<div class="substitution-notice">Equipment adaptation: ${userData.equipment}</div>` : ''}
                         
