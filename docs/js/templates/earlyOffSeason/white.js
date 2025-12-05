@@ -325,52 +325,54 @@
                 
                 // ================================================================
                 // CONDITIONING PLAN - 4-Week GPP (3 sessions/week)
+                // NON-IMPACT ONLY - No running
                 // ================================================================
                 'conditioning': {
                     overview: {
                         frequency: "3 sessions per week",
                         goal: "Build your aerobic base — get in shape to train hard",
-                        equipment: ["Treadmill", "Bike", "Elliptical", "Stairmaster", "Track", "Turf"],
+                        equipment: ["Bike", "Elliptical", "Rower", "Ski Erg", "Stairmaster", "Arc Trainer"],
                         keyRules: [
-                            "Keep all running EASY — you should be able to hold a conversation",
-                            "Walk recoveries are mandatory, not optional",
-                            "Prefer turf, track, or treadmill over concrete"
+                            "All NON-IMPACT conditioning — no running",
+                            "Keep effort EASY — you should be able to hold a conversation",
+                            "Choose any cardio machine available",
+                            "Option A = Steady state, Option B = Intervals"
                         ]
                     },
                     week1: {
                         sessionA: {
-                            title: "Conditioning A",
+                            title: "Non-Impact Conditioning A",
                             totalTime: "30 min",
-                            runningTime: "10 min",
                             structure: [
-                                { type: "warmup", description: "5-min easy walk" },
-                                { type: "work", description: "10 rounds: 1 min run + 1 min walk", detail: "10 × (1 min easy run → 1 min walk)" },
-                                { type: "cooldown", description: "5-min easy walk" }
+                                { type: "optionA", description: "Option A: 30 minutes steady state", detail: "Easy, conversational pace on any machine" },
+                                { type: "optionB-warmup", description: "Option B: 5-min warm-up" },
+                                { type: "optionB-work", description: "10 × (1-min easy + 1-min recovery)", detail: "10 rounds of 1 minute work, 1 minute recovery" },
+                                { type: "optionB-cooldown", description: "5-min cooldown" }
                             ],
-                            coachNote: "This should feel easy. If you're breathing hard, slow down."
+                            coachNote: "This should feel easy. If you're breathing hard, slow down. Zero running."
                         },
                         sessionB: {
-                            title: "Conditioning B",
+                            title: "Non-Impact Conditioning B",
                             totalTime: "30 min",
-                            runningTime: "14 min",
                             structure: [
-                                { type: "warmup", description: "5-min easy walk" },
-                                { type: "work", description: "7 rounds: 2 min run + 1 min walk", detail: "7 × (2 min easy run → 1 min walk)" },
-                                { type: "cooldown", description: "5-min easy walk" }
+                                { type: "optionA", description: "Option A: 30 minutes steady state", detail: "Easy, conversational pace on any machine" },
+                                { type: "optionB-warmup", description: "Option B: 5-min warm-up" },
+                                { type: "optionB-work", description: "7 × (2-min easy + 1-min recovery)", detail: "7 rounds of 2 minutes work, 1 minute recovery" },
+                                { type: "optionB-cooldown", description: "5-min cooldown" }
                             ],
-                            coachNote: "Slightly longer runs, same easy effort."
+                            coachNote: "Slightly longer intervals, same easy effort. Stay conversational."
                         },
                         sessionC: {
-                            title: "Conditioning C",
+                            title: "Non-Impact Conditioning C",
                             totalTime: "30 min",
-                            runningTime: "10 min",
                             structure: [
-                                { type: "warmup", description: "5-min easy walk" },
-                                { type: "work", description: "6 rounds: 1 min run + 30 sec walk", detail: "6 × (1 min easy run → 30 sec walk)" },
-                                { type: "work", description: "8 rounds: 30 sec run + 1 min walk", detail: "8 × (30 sec easy run → 1 min walk)" },
-                                { type: "cooldown", description: "4-min easy walk" }
+                                { type: "optionA", description: "Option A: 30 minutes steady state", detail: "Easy, conversational pace on any machine" },
+                                { type: "optionB-warmup", description: "Option B: 5-min warm-up" },
+                                { type: "optionB-work", description: "6 × (1-min easy + 30-sec recovery)", detail: "6 rounds of 1 minute work, 30 seconds recovery" },
+                                { type: "optionB-work2", description: "8 × (30-sec easy + 1-min recovery)", detail: "8 rounds of 30 seconds work, 1 minute recovery" },
+                                { type: "optionB-cooldown", description: "4-min cooldown" }
                             ],
-                            coachNote: "Two different interval patterns — keeps things interesting."
+                            coachNote: "Two different interval patterns — keeps things interesting. No running."
                         }
                     },
                     week2: {
@@ -379,42 +381,42 @@
                     },
                     week3: {
                         sessionA: {
-                            title: "Conditioning A",
+                            title: "Non-Impact Conditioning A",
                             totalTime: "45 min",
-                            runningTime: "23 min",
                             structure: [
-                                { type: "warmup", description: "6-min easy run + 3-min walk" },
-                                { type: "work", description: "10 rounds: 2 min run + 1 min walk", detail: "10 × (2 min easy run → 1 min walk)" },
-                                { type: "cooldown", description: "4-min easy walk" }
+                                { type: "optionA", description: "Option A: 45 minutes steady state", detail: "Easy, conversational pace on any machine" },
+                                { type: "optionB-warmup", description: "Option B: 6-min warm-up" },
+                                { type: "optionB-work", description: "10 × 2-min easy aerobic intervals with 1-min recovery", detail: "10 rounds of 2 minutes work, 1 minute recovery" },
+                                { type: "optionB-cooldown", description: "4-min cooldown" }
                             ],
-                            coachNote: "Longer session, longer runs. Your base is building."
+                            coachNote: "Longer session with longer intervals. Your base is building."
                         },
                         sessionB: {
-                            title: "Conditioning B",
+                            title: "Non-Impact Conditioning B",
                             totalTime: "45 min",
-                            runningTime: "18 min",
                             structure: [
-                                { type: "warmup", description: "6-min easy run + 3-min walk" },
-                                { type: "work", description: "6 rounds: 3 min run + 2 min walk", detail: "6 × (3 min easy run → 2 min walk)" },
-                                { type: "cooldown", description: "4-min easy walk" }
+                                { type: "optionA", description: "Option A: 45 minutes steady state", detail: "Easy, conversational pace on any machine" },
+                                { type: "optionB-warmup", description: "Option B: 6-min warm-up" },
+                                { type: "optionB-work", description: "6 × 3-min easy aerobic intervals with 2-min recovery", detail: "6 rounds of 3 minutes work, 2 minutes recovery" },
+                                { type: "optionB-cooldown", description: "4-min cooldown" }
                             ],
-                            coachNote: "3-minute runs are a step up — stay conversational."
+                            coachNote: "3-minute intervals are a step up — stay conversational throughout."
                         },
                         sessionC: {
-                            title: "Conditioning C",
+                            title: "Non-Impact Conditioning C",
                             totalTime: "45 min",
-                            runningTime: "20 min",
                             structure: [
-                                { type: "warmup", description: "6-min easy run + 3-min walk" },
-                                { type: "work", description: "20 rounds: 1 min run + 30 sec walk", detail: "20 × (1 min easy run → 30 sec walk)" },
-                                { type: "cooldown", description: "4-min easy walk" }
+                                { type: "optionA", description: "Option A: 45 minutes steady state", detail: "Easy, conversational pace on any machine" },
+                                { type: "optionB-warmup", description: "Option B: 6-min warm-up" },
+                                { type: "optionB-work", description: "20 × 1-min easy aerobic intervals with 30-sec recovery", detail: "20 rounds of 1 minute work, 30 seconds recovery" },
+                                { type: "optionB-cooldown", description: "4-min cooldown" }
                             ],
-                            coachNote: "More intervals, but short rests. Great for building work capacity."
+                            coachNote: "More intervals with short rests. Great for building work capacity. All non-impact."
                         }
                     },
                     week4: {
                         repeatWeek: 3,
-                        note: "Same as Week 3 — solidify the gains"
+                        note: "Same as Week 3 — solidify the gains. All non-impact conditioning."
                     }
                 },
                 
