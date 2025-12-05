@@ -71,7 +71,7 @@
                                     order: "A1",
                                     exercise: "dbSlantboardGobletSquat", 
                                     sets: "3 × 8",
-                                    intensity: "RPE 5–6 — smooth reps, 4–5 in the tank"
+                                    intensity: "RPE 5–6 — smooth reps, 4–5 in the tank",
                                     tempo: "3 seconds down, 1 second up",
                                     rest: "30s",
                                     note: "Heels on slant board, chest up, squat straight down",
