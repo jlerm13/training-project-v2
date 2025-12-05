@@ -51,11 +51,11 @@ const TIER_SYSTEM = {
         // Athlete-friendly descriptions
         intensity: 'Light to moderate — leave a lot in the tank',
         intensityTechnical: '<60% effort',
-        tempo: 'Slow and controlled (3 sec down, 3 sec up)',
+        tempo: 'Slow, controlled, rhythmic  (ex: 3 sec down, 3 sec up)',
         tempoTechnical: '3-0-3 or 2-1-2',
         frequency: '2-4 days/week',
         sessionLength: '30-45 min',
-        repRanges: '6-10 reps per set, some holds',
+        repRanges: '6-12 reps per set, some holds',
         whatToExpect: "You'll focus on moving well before moving heavy. Expect to feel like you could do more — that's the point.",
         color: '#10b981'
     },
