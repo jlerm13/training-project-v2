@@ -566,11 +566,52 @@ function generateProgram() {
     renderWorkouts();
 }
 
+/**
+ * Checks if a template is marked as unavailable (coming soon)
+ */
+function templateIsUnavailable(tier, phase, templateType) {
+    try {
+        const template = window.workoutTemplates?.[tier]?.[phase]?.[templateType];
+        
+        // Check if template has unavailable flag
+        if (template && template.unavailable === true) return true;
+        
+        // For white tier early-offseason, mark 3-day as unavailable
+        if (tier === 'white' && phase === 'early-offseason' && templateType === '3day') {
+            return true;
+        }
+        
+        return false;
+    } catch (error) {
+        return false;
+    }
+}
+
+/**
+ * Gets all templates including unavailable ones for display purposes
+ */
+function getAllTemplatesForDisplay(tier, phase) {
+    const possibleTemplates = [
+        { key: '2day', name: '2-Day' },
+        { key: '3day', name: '3-Day' },
+        { key: '4day', name: '4-Day' }
+    ];
+    
+    return possibleTemplates.map(t => ({
+        ...t,
+        hasData: templateHasData(tier, phase, t.key),
+        unavailable: templateIsUnavailable(tier, phase, t.key)
+    }));
+}
+
 function generateTemplateTabs() {
     const container = document.querySelector('.template-tabs');
-    const availableTemplates = getAvailableTemplatesWithData(userData.tier, userData.phase);
+    const allTemplates = getAllTemplatesForDisplay(userData.tier, userData.phase);
     
-    if (availableTemplates.length === 0) {
+    // Filter to show: templates with data OR templates marked as unavailable (coming soon)
+    const templatesToShow = allTemplates.filter(t => t.hasData || t.unavailable);
+    
+    if (templatesToShow.length === 0) {
         container.innerHTML = `
             <div style="color: #f59e0b; padding: 12px; background: rgba(245, 158, 11, 0.1); border-radius: 8px;">
                 ⚠️ No templates available for this combination. Try <strong>White tier</strong> + <strong>Early Off-Season</strong>.
@@ -582,9 +623,22 @@ function generateTemplateTabs() {
     let tabsHTML = '';
     
     // Lifting template tabs
-    availableTemplates.forEach((template, index) => {
+    templatesToShow.forEach((template, index) => {
         const isActive = template.key === userData.currentTemplate && userData.currentView !== 'conditioning' && userData.currentView !== 'schedule' ? 'active' : '';
-        tabsHTML += `<div class="template-tab ${isActive}" onclick="selectTemplate('${template.key}')">${template.name} Lift</div>`;
+        const isUnavailable = template.unavailable;
+        
+        if (isUnavailable) {
+            // Show as disabled/unavailable
+            tabsHTML += `
+                <div class="template-tab template-tab-unavailable" style="opacity: 0.5; cursor: not-allowed; background: var(--bg-secondary);">
+                    ${template.name} Lift
+                    <div style="font-size: 0.7rem; color: #f59e0b; margin-top: 2px;">⏳ Not Available</div>
+                </div>
+            `;
+        } else {
+            // Show as normal clickable tab
+            tabsHTML += `<div class="template-tab ${isActive}" onclick="selectTemplate('${template.key}')">${template.name} Lift</div>`;
+        }
     });
     
     // Check if conditioning exists for this tier/phase
