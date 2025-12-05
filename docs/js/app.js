@@ -1080,7 +1080,7 @@ function renderWorkouts() {
                 html += `
                     <div class="exercise-block">
                         <div class="exercise-header">
-                            <span class="exercise-category category-${exercise.type}">${exercise.type.toUpperCase()}</span>
+                            <span class="exercise-category category-${exercise.type}">${exercise.order || exercise.type.toUpperCase()}</span>
                             ${exerciseData?.variations ? `<button class="variation-btn" onclick="showVariations('${exerciseId}', this)">Variations</button>` : ''}
                         </div>
                         <div class="exercise-name" id="exercise-${exerciseId}-name">${exerciseName}</div>
