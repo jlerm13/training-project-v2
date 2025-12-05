@@ -833,67 +833,109 @@ function renderConditioning() {
         const sessionLabels = ['Session A', 'Session B', 'Session C'];
         const dayLabels = ['(Day 2 or Post-Lift)', '(Day 4 or Post-Lift)', '(Day 6 or Post-Lift)'];
         
+        // Find Option A and Option B structures
+        const optionA = session.structure.find(item => item.type === 'optionA');
+        const optionB_warmup = session.structure.find(item => item.type === 'optionB-warmup');
+        const optionB_work = session.structure.filter(item => item.type === 'optionB-work' || item.type === 'optionB-work2');
+        const optionB_cooldown = session.structure.find(item => item.type === 'optionB-cooldown');
+        
         html += `
             <div class="workout-day">
                 <div class="workout-header">
                     <div class="workout-title">${sessionLabels[index]} ${dayLabels[index]}</div>
-                    <div class="workout-badge">${session.totalTime}</div>
+                    <div class="workout-badge" style="background: #10b981;">${session.totalTime}</div>
                 </div>
                 <div style="padding: 16px;">
-                    <div style="display: flex; gap: 16px; margin-bottom: 16px;">
-                        <div style="background: var(--bg-tertiary); padding: 8px 12px; border-radius: 6px;">
-                            <span style="font-size: 0.8rem; color: var(--text-secondary);">Total Time</span><br>
-                            <strong>${session.totalTime}</strong>
+                    
+                    <!-- Instruction Header -->
+                    <div style="background: rgba(59, 130, 246, 0.1); padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #3b82f6;">
+                        <strong style="color: #3b82f6;">📋 Choose ONE conditioning approach:</strong>
+                    </div>
+                    
+                    <!-- OPTION A: Steady State -->
+                    ${optionA ? `
+                        <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05)); padding: 16px; border-radius: 12px; margin-bottom: 16px; border: 2px solid rgba(59, 130, 246, 0.3);">
+                            <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                                <span style="font-size: 1.5rem; margin-right: 8px;">🔵</span>
+                                <h3 style="margin: 0; color: #2563eb; font-size: 1.2rem;">Option A: Steady State</h3>
+                            </div>
+                            <div style="font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; color: var(--text-primary);">
+                                ${optionA.description}
+                            </div>
+                            <div style="font-size: 0.95rem; color: var(--text-secondary);">
+                                ${optionA.detail}
+                            </div>
                         </div>
+                    ` : ''}
+                    
+                    <!-- OR Divider -->
+                    <div style="display: flex; align-items: center; margin: 24px 0; gap: 16px;">
+                        <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--border-color), transparent);"></div>
+                        <span style="font-weight: 600; color: var(--text-secondary); font-size: 0.9rem;">OR</span>
+                        <div style="flex: 1; height: 1px; background: linear-gradient(to left, transparent, var(--border-color), transparent);"></div>
                     </div>
                     
-                    <div style="margin-bottom: 16px;">
-                        ${session.structure.map(item => {
-                            let bgColor = 'var(--bg-secondary)';
-                            let icon = '•';
-                            let title = '';
-                            
-                            // Handle Option A (steady state)
-                            if (item.type === 'optionA') {
-                                bgColor = 'rgba(59, 130, 246, 0.1)';
-                                icon = '🔵';
-                                title = 'Option A: Steady State';
-                            }
-                            // Handle Option B warmup
-                            else if (item.type === 'optionB-warmup') {
-                                bgColor = 'rgba(245, 158, 11, 0.1)';
-                                icon = '🟠';
-                                title = 'Option B: Intervals - Warmup';
-                            }
-                            // Handle Option B work
-                            else if (item.type === 'optionB-work' || item.type === 'optionB-work2') {
-                                bgColor = 'rgba(16, 185, 129, 0.15)';
-                                icon = '💪';
-                                title = 'Option B: Intervals - Work';
-                            }
-                            // Handle Option B cooldown
-                            else if (item.type === 'optionB-cooldown') {
-                                bgColor = 'rgba(139, 92, 246, 0.1)';
-                                icon = '❄️';
-                                title = 'Option B: Intervals - Cooldown';
-                            }
-                            // Fallback for any other types
-                            else {
-                                title = item.type.charAt(0).toUpperCase() + item.type.slice(1);
-                            }
-                            
-                            return `
-                                <div style="background: ${bgColor}; padding: 12px; border-radius: 6px; margin-bottom: 8px;">
-                                    ${title ? `<div style="font-weight: 600; margin-bottom: 4px;">${icon} ${title}</div>` : ''}
-                                    <div style="font-size: 1rem;">${item.description}</div>
-                                    ${item.detail ? `<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">${item.detail}</div>` : ''}
+                    <!-- OPTION B: Intervals (Grouped) -->
+                    <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05)); padding: 16px; border-radius: 12px; border: 2px solid rgba(245, 158, 11, 0.3);">
+                        <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                            <span style="font-size: 1.5rem; margin-right: 8px;">🟠</span>
+                            <h3 style="margin: 0; color: #d97706; font-size: 1.2rem;">Option B: Intervals (${session.totalTime} total)</h3>
+                        </div>
+                        
+                        <div style="font-weight: 500; margin-bottom: 12px; color: var(--text-primary);">Structure:</div>
+                        
+                        <!-- Warmup -->
+                        ${optionB_warmup ? `
+                            <div style="background: rgba(239, 68, 68, 0.1); padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #ef4444;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                    <span style="font-size: 1.1rem;">🔥</span>
+                                    <strong style="color: #dc2626;">Warmup</strong>
                                 </div>
-                            `;
-                        }).join('')}
+                                <div style="margin-left: 28px; font-size: 0.95rem;">
+                                    ${optionB_warmup.description.replace('Option B: ', '')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        <!-- Work Intervals -->
+                        ${optionB_work.map(work => `
+                            <div style="background: rgba(16, 185, 129, 0.15); padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #10b981;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                    <span style="font-size: 1.1rem;">💪</span>
+                                    <strong style="color: #059669;">Work</strong>
+                                </div>
+                                <div style="margin-left: 28px;">
+                                    <div style="font-size: 1rem; font-weight: 500; margin-bottom: 4px;">
+                                        ${work.description.replace('Option B: ', '')}
+                                    </div>
+                                    ${work.detail ? `<div style="font-size: 0.85rem; color: var(--text-secondary);">${work.detail}</div>` : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                        
+                        <!-- Cooldown -->
+                        ${optionB_cooldown ? `
+                            <div style="background: rgba(139, 92, 246, 0.1); padding: 12px 16px; border-radius: 8px; border-left: 3px solid #8b5cf6;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                    <span style="font-size: 1.1rem;">❄️</span>
+                                    <strong style="color: #7c3aed;">Cooldown</strong>
+                                </div>
+                                <div style="margin-left: 28px; font-size: 0.95rem;">
+                                    ${optionB_cooldown.description.replace('Option B: ', '')}
+                                </div>
+                            </div>
+                        ` : ''}
                     </div>
                     
-                    <div style="background: rgba(245, 158, 11, 0.1); padding: 10px 12px; border-radius: 6px; border-left: 3px solid #f59e0b;">
-                        <strong>💡 Coach Note:</strong> ${session.coachNote}
+                    <!-- Coach Note -->
+                    <div style="background: rgba(245, 158, 11, 0.1); padding: 12px 16px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #f59e0b;">
+                        <div style="display: flex; align-items: start; gap: 8px;">
+                            <span style="font-size: 1.1rem;">💡</span>
+                            <div>
+                                <strong style="color: #d97706;">Coach Note:</strong>
+                                <span style="margin-left: 4px;">${session.coachNote}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -902,7 +944,6 @@ function renderConditioning() {
     
     container.innerHTML = html;
 }
-
 // ==================== WEEKLY SCHEDULE VIEW ====================
 function showWeeklySchedule() {
     userData.currentView = 'schedule';
