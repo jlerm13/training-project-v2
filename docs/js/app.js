@@ -803,7 +803,7 @@ function renderConditioning() {
     html += `
         <div class="workout-day" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));">
             <div class="workout-header">
-                <div class="workout-title">🏃 Conditioning Overview</div>
+                <div class="workout-title">🏃 Non-Impact Conditioning Overview</div>
                 <div class="workout-badge" style="background: #10b981;">Week ${userData.currentWeek}</div>
             </div>
             <div style="padding: 16px;">
@@ -830,12 +830,13 @@ function renderConditioning() {
         const session = weekData[sessionKey];
         if (!session) return;
         
-        const dayLabels = ['Session A (Tue or Post-Lift)', 'Session B (Thu or Post-Lift)', 'Session C (Sat or Post-Lift)'];
+        const sessionLabels = ['Session A', 'Session B', 'Session C'];
+        const dayLabels = ['(Day 2 or Post-Lift)', '(Day 4 or Post-Lift)', '(Day 6 or Post-Lift)'];
         
         html += `
             <div class="workout-day">
                 <div class="workout-header">
-                    <div class="workout-title">${session.title}</div>
+                    <div class="workout-title">${sessionLabels[index]} ${dayLabels[index]}</div>
                     <div class="workout-badge">${session.totalTime}</div>
                 </div>
                 <div style="padding: 16px;">
@@ -844,23 +845,46 @@ function renderConditioning() {
                             <span style="font-size: 0.8rem; color: var(--text-secondary);">Total Time</span><br>
                             <strong>${session.totalTime}</strong>
                         </div>
-                        <div style="background: var(--bg-tertiary); padding: 8px 12px; border-radius: 6px;">
-                            <span style="font-size: 0.8rem; color: var(--text-secondary);">Running Time</span><br>
-                            <strong>${session.runningTime}</strong>
-                        </div>
                     </div>
                     
                     <div style="margin-bottom: 16px;">
                         ${session.structure.map(item => {
                             let bgColor = 'var(--bg-secondary)';
                             let icon = '•';
-                            if (item.type === 'warmup') { bgColor = 'rgba(59, 130, 246, 0.1)'; icon = '🔥'; }
-                            if (item.type === 'cooldown') { bgColor = 'rgba(139, 92, 246, 0.1)'; icon = '❄️'; }
-                            if (item.type === 'work') { bgColor = 'rgba(16, 185, 129, 0.15)'; icon = '💪'; }
+                            let title = '';
+                            
+                            // Handle Option A (steady state)
+                            if (item.type === 'optionA') {
+                                bgColor = 'rgba(59, 130, 246, 0.1)';
+                                icon = '🔵';
+                                title = 'Option A: Steady State';
+                            }
+                            // Handle Option B warmup
+                            else if (item.type === 'optionB-warmup') {
+                                bgColor = 'rgba(245, 158, 11, 0.1)';
+                                icon = '🟠';
+                                title = 'Option B: Intervals - Warmup';
+                            }
+                            // Handle Option B work
+                            else if (item.type === 'optionB-work' || item.type === 'optionB-work2') {
+                                bgColor = 'rgba(16, 185, 129, 0.15)';
+                                icon = '💪';
+                                title = 'Option B: Intervals - Work';
+                            }
+                            // Handle Option B cooldown
+                            else if (item.type === 'optionB-cooldown') {
+                                bgColor = 'rgba(139, 92, 246, 0.1)';
+                                icon = '❄️';
+                                title = 'Option B: Intervals - Cooldown';
+                            }
+                            // Fallback for any other types
+                            else {
+                                title = item.type.charAt(0).toUpperCase() + item.type.slice(1);
+                            }
                             
                             return `
                                 <div style="background: ${bgColor}; padding: 12px; border-radius: 6px; margin-bottom: 8px;">
-                                    <div style="font-weight: 600; margin-bottom: 4px;">${icon} ${item.type.charAt(0).toUpperCase() + item.type.slice(1)}</div>
+                                    ${title ? `<div style="font-weight: 600; margin-bottom: 4px;">${icon} ${title}</div>` : ''}
                                     <div style="font-size: 1rem;">${item.description}</div>
                                     ${item.detail ? `<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">${item.detail}</div>` : ''}
                                 </div>
