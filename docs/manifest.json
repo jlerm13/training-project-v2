@@ -2,7 +2,7 @@
   "name": "Athletic Development Training System",
   "short_name": "Athletic Training",
   "description": "Personalized athletic training programs with strength and conditioning",
-  "start_url": "/",
+  "start_url": "https://jlerm13.github.io/training-project-v2/",
   "display": "standalone",
   "background_color": "#0a0f1a",
   "theme_color": "#3b82f6",
