@@ -10,7 +10,19 @@
 
     <!-- CSS with cache busting -->
     <link rel="stylesheet" href="css/styles.css?v=2.1.0">
+
+    <!-- PWA Configuration -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Athletic Training">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+    
+    <!-- Viewport for mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
+    
 <body>
     <div class="warning-banner">
         🏗️ Development Preview - White Tier Templates Available
@@ -145,6 +157,25 @@
     <script src="js/templates/earlyOffSeason/red.js?v=2.1.0"></script>
     <script src="js/templates/earlyOffSeason/blue.js?v=2.1.0"></script>
     <script src="js/templates/earlyOffSeason/gold.js?v=2.1.0"></script>
+
+    <!-- Workout Tracking System -->
+    <script src="js/workout-tracker.js"></script>
+    <script src="js/workout-tracker-ui.js"></script>
+
+    <!-- Service Worker Registration for PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('✅ Service Worker registered:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('❌ Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
     
     <script>
         if (typeof initializeTemplates === 'function') {
