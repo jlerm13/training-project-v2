@@ -164,7 +164,7 @@
                 bodyweight: "Single-Leg RDL (bodyweight)"
             },
             equipmentMap: {
-                full: "Barbell Romanian Deadlift",
+                full: "DB Romanian Deadlift",
                 commercial: "DB Romanian Deadlift",
                 minimal: "DB Romanian Deadlift",
                 bodyweight: "Single-Leg RDL"
@@ -193,7 +193,7 @@
                 bodyweight: "Bodyweight Reverse Lunge"
             },
             equipmentMap: {
-                full: "Barbell Reverse Lunge",
+                full: "DB Reverse Lunge",
                 commercial: "DB Reverse Lunge",
                 minimal: "DB Reverse Lunge",
                 bodyweight: "Bodyweight Reverse Lunge"
@@ -222,7 +222,7 @@
                 bodyweight: "Bodyweight Lateral Lunge"
             },
             equipmentMap: {
-                full: "Barbell Lateral Lunge",
+                full: "DB Lateral Lunge",
                 commercial: "DB Lateral Lunge",
                 minimal: "DB Lateral Lunge",
                 bodyweight: "Bodyweight Lateral Lunge"
@@ -251,7 +251,7 @@
                 bodyweight: "Bodyweight Walking Lunges"
             },
             equipmentMap: {
-                full: "Barbell Walking Lunges",
+                full: "DB Walking Lunges",
                 commercial: "DB Walking Lunges",
                 minimal: "DB Walking Lunges",
                 bodyweight: "Bodyweight Walking Lunges"
@@ -367,7 +367,7 @@
                 bb: "Barbell Z-Press"
             },
             equipmentMap: {
-                full: "Barbell Z-Press",
+                full: "DB Z-Press",
                 commercial: "DB Z-Press",
                 minimal: "DB Z-Press",
                 bodyweight: "Pike Push-ups"
@@ -479,7 +479,7 @@
                 bb: "Barbell Kneeling Press"
             },
             equipmentMap: {
-                full: "Barbell Kneeling Press",
+                full: "DB Kneeling Press",
                 commercial: "DB Kneeling Overhead Press",
                 minimal: "DB Kneeling Overhead Press",
                 bodyweight: "Pike Push-ups"
