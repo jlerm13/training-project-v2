@@ -995,8 +995,6 @@ function renderScheduleTable(schedule) {
 }
 
 // ==================== FIXED WORKOUT RENDERING SECTION ====================
-// Replace the renderWorkouts() function in app.js starting around line 620
-
 function renderWorkouts() {
     if (!checkTemplatesLoaded()) {
         const container = document.getElementById('workoutDays');
@@ -1011,16 +1009,13 @@ function renderWorkouts() {
     const container = document.getElementById('workoutDays');
     const weekKey = `week${userData.currentWeek}`;
     
-    // Access templates by TIER -> PHASE -> TEMPLATE TYPE
     const templates = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.[userData.currentTemplate];
     
-    // DEBUG LOGGING
     console.log('🔍 Template Lookup:', {
         tier: userData.tier,
         phase: userData.phase,
         currentTemplate: userData.currentTemplate,
-        found: !!templates,
-        exerciseLibrarySize: Object.keys(window.exerciseLibrary || {}).length
+        found: !!templates
     });
 
     if (!templates) {
@@ -1048,56 +1043,11 @@ function renderWorkouts() {
         return;
     }
 
-    // Start with block periodization banner
     let html = getBlockPeriodizationBanner();
     
     Object.entries(currentWeek).forEach(([dayKey, workoutDay]) => {
         if (dayKey === 'title' || dayKey === 'notes') return;
         
-        // Handle conditioning guidelines separately
-        if (dayKey === 'conditioningGuidelines') {
-            html += `
-                <div class="workout-day">
-                    <div class="workout-header">
-                        <div class="workout-title">${workoutDay.title}</div>
-                        <div class="workout-badge">CONDITIONING</div>
-                    </div>
-                    <div class="conditioning-content" style="padding: 16px;">
-                        <div class="conditioning-section" style="margin-bottom: 20px;">
-                            <h4 style="margin-bottom: 8px; color: var(--primary-color);">Frequency: ${workoutDay.weeklyFrequency}</h4>
-                            <p style="margin-bottom: 12px;"><strong>Equipment Options:</strong> ${workoutDay.modalities.join(', ')}</p>
-                        </div>
-                        
-                        <div class="conditioning-section" style="margin-bottom: 20px; padding: 12px; background: var(--bg-tertiary); border-radius: 6px;">
-                            <h4 style="margin-bottom: 8px; color: var(--text-primary);">Session Type 1: ${workoutDay.sessions.steadyCardio.goal}</h4>
-                            <p style="margin-bottom: 6px;"><strong>Structure:</strong> ${workoutDay.sessions.steadyCardio.structure.join(' → ')}</p>
-                            <p style="margin-bottom: 6px;"><strong>Effort:</strong> ${workoutDay.sessions.steadyCardio.effortCue}</p>
-                            <p style="margin-bottom: 0;"><strong>Progression:</strong> ${workoutDay.sessions.steadyCardio.progression}</p>
-                        </div>
-                        
-                        <div class="conditioning-section" style="margin-bottom: 20px; padding: 12px; background: var(--bg-tertiary); border-radius: 6px;">
-                            <h4 style="margin-bottom: 8px; color: var(--text-primary);">Session Type 2: ${workoutDay.sessions.easyIntervals.goal}</h4>
-                            <p style="margin-bottom: 8px;"><strong>Options:</strong></p>
-                            <ul style="margin-bottom: 8px; padding-left: 20px;">
-                                ${workoutDay.sessions.easyIntervals.options.map(option => `<li style="margin-bottom: 4px;">${option}</li>`).join('')}
-                            </ul>
-                            <p style="margin-bottom: 6px;"><strong>Effort:</strong> ${workoutDay.sessions.easyIntervals.effortCue}</p>
-                            <p style="margin-bottom: 0;"><strong>Progression:</strong> ${workoutDay.sessions.easyIntervals.progression}</p>
-                        </div>
-                        
-                        <div class="conditioning-section" style="padding: 12px; background: var(--bg-secondary); border-radius: 6px; border-left: 4px solid var(--primary-color);">
-                            <h4 style="margin-bottom: 8px; color: var(--text-primary);">Key Points:</h4>
-                            <ul style="margin-bottom: 0; padding-left: 20px;">
-                                ${workoutDay.notes.map(note => `<li style="margin-bottom: 4px;">${note}</li>`).join('')}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            `;
-            return;
-        }
-        
-        // Regular workout day rendering
         html += `
             <div class="workout-day">
                 <div class="workout-header">
@@ -1106,41 +1056,56 @@ function renderWorkouts() {
                 </div>
         `;
         
+        // Render warmup section if it exists
+        if (workoutDay.warmup && workoutDay.warmup.length > 0) {
+            html += `<div style="padding: 16px; background: rgba(245, 158, 11, 0.05); margin: 12px; border-radius: 8px; border-left: 4px solid #f59e0b;">`;
+            html += `<h4 style="margin: 0 0 12px 0; color: #d97706;">Warm-Up</h4>`;
+            
+            workoutDay.warmup.forEach((exercise, index) => {
+                const exerciseData = window.exerciseLibrary?.[exercise.exercise];
+                let exerciseName = window.getExerciseName 
+                    ? window.getExerciseName(exercise.exercise)
+                    : exercise.exercise;
+                
+                const exerciseId = `warmup-${exercise.exercise}-${dayKey}-${index}`;
+                
+                html += `
+                    <div style="background: white; padding: 12px; border-radius: 6px; margin-bottom: 8px;">
+                        <div style="font-weight: 600; margin-bottom: 4px;">${exerciseName}</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">${exercise.sets} • ${exercise.tempo}</div>
+                        <div style="color: var(--text-tertiary); font-size: 0.85rem; margin-top: 4px;">${exercise.note}</div>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+        }
+        
+        // Render main exercises
         if (workoutDay.exercises) {
             workoutDay.exercises.forEach((exercise, index) => {
-                // ✅ FIXED: Proper exercise lookup
                 const exerciseData = window.exerciseLibrary?.[exercise.exercise];
-                
-                // ✅ FIXED: Always get a readable name (from library or formatted)
                 let exerciseName = window.getExerciseName 
                     ? window.getExerciseName(exercise.exercise)
                     : exercise.exercise;
                     
                 let isSubstituted = false;
 
-                // Check if user has selected a variation for this exercise
                 if (userData.exerciseVariations && userData.exerciseVariations[exercise.exercise]) {
                     exerciseName = userData.exerciseVariations[exercise.exercise];
-                } else if (exerciseData) {
-                    // Handle equipment adaptation with phase-specific mapping
-                    if (exerciseData.equipmentMap) {
-                        // Check for phase-specific mapping first
-                        if (userData.phase && exerciseData.equipmentMap[userData.phase]) {
-                            exerciseName = exerciseData.equipmentMap[userData.phase][userData.equipment] || 
-                                         exerciseData.equipmentMap[userData.phase].commercial ||
-                                         exerciseData.equipmentMap[userData.phase].minimal ||
-                                         exerciseData.equipmentMap[userData.phase].bodyweight;
-                        } else {
-                            // Fall back to simple equipment mapping
-                            exerciseName = exerciseData.equipmentMap[userData.equipment] || exerciseData.name;
-                        }
-                        if (exerciseName !== exerciseData.name) isSubstituted = true;
+                } else if (exerciseData && exerciseData.equipmentMap) {
+                    if (userData.phase && exerciseData.equipmentMap[userData.phase]) {
+                        exerciseName = exerciseData.equipmentMap[userData.phase][userData.equipment] || 
+                                     exerciseData.equipmentMap[userData.phase].commercial ||
+                                     exerciseData.equipmentMap[userData.phase].minimal ||
+                                     exerciseData.equipmentMap[userData.phase].bodyweight;
+                    } else {
+                        exerciseName = exerciseData.equipmentMap[userData.equipment] || exerciseData.name;
                     }
+                    if (exerciseName !== exerciseData.name) isSubstituted = true;
                 }
 
                 const exerciseId = `${exercise.exercise}-${dayKey}-${index}`;
-
-                // Dynamic evaluation of template strings
                 const evaluatedSets = evaluateTemplateString(exercise.sets);
                 const evaluatedIntensity = evaluateTemplateString(exercise.intensity);
                 const evaluatedNote = evaluateTemplateString(exercise.note);
@@ -1148,17 +1113,62 @@ function renderWorkouts() {
                 const evaluatedRest = evaluateTemplateString(exercise.rest);
 
                 html += `
-                    <div class="exercise-block">
-                        <div class="exercise-header">
+                    <div class="exercise-block" id="exercise-${exerciseId}" onclick="toggleExerciseDetails('${exerciseId}')">
+                        <div class="exercise-header-row">
                             <span class="exercise-category category-${exercise.type}">${exercise.order || exercise.type.toUpperCase()}</span>
-                            ${exerciseData?.variations ? `<button class="variation-btn" onclick="showVariations('${exerciseId}', this)">Variations</button>` : ''}
+                            ${exerciseData?.variations ? `<button class="variation-btn" onclick="event.stopPropagation(); showVariations('${exerciseId}', this)">Variations</button>` : ''}
                         </div>
-                        <div class="exercise-name" id="exercise-${exerciseId}-name">${exerciseName}</div>
-                        <div class="exercise-details">Sets/Reps: ${evaluatedSets}</div>
-                        ${evaluatedIntensity ? `<div class="exercise-details">Intensity: ${evaluatedIntensity}</div>` : ''}
-                        ${evaluatedTempo ? `<div class="exercise-details">Tempo: ${evaluatedTempo}</div>` : ''}
-                        ${evaluatedRest ? `<div class="exercise-details">Rest: ${evaluatedRest}</div>` : ''}
-                        ${evaluatedNote ? `<div class="exercise-details">Note: ${evaluatedNote}</div>` : ''}
+                        
+                        <div class="exercise-name-large" id="exercise-${exerciseId}-name">${exerciseName}</div>
+                        
+                        <div class="exercise-prescription-large">${evaluatedSets}</div>
+                        
+                        <div class="exercise-actions">
+                            <button class="exercise-btn exercise-btn-details" onclick="event.stopPropagation();">
+                                Tap for Details
+                            </button>
+                            <button class="exercise-btn exercise-btn-done" onclick="event.stopPropagation(); markExerciseDone('${exerciseId}')">
+                                ✓ Done
+                            </button>
+                        </div>
+                        
+                        <div class="exercise-details-expanded">
+                            ${evaluatedIntensity ? `
+                                <div class="exercise-detail-row">
+                                    <span class="exercise-detail-label">Intensity:</span>
+                                    <span class="exercise-detail-value">${evaluatedIntensity}</span>
+                                </div>
+                            ` : ''}
+                            
+                            ${evaluatedTempo ? `
+                                <div class="exercise-detail-row">
+                                    <span class="exercise-detail-label">Tempo:</span>
+                                    <span class="exercise-detail-value">${evaluatedTempo}</span>
+                                </div>
+                            ` : ''}
+                            
+                            ${evaluatedRest ? `
+                                <div class="exercise-detail-row">
+                                    <span class="exercise-detail-label">Rest:</span>
+                                    <span class="exercise-detail-value">${evaluatedRest}</span>
+                                </div>
+                            ` : ''}
+                            
+                            ${evaluatedNote ? `
+                                <div class="exercise-detail-row">
+                                    <span class="exercise-detail-label">Coach Note:</span>
+                                    <span class="exercise-detail-value">${evaluatedNote}</span>
+                                </div>
+                            ` : ''}
+                            
+                            ${isSubstituted ? `
+                                <div class="last-week-reference">
+                                    ⚙️ Adapted to your equipment: ${userData.equipment}
+                                </div>
+                            ` : ''}
+                            
+                            <div class="collapse-hint">Tap anywhere to collapse</div>
+                        </div>
                         
                         ${exerciseData?.variations ? `
                             <div class="variations-dropdown hidden" id="variations-${exerciseId}">
@@ -1173,6 +1183,7 @@ function renderWorkouts() {
                 `;
             });
         }
+        
         html += `</div>`;
     });
     
@@ -1226,6 +1237,71 @@ function selectVariation(exerciseKey, variationName, exerciseId) {
     // Store user's selection
     if (!userData.exerciseVariations) userData.exerciseVariations = {};
     userData.exerciseVariations[exerciseKey] = variationName;
+}
+
+// ==================== EXERCISE EXPAND/COLLAPSE ====================
+function toggleExerciseDetails(exerciseId) {
+    const exerciseBlock = document.getElementById(`exercise-${exerciseId}`);
+    
+    if (!exerciseBlock) return;
+    
+    // Close all other expanded exercises
+    document.querySelectorAll('.exercise-block.expanded').forEach(block => {
+        if (block.id !== `exercise-${exerciseId}`) {
+            block.classList.remove('expanded');
+        }
+    });
+    
+    // Toggle this exercise
+    exerciseBlock.classList.toggle('expanded');
+}
+
+function markExerciseDone(exerciseId) {
+    const exerciseBlock = document.getElementById(`exercise-${exerciseId}`);
+    const doneButton = exerciseBlock.querySelector('.exercise-btn-done');
+    
+    if (doneButton.classList.contains('completed')) {
+        // Un-mark as done
+        doneButton.classList.remove('completed');
+        doneButton.innerHTML = '✓ Done';
+    } else {
+        // Mark as done
+        doneButton.classList.add('completed');
+        doneButton.innerHTML = '✓ Completed';
+        
+        // Optional: Show a quick toast notification
+        showQuickToast('Exercise marked complete! 💪');
+        
+        // Auto-collapse after marking done
+        setTimeout(() => {
+            exerciseBlock.classList.remove('expanded');
+        }, 800);
+    }
+}
+
+function showQuickToast(message) {
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #10b981;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 10001;
+        animation: slideUp 0.3s ease-out;
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideUp 0.3s ease-out reverse';
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
 }
 
 // ==================== WEEK NAVIGATION ====================
