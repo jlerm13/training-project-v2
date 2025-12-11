@@ -195,14 +195,13 @@ function updateWeekDisplay() {
             const blockType = window.BlockPeriodization.getBlockWaveType(userData.phase);
             const weeklyFocus = window.BlockPeriodization.getWeeklyFocus(userData.phase, userData.currentWeek);
             
-            // Add block type and weekly focus
+            // Subtle integration - no extra color
             displayText += ` - ${blockType.charAt(0).toUpperCase() + blockType.slice(1)} Block`;
             
-            // Add a tooltip or subtitle with weekly focus
             weekDisplay.innerHTML = `
                 <div style="text-align: center;">
-                    <div style="font-weight: 600; font-size: 1.1rem;">${displayText}</div>
-                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; font-style: italic;">
+                    <div style="font-weight: 600; font-size: 1.1rem; color: var(--text-primary);">${displayText}</div>
+                    <div style="font-size: 0.8rem; color: var(--text-tertiary); margin-top: 4px; font-style: italic;">
                         ${weeklyFocus}
                     </div>
                 </div>
@@ -221,53 +220,8 @@ function updateWeekDisplay() {
  * Gets block periodization banner for workout display
  */
 function getBlockPeriodizationBanner() {
-    if (!checkBlockPeriodizationLoaded() || !userData.phase) {
+    // Banner removed for visual clarity - block info integrated into week display
         return '';
-    }
-
-    try {
-        const blockType = window.BlockPeriodization.getBlockWaveType(userData.phase);
-        const weeklyFocus = window.BlockPeriodization.getWeeklyFocus(userData.phase, userData.currentWeek);
-        const concentratedLoading = window.BlockPeriodization.getConcentratedLoading(userData.phase, userData.currentWeek);
-
-        const blockColors = {
-            'volume': '#16a34a',        // Green for volume
-            'intensity': '#dc2626',     // Red for intensity  
-            'specificity': '#2563eb',   // Blue for specificity
-            'maintenance': '#ca8a04'    // Amber for maintenance
-        };
-
-        const blockColor = blockColors[blockType] || '#64748b';
-
-        return `
-            <div class="block-periodization-banner" style="
-                background: linear-gradient(135deg, ${blockColor}15, ${blockColor}05);
-                border-left: 4px solid ${blockColor};
-                padding: 16px;
-                margin-bottom: 20px;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            ">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; color: ${blockColor}; font-size: 1.1rem; margin-bottom: 4px;">
-                            ${blockType.charAt(0).toUpperCase() + blockType.slice(1)} Block - Week ${userData.currentWeek}
-                        </div>
-                        <div style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.4;">
-                            ${weeklyFocus}
-                        </div>
-                    </div>
-                    <div style="text-align: right; font-size: 0.85rem; color: var(--text-tertiary);">
-                        <div><strong>Primary:</strong> ${concentratedLoading.primary.quality}</div>
-                        <div style="margin-top: 2px;">${concentratedLoading.primary.focus}</div>
-                    </div>
-                </div>
-            </div>
-        `;
-    } catch (error) {
-        console.error('Error creating block periodization banner:', error);
-        return '';
-    }
 }
 
 // ==================== UI FLOW (4 STEPS - NO CONTEXT SCREEN) ====================
@@ -722,7 +676,7 @@ function generateProgramOverview() {
                         ${phase.subtitle} • ${phase.weeks}
                     </p>
                 </div>
-                <div style="background: ${tierInfo.color}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                <div style="background: var(--bg-tertiary); color: var(--text-secondary); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; border: 1px solid var(--border-strong);">
                     ${tierInfo.name} Tier
                 </div>
             </div>
