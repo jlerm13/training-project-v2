@@ -643,24 +643,13 @@ body {
 
 /* CIRCUIT/SUPERSET COLORS - KEEP FOR FUNCTIONAL DIFFERENTIATION */
 /* These colors help athletes quickly identify which exercises go together */
-.category-circuit-a { 
-    background: linear-gradient(135deg, #dc2626, #b91c1c);
-    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
-}
-
-.category-circuit-b { 
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
-}
-
-.category-superset-c { 
-    background: linear-gradient(135deg, #059669, #047857);
-    box-shadow: 0 2px 4px rgba(5, 150, 105, 0.3);
-}
-
+.category-circuit-a,
+.category-circuit-b,
+.category-superset-c,
 .category-tri-set-d { 
-    background: linear-gradient(135deg, #7c3aed, #6d28d9);
-    box-shadow: 0 2px 4px rgba(124, 58, 237, 0.3);
+    background: #e00122; /* UC Red */
+    color: white;
+    box-shadow: 0 2px 4px rgba(224, 1, 34, 0.3);
 }
 
 .category-warmup { 
