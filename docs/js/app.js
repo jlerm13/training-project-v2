@@ -443,6 +443,124 @@ function selectCard(screenSelector, continueBtnId) {
     document.getElementById(continueBtnId).classList.remove('hidden');
 }
 
+// ==================== CONFIRMATION SCREEN ====================
+function showConfirmationScreen() {
+    hideAllScreens();
+    const screen = document.getElementById('confirmationScreen');
+    const content = document.getElementById('confirmationContent');
+    
+    // Map values to friendly names
+    const tierNames = {
+        'white': 'I need clear instructions',
+        'red': 'I need some guidance',
+        'blue': "I'm pretty independent",
+        'gold': "I'm fully self-directed"
+    };
+    
+    const phaseNames = {
+        'early-offseason': 'Early Off-Season',
+        'mid-offseason': 'Mid Off-Season',
+        'preseason': 'Pre-Season',
+        'inseason': 'In-Season'
+    };
+    
+    const equipmentNames = {
+        'full': 'Full Facility',
+        'commercial': 'Commercial Gym',
+        'minimal': 'Minimal Equipment',
+        'bodyweight': 'Bodyweight Only'
+    };
+    
+    // Count how many exercises will be adapted
+    const adaptationCount = userData.equipment === 'bodyweight' ? 12 : 
+                           userData.equipment === 'minimal' ? 8 : 
+                           userData.equipment === 'commercial' ? 3 : 0;
+    
+    content.innerHTML = `
+        <div class="confirmation-hero">✓</div>
+        <div class="confirmation-title">Your Program is Ready</div>
+        <div class="confirmation-subtitle">We've customized everything based on your setup</div>
+        
+        <div class="confirmation-grid">
+            <div class="confirmation-item">
+                <div class="confirmation-icon">🎯</div>
+                <div class="confirmation-text">
+                    <div class="confirmation-label">Training Independence</div>
+                    <div class="confirmation-value">${tierNames[userData.tier]}</div>
+                </div>
+            </div>
+            
+            <div class="confirmation-item">
+                <div class="confirmation-icon">📅</div>
+                <div class="confirmation-text">
+                    <div class="confirmation-label">Training Phase</div>
+                    <div class="confirmation-value">${phaseNames[userData.phase]}</div>
+                </div>
+            </div>
+            
+            <div class="confirmation-item">
+                <div class="confirmation-icon">🏋️</div>
+                <div class="confirmation-text">
+                    <div class="confirmation-label">Equipment Access</div>
+                    <div class="confirmation-value">${equipmentNames[userData.equipment]}</div>
+                </div>
+            </div>
+        </div>
+        
+        ${adaptationCount > 0 ? `
+            <div class="adaptations-box">
+                <div class="adaptations-title">
+                    <span>⚙️</span>
+                    <span>Automatic Adaptations</span>
+                    <span class="adaptations-count">${adaptationCount}</span>
+                </div>
+                <p style="margin: 0 0 12px 0; color: var(--text-secondary); font-size: 0.95rem;">
+                    We've swapped exercises to match your equipment:
+                </p>
+                <ul class="adaptations-list">
+                    ${userData.equipment === 'bodyweight' ? `
+                        <li>Barbell Squats → Bodyweight Squats</li>
+                        <li>Bench Press → Push-ups</li>
+                        <li>DB Rows → Inverted Rows</li>
+                        <li>...and 9 more exercises adapted</li>
+                    ` : userData.equipment === 'minimal' ? `
+                        <li>Barbell Squats → DB Goblet Squats</li>
+                        <li>Bench Press → DB Bench Press</li>
+                        <li>Cable Rows → DB Rows</li>
+                        <li>...and 5 more exercises adapted</li>
+                    ` : userData.equipment === 'commercial' ? `
+                        <li>Specialty Bars → Standard Barbells</li>
+                        <li>Sleds → Cardio Machines</li>
+                        <li>...and 1 more exercise adapted</li>
+                    ` : ''}
+                </ul>
+            </div>
+        ` : `
+            <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; margin: 24px 0;">
+                <p style="margin: 0; color: var(--text-secondary);">
+                    <strong style="color: var(--text-primary);">✓ No adaptations needed</strong><br>
+                    You have full equipment access, so you'll see the program as designed.
+                </p>
+            </div>
+        `}
+        
+        <p style="margin: 32px 0 24px 0; font-size: 1.1rem; color: var(--text-primary); font-weight: 500;">
+            Everything is set. Ready to start training?
+        </p>
+        
+        <button class="btn" onclick="generateProgram()" style="width: 100%; padding: 16px; font-size: 1.1rem;">
+            Start Week 1 →
+        </button>
+        
+        <button class="btn btn-secondary" onclick="goBack('equipment')" style="width: 100%; margin-top: 12px;">
+            ← Go Back
+        </button>
+    `;
+    
+    screen.classList.remove('hidden');
+    updateProgressTracker(4);
+}
+
 // ==================== TEMPLATE AVAILABILITY CHECK ====================
 /**
  * Checks if a template has actual workout data (not just description/note)
