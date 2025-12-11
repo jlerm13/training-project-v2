@@ -707,9 +707,9 @@ function generateProgramOverview() {
         </div>
         
         <!-- What to Expect -->
-        <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid ${tierInfo.color}; padding: 12px; border-radius: 4px;">
-            <p style="margin: 0; font-size: 0.9rem;">
-                <strong> What to Expect:</strong> ${phase.whatToExpect}
+        <div style="background: var(--bg-tertiary); border-left: 4px solid var(--border-strong); padding: 12px; border-radius: 4px;">
+            <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
+                <strong style="color: var(--text-primary);">💡 What to Expect:</strong> ${phase.whatToExpect}
             </p>
         </div>
     `;
