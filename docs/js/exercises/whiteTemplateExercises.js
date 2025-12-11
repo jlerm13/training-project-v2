@@ -1,6 +1,7 @@
 // exercises/whiteTemplateExercises.js - White Tier Template Exercises
-// Architecture: Movement-first with tool variations where applicable
-// This eliminates the need for dbLunge, kbLunge, bbLunge as separate entries
+// Architecture: Movement-first with equipment-based variations
+// Updated: Variations arrays derived from equipmentMap for UI compatibility
+// ============================================================================
 
 (function() {
     const whiteTemplateExercises = {
@@ -14,6 +15,11 @@
             category: "warmup",
             movementPattern: "mobility-squat",
             defaultTool: "bodyweight",
+            variations: [
+                "Squat to Stands",
+                "Squat to Stands (holding wall)",
+                "Squat to Stands (hands on knees)"
+            ],
             coachingCues: [
                 "Start standing, fold forward and grab toes",
                 "Drop hips into deep squat while holding toes",
@@ -29,6 +35,11 @@
             category: "warmup",
             movementPattern: "mobility-lunge",
             defaultTool: "bodyweight",
+            variations: [
+                "World's Greatest Stretch",
+                "World's Greatest Stretch (no rotation)",
+                "World's Greatest Stretch (hands elevated)"
+            ],
             coachingCues: [
                 "Step into deep lunge position",
                 "Place same-side elbow toward the ground",
@@ -44,6 +55,11 @@
             category: "warmup",
             movementPattern: "core-stability",
             defaultTool: "bodyweight",
+            variations: [
+                "Shoulder Taps",
+                "Shoulder Taps (from knees)",
+                "Shoulder Taps (feet wide)"
+            ],
             coachingCues: [
                 "Start in strong push-up position",
                 "Lift one hand to tap opposite shoulder",
@@ -59,9 +75,17 @@
             category: "warmup",
             movementPattern: "cardio-coordination",
             defaultTool: "jumprope",
-            toolVariations: {
-                jumprope: "Jump Rope",
-                bodyweight: "Jumping Jacks"
+            variations: [
+                "Jump Rope (Double Foot)",
+                "Jumping Jacks",
+                "High Knees in Place",
+                "Seal Jacks"
+            ],
+            equipmentMap: {
+                full: "Jump Rope (Double Foot)",
+                commercial: "Jump Rope (Double Foot)",
+                minimal: "Jumping Jacks",
+                bodyweight: "High Knees in Place"
             },
             coachingCues: [
                 "Stay light on your toes",
@@ -78,6 +102,11 @@
             category: "warmup",
             movementPattern: "mobility-squat",
             defaultTool: "bodyweight",
+            variations: [
+                "Squat to Forward Fold",
+                "Squat to Forward Fold (hands on shins)",
+                "Squat to Forward Fold (using wall)"
+            ],
             coachingCues: [
                 "Drop into deep squat position",
                 "Grab under your toes",
@@ -93,6 +122,11 @@
             category: "warmup",
             movementPattern: "mobility-hip",
             defaultTool: "bodyweight",
+            variations: [
+                "Hip 90/90 with Reach",
+                "Hip 90/90 (no reach)",
+                "Hip 90/90 Transitions"
+            ],
             coachingCues: [
                 "Sit with both legs at 90-degree angles",
                 "Front shin parallel, back shin perpendicular",
@@ -108,6 +142,11 @@
             category: "warmup",
             movementPattern: "mobility-full-body",
             defaultTool: "bodyweight",
+            variations: [
+                "Downward Dog Toe Tap",
+                "Downward Dog Hold",
+                "Downward Dog with Calf Pedal"
+            ],
             coachingCues: [
                 "Start in downward dog - hips high, heels pressing down",
                 "Reach one hand to opposite foot",
@@ -119,21 +158,22 @@
         },
         
         // ============================================================================
-        // LOWER BODY - MOVEMENT-FIRST WITH TOOL VARIATIONS
+        // LOWER BODY EXERCISES
         // ============================================================================
         
-        // GOBLET SQUAT VARIATIONS
         dbSlantboardGobletSquat: {
             name: "DB Slantboard Goblet Squat",
             category: "lower-body",
             movementPattern: "squat",
             baseMovement: "gobletSquat",
             defaultTool: "db",
-            toolVariations: {
-                db: "DB Slantboard Goblet Squat",
-                kb: "KB Slantboard Goblet Squat",
-                bodyweight: "Slantboard Squat"
-            },
+            variations: [
+                "DB Slantboard Goblet Squat",
+                "KB Slantboard Goblet Squat",
+                "DB Goblet Squat (heels elevated)",
+                "Goblet Squat (plates under heels)",
+                "Bodyweight Squat (heels elevated)"
+            ],
             equipmentMap: {
                 full: "DB Slantboard Goblet Squat",
                 commercial: "DB Goblet Squat (heels elevated)",
@@ -150,24 +190,24 @@
             indicator: { isIndicator: false }
         },
         
-        // RDL - Romanian Deadlift
         dbRDL: {
             name: "DB Romanian Deadlift",
             category: "lower-body",
             movementPattern: "hip-hinge",
             baseMovement: "romanianDeadlift",
             defaultTool: "db",
-            toolVariations: {
-                db: "DB Romanian Deadlift",
-                kb: "KB Romanian Deadlift",
-                bb: "Barbell Romanian Deadlift",
-                bodyweight: "Single-Leg RDL (bodyweight)"
-            },
+            variations: [
+                "DB Romanian Deadlift",
+                "KB Romanian Deadlift",
+                "Barbell Romanian Deadlift",
+                "Single-Leg RDL (bodyweight)",
+                "Single DB Romanian Deadlift"
+            ],
             equipmentMap: {
-                full: "DB Romanian Deadlift",
+                full: "Barbell Romanian Deadlift",
                 commercial: "DB Romanian Deadlift",
                 minimal: "DB Romanian Deadlift",
-                bodyweight: "Single-Leg RDL"
+                bodyweight: "Single-Leg RDL (bodyweight)"
             },
             coachingCues: [
                 "Push hips back, not down",
@@ -179,21 +219,21 @@
             indicator: { isIndicator: false }
         },
         
-        // REVERSE LUNGE
         dbReverseLunge: {
             name: "DB Reverse Lunge",
             category: "lower-body",
             movementPattern: "lunge",
             baseMovement: "reverseLunge",
             defaultTool: "db",
-            toolVariations: {
-                db: "DB Reverse Lunge",
-                kb: "KB Reverse Lunge",
-                bb: "Barbell Reverse Lunge",
-                bodyweight: "Bodyweight Reverse Lunge"
-            },
+            variations: [
+                "DB Reverse Lunge",
+                "KB Reverse Lunge (goblet)",
+                "KB Reverse Lunge (rack position)",
+                "Barbell Reverse Lunge",
+                "Bodyweight Reverse Lunge"
+            ],
             equipmentMap: {
-                full: "DB Reverse Lunge",
+                full: "Barbell Reverse Lunge",
                 commercial: "DB Reverse Lunge",
                 minimal: "DB Reverse Lunge",
                 bodyweight: "Bodyweight Reverse Lunge"
@@ -208,21 +248,21 @@
             indicator: { isIndicator: false }
         },
         
-        // LATERAL LUNGE
         dbLateralLunge: {
             name: "DB Lateral Lunge",
             category: "lower-body",
             movementPattern: "lateral-lunge",
             baseMovement: "lateralLunge",
             defaultTool: "db",
-            toolVariations: {
-                db: "DB Lateral Lunge",
-                kb: "KB Lateral Lunge",
-                bb: "Barbell Lateral Lunge",
-                bodyweight: "Bodyweight Lateral Lunge"
-            },
+            variations: [
+                "DB Lateral Lunge",
+                "KB Lateral Lunge (goblet)",
+                "Barbell Lateral Lunge",
+                "Bodyweight Lateral Lunge",
+                "Slider Lateral Lunge"
+            ],
             equipmentMap: {
-                full: "DB Lateral Lunge",
+                full: "Barbell Lateral Lunge",
                 commercial: "DB Lateral Lunge",
                 minimal: "DB Lateral Lunge",
                 bodyweight: "Bodyweight Lateral Lunge"
@@ -237,21 +277,21 @@
             indicator: { isIndicator: false }
         },
         
-        // WALKING LUNGES
         dbWalkingLunges: {
             name: "DB Walking Lunges",
             category: "lower-body",
             movementPattern: "lunge",
             baseMovement: "walkingLunge",
             defaultTool: "db",
-            toolVariations: {
-                db: "DB Walking Lunges",
-                kb: "KB Walking Lunges",
-                bb: "Barbell Walking Lunges",
-                bodyweight: "Bodyweight Walking Lunges"
-            },
+            variations: [
+                "DB Walking Lunges",
+                "KB Walking Lunges (goblet)",
+                "KB Walking Lunges (rack position)",
+                "Barbell Walking Lunges",
+                "Bodyweight Walking Lunges"
+            ],
             equipmentMap: {
-                full: "DB Walking Lunges",
+                full: "Barbell Walking Lunges",
                 commercial: "DB Walking Lunges",
                 minimal: "DB Walking Lunges",
                 bodyweight: "Bodyweight Walking Lunges"
@@ -266,18 +306,19 @@
             indicator: { isIndicator: false }
         },
         
-        // SWINGS (DB or KB)
         dbKbSwings: {
             name: "DB/KB Swings",
             category: "lower-body",
             movementPattern: "hip-hinge-ballistic",
             baseMovement: "kettlebellSwing",
             defaultTool: "kb",
-            toolVariations: {
-                kb: "Kettlebell Swings",
-                db: "Dumbbell Swings",
-                bodyweight: "Hip Hinges (fast)"
-            },
+            variations: [
+                "Kettlebell Swings (two-hand)",
+                "Kettlebell Swings (one-hand)",
+                "Dumbbell Swings",
+                "Banded Hip Hinges (fast)",
+                "Explosive Hip Hinges (bodyweight)"
+            ],
             equipmentMap: {
                 full: "Kettlebell Swings",
                 commercial: "Kettlebell Swings",
@@ -294,18 +335,19 @@
             indicator: { isIndicator: false }
         },
         
-        // STEP DOWNS
         dbStepDowns: {
             name: "DB Step Downs",
             category: "lower-body",
             movementPattern: "step-eccentric",
             baseMovement: "stepDown",
             defaultTool: "db",
-            toolVariations: {
-                db: "DB Step Downs",
-                kb: "KB Step Downs",
-                bodyweight: "Bodyweight Step Downs"
-            },
+            variations: [
+                "DB Step Downs",
+                "KB Step Downs (goblet)",
+                "Bodyweight Step Downs",
+                "Slow Eccentric Step Downs",
+                "Step Downs (lower box)"
+            ],
             equipmentMap: {
                 full: "DB Step Downs",
                 commercial: "DB Step Downs",
@@ -322,18 +364,19 @@
             indicator: { isIndicator: false }
         },
         
-        // CURTSY LUNGE
         dbCurtsyLunge: {
             name: "DB Curtsy Lunge",
             category: "lower-body",
             movementPattern: "lunge-rotational",
             baseMovement: "curtsyLunge",
             defaultTool: "db",
-            toolVariations: {
-                db: "DB Curtsy Lunge",
-                kb: "KB Curtsy Lunge",
-                bodyweight: "Bodyweight Curtsy Lunge"
-            },
+            variations: [
+                "DB Curtsy Lunge",
+                "KB Curtsy Lunge (goblet)",
+                "Barbell Curtsy Lunge",
+                "Bodyweight Curtsy Lunge",
+                "Curtsy Lunge to Lateral Lunge"
+            ],
             equipmentMap: {
                 full: "DB Curtsy Lunge",
                 commercial: "DB Curtsy Lunge",
@@ -351,23 +394,84 @@
         },
         
         // ============================================================================
-        // UPPER BODY - MOVEMENT-FIRST WITH TOOL VARIATIONS
+        // UPPER BODY EXERCISES
         // ============================================================================
         
-        // Z-PRESS
+        dbBenchPress: {
+            name: "DB Bench Press",
+            category: "upper-body",
+            movementPattern: "horizontal-push",
+            baseMovement: "benchPress",
+            defaultTool: "db",
+            variations: [
+                "DB Bench Press",
+                "DB Bench Press (neutral grip)",
+                "Alternating DB Bench Press",
+                "DB Floor Press",
+                "Push-ups (weighted)",
+                "Push-ups (bodyweight)"
+            ],
+            equipmentMap: {
+                full: "DB Bench Press",
+                commercial: "DB Bench Press",
+                minimal: "DB Floor Press",
+                bodyweight: "Push-ups"
+            },
+            coachingCues: [
+                "Lower slowly to chest",
+                "Press straight up",
+                "Keep shoulder blades squeezed together",
+                "Feet flat on floor"
+            ],
+            athleticCarryover: "Horizontal pushing strength",
+            indicator: { isIndicator: false }
+        },
+        
+        dbRows: {
+            name: "DB Rows",
+            category: "upper-body",
+            movementPattern: "horizontal-pull",
+            baseMovement: "row",
+            defaultTool: "db",
+            variations: [
+                "DB Rows (one-arm)",
+                "DB Rows (chest-supported)",
+                "KB Rows",
+                "Barbell Rows",
+                "Inverted Rows",
+                "Band Rows"
+            ],
+            equipmentMap: {
+                full: "DB Rows (one-arm)",
+                commercial: "DB Rows (one-arm)",
+                minimal: "DB Rows (one-arm)",
+                bodyweight: "Inverted Rows"
+            },
+            coachingCues: [
+                "Place other hand on bench for support",
+                "Pull weight to your side/hip",
+                "Squeeze shoulder blade at top",
+                "Control the descent"
+            ],
+            athleticCarryover: "Pulling strength and back development",
+            indicator: { isIndicator: false }
+        },
+        
         dbZPress: {
             name: "DB Z-Press",
             category: "upper-body",
             movementPattern: "vertical-push",
             baseMovement: "overheadPress",
             defaultTool: "db",
-            toolVariations: {
-                db: "DB Z-Press",
-                kb: "KB Z-Press",
-                bb: "Barbell Z-Press"
-            },
+            variations: [
+                "DB Z-Press",
+                "KB Z-Press",
+                "Barbell Z-Press",
+                "DB Seated Press (on bench)",
+                "Pike Push-ups"
+            ],
             equipmentMap: {
-                full: "DB Z-Press",
+                full: "Barbell Z-Press",
                 commercial: "DB Z-Press",
                 minimal: "DB Z-Press",
                 bodyweight: "Pike Push-ups"
@@ -382,18 +486,19 @@
             indicator: { isIndicator: false }
         },
         
-        // SHOULDER RAISE COMPLEX
         dbShoulderRaiseComplex: {
             name: "DB Shoulder Raise Complex",
             category: "upper-body",
             movementPattern: "shoulder-isolation",
             baseMovement: "shoulderRaises",
             defaultTool: "db",
-            toolVariations: {
-                db: "DB Shoulder Raise Complex",
-                cable: "Cable Shoulder Raise Complex",
-                band: "Band Shoulder Raise Complex"
-            },
+            variations: [
+                "DB Shoulder Raise Complex",
+                "Cable Shoulder Raise Complex",
+                "Band Shoulder Raise Complex",
+                "Plate Shoulder Raise Complex",
+                "Arm Circles (various directions)"
+            ],
             equipmentMap: {
                 full: "DB Shoulder Raise Complex",
                 commercial: "DB Shoulder Raise Complex",
@@ -410,18 +515,20 @@
             indicator: { isIndicator: false }
         },
         
-        // PUSH-UPS
         pushUps: {
             name: "Push-ups",
             category: "upper-body",
             movementPattern: "horizontal-push",
             baseMovement: "pushUp",
             defaultTool: "bodyweight",
-            toolVariations: {
-                bodyweight: "Push-ups",
-                weighted: "Weighted Push-ups",
-                band: "Band-Resisted Push-ups"
-            },
+            variations: [
+                "Push-ups (standard)",
+                "Push-ups (hands elevated)",
+                "Push-ups (feet elevated)",
+                "Push-ups (knees)",
+                "Diamond Push-ups",
+                "Wide Push-ups"
+            ],
             equipmentMap: {
                 full: "Push-ups",
                 commercial: "Push-ups",
@@ -438,18 +545,19 @@
             indicator: { isIndicator: false }
         },
         
-        // INVERTED ROWS
         invertedRows: {
             name: "Inverted Rows",
             category: "upper-body",
             movementPattern: "horizontal-pull",
             baseMovement: "row",
             defaultTool: "bodyweight",
-            toolVariations: {
-                bodyweight: "Inverted Rows (bar or TRX)",
-                trx: "TRX Rows",
-                rings: "Ring Rows"
-            },
+            variations: [
+                "Inverted Rows (bar)",
+                "Inverted Rows (TRX/rings)",
+                "Inverted Rows (underhand grip)",
+                "Inverted Rows (feet elevated)",
+                "Inverted Rows (knees bent - easier)"
+            ],
             equipmentMap: {
                 full: "Inverted Rows (bar)",
                 commercial: "Inverted Rows (Smith machine)",
@@ -466,20 +574,22 @@
             indicator: { isIndicator: false }
         },
         
-        // KNEELING OVERHEAD PRESS
         dbKneelingOHPress: {
             name: "DB Kneeling Overhead Press",
             category: "upper-body",
             movementPattern: "vertical-push",
             baseMovement: "overheadPress",
             defaultTool: "db",
-            toolVariations: {
-                db: "DB Kneeling Overhead Press",
-                kb: "KB Kneeling Overhead Press",
-                bb: "Barbell Kneeling Press"
-            },
+            variations: [
+                "DB Kneeling Overhead Press",
+                "KB Kneeling Overhead Press",
+                "DB Half-Kneeling Press (one knee)",
+                "Barbell Kneeling Press",
+                "Pike Push-ups",
+                "Wall Handstand Hold"
+            ],
             equipmentMap: {
-                full: "DB Kneeling Press",
+                full: "Barbell Kneeling Press",
                 commercial: "DB Kneeling Overhead Press",
                 minimal: "DB Kneeling Overhead Press",
                 bodyweight: "Pike Push-ups"
@@ -494,17 +604,19 @@
             indicator: { isIndicator: false }
         },
         
-        // GORILLA ROWS
         kbGorillaRows: {
             name: "KB Gorilla Rows",
             category: "upper-body",
             movementPattern: "horizontal-pull",
             baseMovement: "row",
             defaultTool: "kb",
-            toolVariations: {
-                kb: "KB Gorilla Rows",
-                db: "DB Gorilla Rows"
-            },
+            variations: [
+                "KB Gorilla Rows",
+                "DB Gorilla Rows",
+                "KB Gorilla Rows (pause at top)",
+                "Renegade Rows",
+                "Bent-Over DB Rows (both arms)"
+            ],
             equipmentMap: {
                 full: "KB Gorilla Rows",
                 commercial: "KB Gorilla Rows",
@@ -522,7 +634,7 @@
         },
         
         // ============================================================================
-        // ACCESSORIES
+        // LOWER BODY ACCESSORIES
         // ============================================================================
         
         calfRaisesDouble: {
@@ -531,12 +643,13 @@
             movementPattern: "ankle-plantar-flexion",
             baseMovement: "calfRaise",
             defaultTool: "bodyweight",
-            toolVariations: {
-                bodyweight: "Bodyweight Calf Raises",
-                db: "DB Calf Raises",
-                bb: "Barbell Calf Raises",
-                machine: "Calf Raise Machine"
-            },
+            variations: [
+                "Calf Raises (bodyweight)",
+                "Calf Raises (DB in hands)",
+                "Calf Raises (machine)",
+                "Single-Leg Calf Raises",
+                "Seated Calf Raises"
+            ],
             equipmentMap: {
                 full: "Calf Raise Machine",
                 commercial: "DB Calf Raises",
@@ -558,6 +671,18 @@
             category: "lower-accessory",
             movementPattern: "isometric-squat",
             defaultTool: "bodyweight",
+            variations: [
+                "Wall Sits",
+                "Wall Sits (single leg)",
+                "Wall Sits (with weight on lap)",
+                "Wall Sits (marching)"
+            ],
+            equipmentMap: {
+                full: "Wall Sits (with weight)",
+                commercial: "Wall Sits",
+                minimal: "Wall Sits",
+                bodyweight: "Wall Sits"
+            },
             coachingCues: [
                 "Back flat against wall",
                 "Thighs parallel to floor (like sitting in chair)",
@@ -573,6 +698,18 @@
             category: "lower-accessory",
             movementPattern: "ankle-dorsiflexion",
             defaultTool: "bodyweight",
+            variations: [
+                "Wall Tibialis Raises",
+                "Seated Tibialis Raises",
+                "Tib Bar Raises",
+                "Banded Tibialis Raises"
+            ],
+            equipmentMap: {
+                full: "Tib Bar Raises",
+                commercial: "Wall Tibialis Raises",
+                minimal: "Wall Tibialis Raises",
+                bodyweight: "Wall Tibialis Raises"
+            },
             coachingCues: [
                 "Lean back against wall, feet out in front",
                 "Lift toes up toward shins",
@@ -588,11 +725,13 @@
             category: "lower-accessory",
             movementPattern: "knee-flexion",
             defaultTool: "stabilityball",
-            toolVariations: {
-                stabilityball: "Stability Ball Hamstring Curls",
-                slideboard: "Slider Hamstring Curls",
-                trx: "TRX Hamstring Curls"
-            },
+            variations: [
+                "Stability Ball Hamstring Curls",
+                "Stability Ball Hamstring Curls (single leg)",
+                "Slider Hamstring Curls",
+                "TRX Hamstring Curls",
+                "Nordic Curl Negatives"
+            ],
             equipmentMap: {
                 full: "Stability Ball Hamstring Curls",
                 commercial: "Stability Ball Hamstring Curls",
@@ -610,7 +749,7 @@
         },
         
         // ============================================================================
-        // CORE
+        // CORE EXERCISES
         // ============================================================================
         
         plankElbows: {
@@ -618,6 +757,19 @@
             category: "core",
             movementPattern: "anti-extension",
             defaultTool: "bodyweight",
+            variations: [
+                "Elbow Plank",
+                "High Plank (hands)",
+                "Plank with Shoulder Taps",
+                "Plank (from knees)",
+                "RKC Plank (max tension)"
+            ],
+            equipmentMap: {
+                full: "Elbow Plank",
+                commercial: "Elbow Plank",
+                minimal: "Elbow Plank",
+                bodyweight: "Elbow Plank"
+            },
             coachingCues: [
                 "Elbows directly under shoulders",
                 "Squeeze glutes and brace abs",
@@ -633,6 +785,19 @@
             category: "core",
             movementPattern: "anti-extension",
             defaultTool: "bodyweight",
+            variations: [
+                "Dead Bugs",
+                "Dead Bugs (arms only)",
+                "Dead Bugs (legs only)",
+                "Dead Bugs (with band)",
+                "Dead Bugs (with weight)"
+            ],
+            equipmentMap: {
+                full: "Dead Bugs (with weight)",
+                commercial: "Dead Bugs",
+                minimal: "Dead Bugs",
+                bodyweight: "Dead Bugs"
+            },
             coachingCues: [
                 "Lie on back, arms up, knees at 90°",
                 "Lower opposite arm and leg slowly",
@@ -649,12 +814,13 @@
             movementPattern: "rotation",
             baseMovement: "woodchop",
             defaultTool: "db",
-            toolVariations: {
-                db: "DB Low-to-High Chop",
-                cable: "Cable Low-to-High Chop",
-                band: "Band Low-to-High Chop",
-                mb: "Medicine Ball Rotational Throw"
-            },
+            variations: [
+                "DB Low-to-High Chop",
+                "Cable Low-to-High Chop",
+                "Band Low-to-High Chop",
+                "Medicine Ball Rotational Throw",
+                "Rotational Reaches (bodyweight)"
+            ],
             equipmentMap: {
                 full: "Cable Low-to-High Chop",
                 commercial: "DB Low-to-High Chop",
@@ -668,6 +834,90 @@
                 "Control the return"
             ],
             athleticCarryover: "Rotational power for throwing, swinging, striking",
+            indicator: { isIndicator: false }
+        },
+        
+        sidePlank: {
+            name: "Side Plank",
+            category: "core",
+            movementPattern: "anti-lateral-flexion",
+            defaultTool: "bodyweight",
+            variations: [
+                "Side Plank (elbow)",
+                "Side Plank (hand)",
+                "Side Plank (from knees)",
+                "Side Plank with Hip Dips",
+                "Side Plank with Reach Through"
+            ],
+            equipmentMap: {
+                full: "Side Plank",
+                commercial: "Side Plank",
+                minimal: "Side Plank",
+                bodyweight: "Side Plank"
+            },
+            coachingCues: [
+                "Stack feet or stagger for balance",
+                "Lift hips to form straight line",
+                "Keep top hip stacked over bottom hip",
+                "Don't let hips sag forward or back"
+            ],
+            athleticCarryover: "Lateral core stability",
+            indicator: { isIndicator: false }
+        },
+        
+        trxKneeTucks: {
+            name: "TRX Knee Tucks",
+            category: "core",
+            movementPattern: "hip-flexion-anti-extension",
+            defaultTool: "trx",
+            variations: [
+                "TRX Knee Tucks",
+                "TRX Pike",
+                "Stability Ball Knee Tucks",
+                "Slider Knee Tucks",
+                "Mountain Climbers (slow)"
+            ],
+            equipmentMap: {
+                full: "TRX Knee Tucks",
+                commercial: "TRX Knee Tucks",
+                minimal: "Slider Knee Tucks",
+                bodyweight: "Mountain Climbers (slow)"
+            },
+            coachingCues: [
+                "Start in plank with feet in straps",
+                "Pull knees toward chest",
+                "Keep hips level, don't pike up",
+                "Extend back to plank with control"
+            ],
+            athleticCarryover: "Dynamic core control",
+            indicator: { isIndicator: false }
+        },
+        
+        pallofPressHolds: {
+            name: "Pallof Press Holds",
+            category: "core",
+            movementPattern: "anti-rotation",
+            defaultTool: "band",
+            variations: [
+                "Pallof Press Holds (band)",
+                "Pallof Press Holds (cable)",
+                "Pallof Press (with press out)",
+                "Pallof Press (tall kneeling)",
+                "Pallof Press (half kneeling)"
+            ],
+            equipmentMap: {
+                full: "Pallof Press Holds (cable)",
+                commercial: "Pallof Press Holds (cable)",
+                minimal: "Pallof Press Holds (band)",
+                bodyweight: "Plank with Reach (anti-rotation)"
+            },
+            coachingCues: [
+                "Stand perpendicular to cable/band",
+                "Press hands straight out from chest",
+                "Resist rotation toward the anchor",
+                "Hold position, keep breathing"
+            ],
+            athleticCarryover: "Anti-rotation strength for contact sports",
             indicator: { isIndicator: false }
         }
     };
