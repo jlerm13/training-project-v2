@@ -71,12 +71,12 @@
                                 
                                 // SUPERSET C - Lower Accessories
                                 { type: "superset-c", order: "C1", exercise: "wallTibRaises", sets: "2 × 10", tempo: "2 seconds down, hold at top", rest: "20s", note: "Lean against wall, lift toes up high", media: { photo: "assets/exercises/white/wall-tib-raises.jpg", video: "assets/exercises/white/wall-tib-raises.mp4" } },
-                                { type: "superset-c", order: "C2", exercise: "stabilityBallHamstringCurls", sets: "2 × 10", tempo: "Smooth and steady", rest: "45s", note: "Bridge hips up, curl ball toward you", media: { photo: "assets/exercises/white/stability-ball-hamstring-curls.jpg", video: "assets/exercises/white/stability-ball-hamstring-curls.mp4" } },
+                                { type: "superset-c", order: "C2", exercise: "stabilityBallHamstringCurls", sets: "2 × 8", tempo: "Smooth and steady", rest: "45s", note: "Bridge hips up, curl ball toward you", media: { photo: "assets/exercises/white/stability-ball-hamstring-curls.jpg", video: "assets/exercises/white/stability-ball-hamstring-curls.mp4" } },
                                 
                                 // TRI-SET D - Core
-                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 30s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line", media: { photo: "assets/exercises/white/plank-elbows.jpg", video: "assets/exercises/white/plank-elbows.mp4" } },
-                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 5/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
-                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
+                                { type: "tri-set-d", order: "D1", exercise: "sidePlank", sets: "2 × 30s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line", media: { photo: "assets/exercises/white/plank-elbows.jpg", video: "assets/exercises/white/plank-elbows.mp4" } },
+                                { type: "tri-set-d", order: "D2", exercise: "trxTucks", sets: "2 × 10", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
+                                { type: "tri-set-d", order: "D3", exercise: "pallofPressHold", sets: "2 × 15s/side", tempo: "Hold steady", rest: "45s", note: "Start low, twist up and across your body", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
                             ]
                         }
                     },
@@ -139,9 +139,9 @@
                                 { type: "superset-c", order: "C2", exercise: "stabilityBallHamstringCurls", sets: "2 × 10", tempo: "Smooth and steady", rest: "45s", note: "Bridge hips up, curl ball toward you", media: { photo: "assets/exercises/white/stability-ball-hamstring-curls.jpg", video: "assets/exercises/white/stability-ball-hamstring-curls.mp4" } },
                                 
                                 // TRI-SET D - Core (Week 2: increased time/reps)
-                                { type: "tri-set-d", order: "D1", exercise: "plankElbows", sets: "2 × 45s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line", media: { photo: "assets/exercises/white/plank-elbows.jpg", video: "assets/exercises/white/plank-elbows.mp4" } },
-                                { type: "tri-set-d", order: "D2", exercise: "deadbugs", sets: "2 × 8/side", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
-                                { type: "tri-set-d", order: "D3", exercise: "dbLowHighChop", sets: "2 × 10/side", tempo: "Smooth and steady", rest: "45s", note: "Start low, twist up and across your body", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
+                                { type: "tri-set-d", order: "D1", exercise: "sidePlank", sets: "2 × 45s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line", media: { photo: "assets/exercises/white/plank-elbows.jpg", video: "assets/exercises/white/plank-elbows.mp4" } },
+                                { type: "tri-set-d", order: "D2", exercise: "trxTucks", sets: "2 × 12", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
+                                { type: "tri-set-d", order: "D3", exercise: "pallofPressHold", sets: "2 × 20/side", tempo: "Hold steady", rest: "45s", note: "Start low, twist up and across your body", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
                             ]
                         }
                     },
