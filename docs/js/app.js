@@ -848,14 +848,14 @@ function renderConditioning() {
                     
                     <!-- Instruction Header -->
                     <div style="background: rgba(59, 130, 246, 0.1); padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #3b82f6;">
-                        <strong style="color: #3b82f6;">📋 Choose ONE conditioning approach:</strong>
+                        <strong style="color: #3b82f6;"> Choose ONE conditioning approach:</strong>
                     </div>
                     
                     <!-- OPTION A: Steady State -->
                     ${optionA ? `
                         <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05)); padding: 16px; border-radius: 12px; margin-bottom: 16px; border: 2px solid rgba(59, 130, 246, 0.3);">
                             <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                                <span style="font-size: 1.5rem; margin-right: 8px;">🔵</span>
+                                <span style="font-size: 1.5rem; margin-right: 8px;"></span>
                                 <h3 style="margin: 0; color: #2563eb; font-size: 1.2rem;">Option A: Steady State</h3>
                             </div>
                             <div style="font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; color: var(--text-primary);">
@@ -877,7 +877,7 @@ function renderConditioning() {
                     <!-- OPTION B: Intervals (Grouped) -->
                     <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05)); padding: 16px; border-radius: 12px; border: 2px solid rgba(245, 158, 11, 0.3);">
                         <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                            <span style="font-size: 1.5rem; margin-right: 8px;">🟠</span>
+                            <span style="font-size: 1.5rem; margin-right: 8px;"></span>
                             <h3 style="margin: 0; color: #d97706; font-size: 1.2rem;">Option B: Intervals (${session.totalTime} total)</h3>
                         </div>
                         
