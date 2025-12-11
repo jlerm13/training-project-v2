@@ -865,7 +865,7 @@
             indicator: { isIndicator: false }
         },
         
-        trxKneeTucks: {
+        trxKneeTuck: {
             name: "TRX Knee Tucks",
             category: "core",
             movementPattern: "hip-flexion-anti-extension",
@@ -893,7 +893,7 @@
             indicator: { isIndicator: false }
         },
         
-        pallofPressHolds: {
+        pallofPressHold: {
             name: "Pallof Press Holds",
             category: "core",
             movementPattern: "anti-rotation",
