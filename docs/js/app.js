@@ -994,7 +994,9 @@ function renderScheduleTable(schedule) {
     return html;
 }
 
-// ==================== ENHANCED WORKOUT RENDERING WITH DYNAMIC EVALUATION ====================
+// ==================== FIXED WORKOUT RENDERING SECTION ====================
+// Replace the renderWorkouts() function in app.js starting around line 620
+
 function renderWorkouts() {
     if (!checkTemplatesLoaded()) {
         const container = document.getElementById('workoutDays');
@@ -1009,16 +1011,16 @@ function renderWorkouts() {
     const container = document.getElementById('workoutDays');
     const weekKey = `week${userData.currentWeek}`;
     
-    // CRITICAL FIX: Access templates by TIER -> PHASE -> TEMPLATE TYPE
+    // Access templates by TIER -> PHASE -> TEMPLATE TYPE
     const templates = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.[userData.currentTemplate];
     
     // DEBUG LOGGING
-    console.log(' Template Lookup:', {
+    console.log('🔍 Template Lookup:', {
         tier: userData.tier,
         phase: userData.phase,
         currentTemplate: userData.currentTemplate,
         found: !!templates,
-        availableStructure: window.workoutTemplates ? Object.keys(window.workoutTemplates) : 'none'
+        exerciseLibrarySize: Object.keys(window.exerciseLibrary || {}).length
     });
 
     if (!templates) {
@@ -1106,22 +1108,22 @@ function renderWorkouts() {
         
         if (workoutDay.exercises) {
             workoutDay.exercises.forEach((exercise, index) => {
-                // Use exerciseLibrary (from exercise-loader.js) or fall back to old exerciseDatabase
-                const exerciseData = window.exerciseLibrary?.[exercise.exercise] || 
-                                    (typeof exerciseDatabase !== 'undefined' ? exerciseDatabase?.[exercise.exercise] : null);
+                // ✅ FIXED: Proper exercise lookup
+                const exerciseData = window.exerciseLibrary?.[exercise.exercise];
                 
-                // Use getExerciseName helper if available, otherwise format the key
-                let exerciseName = typeof getExerciseName === 'function' 
-                    ? getExerciseName(exercise.exercise)
+                // ✅ FIXED: Always get a readable name (from library or formatted)
+                let exerciseName = window.getExerciseName 
+                    ? window.getExerciseName(exercise.exercise)
                     : exercise.exercise;
+                    
                 let isSubstituted = false;
 
                 // Check if user has selected a variation for this exercise
                 if (userData.exerciseVariations && userData.exerciseVariations[exercise.exercise]) {
                     exerciseName = userData.exerciseVariations[exercise.exercise];
-                } else {
+                } else if (exerciseData) {
                     // Handle equipment adaptation with phase-specific mapping
-                    if (exerciseData && exerciseData.equipmentMap) {
+                    if (exerciseData.equipmentMap) {
                         // Check for phase-specific mapping first
                         if (userData.phase && exerciseData.equipmentMap[userData.phase]) {
                             exerciseName = exerciseData.equipmentMap[userData.phase][userData.equipment] || 
@@ -1133,10 +1135,7 @@ function renderWorkouts() {
                             exerciseName = exerciseData.equipmentMap[userData.equipment] || exerciseData.name;
                         }
                         if (exerciseName !== exerciseData.name) isSubstituted = true;
-                    } else if (exerciseData && exerciseData.name) {
-                        exerciseName = exerciseData.name;
                     }
-                    // If no exerciseData, the getExerciseName fallback is already set above
                 }
 
                 const exerciseId = `${exercise.exercise}-${dayKey}-${index}`;
@@ -1147,7 +1146,6 @@ function renderWorkouts() {
                 const evaluatedNote = evaluateTemplateString(exercise.note);
                 const evaluatedTempo = evaluateTemplateString(exercise.tempo);
                 const evaluatedRest = evaluateTemplateString(exercise.rest);
-
 
                 html += `
                     <div class="exercise-block">
