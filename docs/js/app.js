@@ -1124,7 +1124,7 @@ function renderWorkouts() {
                         <div class="exercise-prescription-large">${evaluatedSets}</div>
                         
                         <div class="exercise-actions">
-                            <button class="exercise-btn exercise-btn-details" onclick="event.stopPropagation();">
+                            <button class="exercise-btn exercise-btn-details" onclick="event.stopPropagation(); toggleExerciseDetails('${exerciseId}');">
                                 Tap for Details
                             </button>
                             <button class="exercise-btn exercise-btn-done" onclick="event.stopPropagation(); markExerciseDone('${exerciseId}')">
