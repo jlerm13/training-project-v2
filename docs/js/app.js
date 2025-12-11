@@ -630,9 +630,8 @@ function generateTemplateTabs() {
         if (isUnavailable) {
             // Show as disabled/unavailable
             tabsHTML += `
-                <div class="template-tab template-tab-unavailable" style="opacity: 0.5; cursor: not-allowed; background: var(--bg-secondary);">
+                <div class="template-tab disabled">
                     ${template.name} Lift
-                    <div style="font-size: 0.7rem; color: #f59e0b; margin-top: 2px;">⏳ Not Available</div>
                 </div>
             `;
         } else {
@@ -650,11 +649,11 @@ function generateTemplateTabs() {
         
         // Conditioning tab
         const conditioningActive = userData.currentView === 'conditioning' ? 'active' : '';
-        tabsHTML += `<div class="template-tab ${conditioningActive}" style="background: ${conditioningActive ? 'var(--primary-color)' : 'rgba(16, 185, 129, 0.1)'}; color: ${conditioningActive ? 'white' : '#10b981'};" onclick="showConditioning()">🏃 Conditioning</div>`;
+        tabsHTML += `<div class="template-tab ${conditioningActive}" onclick="showConditioning()">Conditioning</div>`;
         
         // Schedule tab
         const scheduleActive = userData.currentView === 'schedule' ? 'active' : '';
-        tabsHTML += `<div class="template-tab ${scheduleActive}" style="background: ${scheduleActive ? 'var(--primary-color)' : 'rgba(59, 130, 246, 0.1)'}; color: ${scheduleActive ? 'white' : '#3b82f6'};" onclick="showWeeklySchedule()">📅 Weekly Schedule</div>`;
+        tabsHTML += `<div class="template-tab ${scheduleActive}" onclick="showWeeklySchedule()">Weekly Schedule</div>`;
     }
     
     container.innerHTML = tabsHTML;
@@ -756,7 +755,7 @@ function generateProgramOverview() {
         <!-- What to Expect -->
         <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid ${tierInfo.color}; padding: 12px; border-radius: 4px;">
             <p style="margin: 0; font-size: 0.9rem;">
-                <strong>💡 What to Expect:</strong> ${phase.whatToExpect}
+                <strong> What to Expect:</strong> ${phase.whatToExpect}
             </p>
         </div>
     `;
@@ -803,7 +802,7 @@ function renderConditioning() {
     html += `
         <div class="workout-day" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));">
             <div class="workout-header">
-                <div class="workout-title">🏃 Non-Impact Conditioning Overview</div>
+                <div class="workout-title"> Non-Impact Conditioning Overview</div>
                 <div class="workout-badge" style="background: #10b981;">Week ${userData.currentWeek}</div>
             </div>
             <div style="padding: 16px;">
@@ -820,7 +819,7 @@ function renderConditioning() {
                         ${conditioning.overview.keyRules.map(rule => `<li style="margin-bottom: 4px;">${rule}</li>`).join('')}
                     </ul>
                 </div>
-                ${weekData.note ? `<p style="margin: 12px 0 0 0; font-style: italic; color: var(--text-secondary);">📌 ${weekData.note}</p>` : ''}
+                ${weekData.note ? `<p style="margin: 12px 0 0 0; font-style: italic; color: var(--text-secondary);"> ${weekData.note}</p>` : ''}
             </div>
         </div>
     `;
@@ -888,7 +887,7 @@ function renderConditioning() {
                         ${optionB_warmup ? `
                             <div style="background: rgba(239, 68, 68, 0.1); padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #ef4444;">
                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                                    <span style="font-size: 1.1rem;">🔥</span>
+                                    <span style="font-size: 1.1rem;"></span>
                                     <strong style="color: #dc2626;">Warmup</strong>
                                 </div>
                                 <div style="margin-left: 28px; font-size: 0.95rem;">
@@ -901,7 +900,7 @@ function renderConditioning() {
                         ${optionB_work.map(work => `
                             <div style="background: rgba(16, 185, 129, 0.15); padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #10b981;">
                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                                    <span style="font-size: 1.1rem;">💪</span>
+                                    <span style="font-size: 1.1rem;"></span>
                                     <strong style="color: #059669;">Work</strong>
                                 </div>
                                 <div style="margin-left: 28px;">
@@ -917,7 +916,7 @@ function renderConditioning() {
                         ${optionB_cooldown ? `
                             <div style="background: rgba(139, 92, 246, 0.1); padding: 12px 16px; border-radius: 8px; border-left: 3px solid #8b5cf6;">
                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                                    <span style="font-size: 1.1rem;">❄️</span>
+                                    <span style="font-size: 1.1rem;"></span>
                                     <strong style="color: #7c3aed;">Cooldown</strong>
                                 </div>
                                 <div style="margin-left: 28px; font-size: 0.95rem;">
@@ -930,7 +929,7 @@ function renderConditioning() {
                     <!-- Coach Note -->
                     <div style="background: rgba(245, 158, 11, 0.1); padding: 12px 16px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #f59e0b;">
                         <div style="display: flex; align-items: start; gap: 8px;">
-                            <span style="font-size: 1.1rem;">💡</span>
+                            <span style="font-size: 1.1rem;"></span>
                             <div>
                                 <strong style="color: #d97706;">Coach Note:</strong>
                                 <span style="margin-left: 4px;">${session.coachNote}</span>
@@ -969,7 +968,7 @@ function renderWeeklySchedule() {
     let html = `
         <div class="workout-day" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));">
             <div class="workout-header">
-                <div class="workout-title">📅 ${templateSchedule.name}</div>
+                <div class="workout-title"> ${templateSchedule.name}</div>
                 <div class="workout-badge" style="background: #3b82f6;">Weekly View</div>
             </div>
             <div style="padding: 16px;">
@@ -1001,7 +1000,7 @@ function renderWeeklySchedule() {
     html += `
         <div class="workout-day">
             <div class="workout-header">
-                <div class="workout-title">💡 Scheduling Tips</div>
+                <div class="workout-title"> Scheduling Tips</div>
             </div>
             <div style="padding: 16px;">
                 <ul style="margin: 0; padding-left: 20px;">
@@ -1019,10 +1018,10 @@ function renderWeeklySchedule() {
 
 function renderScheduleTable(schedule) {
     const typeColors = {
-        lift: { bg: 'rgba(239, 68, 68, 0.1)', text: '#ef4444', icon: '🏋️' },
-        conditioning: { bg: 'rgba(16, 185, 129, 0.1)', text: '#10b981', icon: '🏃' },
-        rest: { bg: 'rgba(156, 163, 175, 0.1)', text: '#6b7280', icon: '😴' },
-        both: { bg: 'rgba(139, 92, 246, 0.1)', text: '#8b5cf6', icon: '💪' }
+        lift: { bg: 'rgba(239, 68, 68, 0.1)', text: '#ef4444' },
+        conditioning: { bg: 'rgba(16, 185, 129, 0.1)', text: '#10b981' },
+        rest: { bg: 'rgba(156, 163, 175, 0.1)', text: '#6b7280' },
+        both: { bg: 'rgba(139, 92, 246, 0.1)', text: '#8b5cf6' }
     };
     
     let html = '<div style="display: grid; gap: 8px;">';
@@ -1060,7 +1059,7 @@ function renderWorkouts() {
     const templates = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.[userData.currentTemplate];
     
     // DEBUG LOGGING
-    console.log('🔍 Template Lookup:', {
+    console.log(' Template Lookup:', {
         tier: userData.tier,
         phase: userData.phase,
         currentTemplate: userData.currentTemplate,
