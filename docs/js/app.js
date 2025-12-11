@@ -1159,7 +1159,6 @@ function renderWorkouts() {
                         ${evaluatedTempo ? `<div class="exercise-details">Tempo: ${evaluatedTempo}</div>` : ''}
                         ${evaluatedRest ? `<div class="exercise-details">Rest: ${evaluatedRest}</div>` : ''}
                         ${evaluatedNote ? `<div class="exercise-details">Note: ${evaluatedNote}</div>` : ''}
-                        ${isSubstituted && userData.equipment !== 'full' ? `<div class="substitution-notice">Equipment adaptation: ${userData.equipment}</div>` : ''}
                         
                         ${exerciseData?.variations ? `
                             <div class="variations-dropdown hidden" id="variations-${exerciseId}">
