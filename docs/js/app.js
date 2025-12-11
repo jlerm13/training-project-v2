@@ -1362,15 +1362,15 @@ const isExpanding = !exerciseBlock.classList.contains('expanded');
 exerciseBlock.classList.toggle('expanded');
 
 // If expanding, load any saved notes
-if (isExpanding) {
-    const notesTextarea = exerciseBlock.querySelector('.exercise-notes-textarea');
-    if (notesTextarea) {
-        const exerciseKey = exerciseId.split('-')[0]; // Extract exercise key from ID
-        const todayWorkout = WorkoutTracker.getTodayWorkout();
-        const savedNotes = todayWorkout?.exercises?.[exerciseKey]?.notes || '';
-        notesTextarea.value = savedNotes;
+    if (isExpanding) {
+        const notesTextarea = exerciseBlock.querySelector('.exercise-notes-textarea');
+        if (notesTextarea) {
+            const exerciseKey = exerciseId.split('-')[0];
+            const todayWorkout = WorkoutTracker.getTodayWorkout();
+            const savedNotes = todayWorkout?.exercises?.[exerciseKey]?.notes || '';
+            notesTextarea.value = savedNotes;
+        }
     }
-}
 
 function markExerciseDone(exerciseId) {
     const exerciseBlock = document.getElementById(`exercise-${exerciseId}`);
