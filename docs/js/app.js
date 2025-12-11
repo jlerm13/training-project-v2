@@ -236,15 +236,15 @@ function showExperienceScreen() {
     const screen = document.getElementById('experienceScreen');
     screen.innerHTML = `
         <div class="card">
-            <h2>How experienced are you with strength training?</h2>
+            <h2>How independent are you when training alone?</h2>
             <p style="color: var(--text-secondary); margin-bottom: 16px;">
-                This determines your rep ranges, intensity, and exercise complexity. 
-                <strong>For demos: Pick "New to Lifting" to see full programming (only tier currently built).</strong>
+                Your coach isn't there to adjust things on the fly. Be honest—what helps you stay on track?
+                <strong>For demos: Pick "I need clear instructions" to see full programming.</strong>
             </p>
             <div class="options-grid">
                 <div class="option-card" onclick="selectTier('white')">
-                    <div class="option-title">New to Lifting</div>
-                    <div class="option-desc">You're new to structured strength training or getting back after time off</div>
+                    <div class="option-title">I need clear instructions</div>
+                    <div class="option-desc">Tell me exactly what to do, how to do it, and when to do it</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
                         6-10 reps per set | 30-45 min sessions
                     </div>
@@ -253,8 +253,8 @@ function showExperienceScreen() {
                     </div>
                 </div>
                 <div class="option-card" onclick="selectTier('red')" style="opacity: 0.6;">
-                    <div class="option-title">Lift Regularly</div>
-                    <div class="option-desc">You train consistently and know the basic movement patterns</div>
+                    <div class="option-title">I need some guidance</div>
+                    <div class="option-desc">Give me structure, but I can adjust based on how I feel</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
                         6-10 reps per set | 40-55 min sessions
                     </div>
@@ -263,8 +263,8 @@ function showExperienceScreen() {
                     </div>
                 </div>
                 <div class="option-card" onclick="selectTier('blue')" style="opacity: 0.6;">
-                    <div class="option-title">Experienced Lifter</div>
-                    <div class="option-desc">You have years of training experience and can handle heavy loads</div>
+                    <div class="option-title">I'm pretty independent</div>
+                    <div class="option-desc">I know my body and can modify exercises when needed</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
                         4-6 reps per set | 45-70 min sessions
                     </div>
@@ -273,8 +273,8 @@ function showExperienceScreen() {
                     </div>
                 </div>
                 <div class="option-card" onclick="selectTier('gold')" style="opacity: 0.6;">
-                    <div class="option-title">Elite Athlete</div>
-                    <div class="option-desc">You compete or train at a high level with advanced programming needs</div>
+                    <div class="option-title">I'm fully self-directed</div>
+                    <div class="option-desc">I can modify programming on the fly and know when to push or back off</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
                         3-6 reps per set | 50-75 min sessions
                     </div>
