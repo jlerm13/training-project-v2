@@ -1361,7 +1361,7 @@ function toggleExerciseDetails(exerciseId) {
 const isExpanding = !exerciseBlock.classList.contains('expanded');
 exerciseBlock.classList.toggle('expanded');
 
-// If expanding, load any saved notes
+    // If expanding, load any saved notes
     if (isExpanding) {
         const notesTextarea = exerciseBlock.querySelector('.exercise-notes-textarea');
         if (notesTextarea) {
@@ -1371,6 +1371,7 @@ exerciseBlock.classList.toggle('expanded');
             notesTextarea.value = savedNotes;
         }
     }
+}
 
 function markExerciseDone(exerciseId) {
     const exerciseBlock = document.getElementById(`exercise-${exerciseId}`);
