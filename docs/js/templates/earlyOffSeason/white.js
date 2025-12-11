@@ -75,8 +75,8 @@
                                 
                                 // TRI-SET D - Core
                                 { type: "tri-set-d", order: "D1", exercise: "sidePlank", sets: "2 × 30s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line", media: { photo: "assets/exercises/white/plank-elbows.jpg", video: "assets/exercises/white/plank-elbows.mp4" } },
-                                { type: "tri-set-d", order: "D2", exercise: "trxKneeTucks", sets: "2 × 10", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
-                                { type: "tri-set-d", order: "D3", exercise: "pallofPressHold", sets: "2 × 15s/side", tempo: "Hold steady", rest: "45s", note: "Start low, twist up and across your body", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
+                                { type: "tri-set-d", order: "D2", exercise: "trxKneeTucks", sets: "2 × 10", tempo: "Smooth and steady", rest: "20s", note: "Keep hips level, don't pike up", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
+                                { type: "tri-set-d", order: "D3", exercise: "pallofPressHold", sets: "2 × 15s/side", tempo: "Hold steady", rest: "45s", note: "Press band out, resist rotation", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
                             ]
                         }
                     },
@@ -140,8 +140,8 @@
                                 
                                 // TRI-SET D - Core (Week 2: increased time/reps)
                                 { type: "tri-set-d", order: "D1", exercise: "sidePlank", sets: "2 × 45s", tempo: "Hold steady", rest: "20s", note: "Elbows under shoulders, squeeze glutes, hold straight line", media: { photo: "assets/exercises/white/plank-elbows.jpg", video: "assets/exercises/white/plank-elbows.mp4" } },
-                                { type: "tri-set-d", order: "D2", exercise: "trxTucks", sets: "2 × 12", tempo: "Smooth and steady", rest: "20s", note: "Lower arms and legs slowly, keep back flat on ground", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
-                                { type: "tri-set-d", order: "D3", exercise: "pallofPressHold", sets: "2 × 20/side", tempo: "Hold steady", rest: "45s", note: "Start low, twist up and across your body", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
+                                { type: "tri-set-d", order: "D2", exercise: "trxTucks", sets: "2 × 12", tempo: "Smooth and steady", rest: "20s", note: "Keep hips level, don't pike up", media: { photo: "assets/exercises/white/deadbugs.jpg", video: "assets/exercises/white/deadbugs.mp4" } },
+                                { type: "tri-set-d", order: "D3", exercise: "pallofPressHold", sets: "2 × 20/side", tempo: "Hold steady", rest: "45s", note: "Press band out, resist rotation", media: { photo: "assets/exercises/white/db-low-high-chop.jpg", video: "assets/exercises/white/db-low-high-chop.mp4" } }
                             ]
                         }
                     },
@@ -205,7 +205,7 @@
                                 
                                 // TRI-SET D - Core (Week 3: increased time/reps)
                                 { type: "tri-set-d", order: "D1", exercise: "sidePlank", sets: "2 × 45s/side", tempo: "Hold steady", rest: "20s", note: "Stack feet, lift hips, hold straight line", media: { photo: "assets/exercises/white/side-plank.jpg", video: "assets/exercises/white/side-plank.mp4" } },
-                                { type: "tri-set-d", order: "D2", exercise: "trxKneeTucks", sets: "2 × 12", tempo: "Smooth and steady", rest: "20s", note: "Hold plank, pull knees to chest", media: { photo: "assets/exercises/white/trx-knee-tucks.jpg", video: "assets/exercises/white/trx-knee-tucks.mp4" } },
+                                { type: "tri-set-d", order: "D2", exercise: "trxKneeTucks", sets: "2 × 12", tempo: "Smooth and steady", rest: "20s", note: "Keep hips level, don't pike up", media: { photo: "assets/exercises/white/trx-knee-tucks.jpg", video: "assets/exercises/white/trx-knee-tucks.mp4" } },
                                 { type: "tri-set-d", order: "D3", exercise: "pallofPressHold", sets: "2 × 30s/side", tempo: "Hold steady", rest: "45s", note: "Press band out, resist rotation", media: { photo: "assets/exercises/white/pallof-press-hold.jpg", video: "assets/exercises/white/pallof-press-hold.mp4" } }
                             ]
                         }
