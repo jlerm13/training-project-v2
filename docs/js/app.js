@@ -993,6 +993,93 @@ function renderScheduleTable(schedule) {
     html += '</div>';
     return html;
 }
+// ==================== TRACKING INTERFACE RENDERER ====================
+function renderTrackingInterface(exerciseKey, exerciseName, prescription, exerciseId) {
+    // Parse prescription (e.g., "3 × 8" or "4 × 5")
+    const prescriptionMatch = prescription.match(/(\d+)\s*[×x]\s*(\d+)/);
+    if (!prescriptionMatch) {
+        return '<p style="color: var(--text-tertiary); font-style: italic;">Tracking not available for this exercise type</p>';
+    }
+    
+    const numSets = parseInt(prescriptionMatch[1]);
+    const numReps = parseInt(prescriptionMatch[2]);
+    
+    // Get last workout data
+    const lastWeight = WorkoutTracker.getLastWeight(exerciseKey);
+    const suggestedWeight = WorkoutTracker.getSuggestedWeight(exerciseKey);
+    
+    // Get today's logged sets
+    const todayWorkout = WorkoutTracker.getTodayWorkout();
+    const loggedSets = todayWorkout?.exercises?.[exerciseKey]?.sets || [];
+    
+    let html = '';
+    
+    // Show last workout reference if available
+    if (lastWeight) {
+        html += `
+            <div class="last-workout-reference">
+                <span>💪 Last workout: <strong>${lastWeight} lbs</strong></span>
+                ${suggestedWeight && suggestedWeight > lastWeight ? `
+                    <span class="suggested-weight-badge">Try ${suggestedWeight} lbs</span>
+                ` : ''}
+            </div>
+        `;
+    }
+    
+    // Tracking grid header
+    html += `
+        <div class="tracking-grid-header">
+            <div>Set</div>
+            <div>Target</div>
+            <div>Reps</div>
+            <div>Weight</div>
+            <div></div>
+        </div>
+    `;
+    
+    // Render each set
+    for (let i = 1; i <= numSets; i++) {
+        const loggedSet = loggedSets.find(s => s.setNumber === i);
+        const isCompleted = !!loggedSet;
+        
+        html += `
+            <div class="tracking-set-row ${isCompleted ? 'completed' : ''}" id="set-row-${exerciseId}-${i}">
+                <div class="set-number-badge">${i}</div>
+                <div class="set-prescription-hint">${numReps} × __</div>
+                <input 
+                    type="number" 
+                    class="tracking-input"
+                    id="reps-${exerciseId}-${i}"
+                    placeholder="${numReps}"
+                    value="${loggedSet?.reps || ''}"
+                    min="1"
+                    max="50"
+                    ${isCompleted ? 'disabled' : ''}
+                />
+                <input 
+                    type="number" 
+                    class="tracking-input"
+                    id="weight-${exerciseId}-${i}"
+                    placeholder="${suggestedWeight || lastWeight || '0'}"
+                    value="${loggedSet?.weight || ''}"
+                    min="0"
+                    step="2.5"
+                    ${isCompleted ? 'disabled' : ''}
+                />
+                <button 
+                    class="tracking-check-btn"
+                    id="check-${exerciseId}-${i}"
+                    onclick="logSetInline('${exerciseKey}', '${exerciseName}', ${i}, '${exerciseId}')"
+                    ${isCompleted ? 'disabled' : ''}
+                >
+                    ${isCompleted ? '✓' : '○'}
+                </button>
+            </div>
+        `;
+    }
+    
+    return html;
+}
 
 // ==================== FIXED WORKOUT RENDERING SECTION ====================
 function renderWorkouts() {
@@ -1132,7 +1219,7 @@ function renderWorkouts() {
                             </button>
                         </div>
                         
-                        <div class="exercise-details-expanded">
+<div class="exercise-details-expanded">
                             ${evaluatedIntensity ? `
                                 <div class="exercise-detail-row">
                                     <span class="exercise-detail-label">Intensity:</span>
@@ -1166,6 +1253,24 @@ function renderWorkouts() {
                                     ⚙️ Adapted to your equipment: ${userData.equipment}
                                 </div>
                             ` : ''}
+                            
+                            <!-- TRACKING SECTION -->
+                            <div class="tracking-section">
+                                <div class="tracking-header">📊 Track Your Sets</div>
+                                
+                                ${renderTrackingInterface(exercise.exercise, exerciseName, evaluatedSets, exerciseId)}
+                                
+                                <!-- Exercise Notes -->
+                                <div class="exercise-notes-area">
+                                    <div class="exercise-notes-label">Notes (optional)</div>
+                                    <textarea 
+                                        class="exercise-notes-textarea" 
+                                        placeholder="How did it feel? Any adjustments needed?"
+                                        id="notes-${exerciseId}"
+                                        onblur="saveExerciseNotes('${exercise.exercise}', '${exerciseId}')"
+                                    ></textarea>
+                                </div>
+                            </div>
                             
                             <div class="collapse-hint">Tap anywhere to collapse</div>
                         </div>
@@ -1253,7 +1358,18 @@ function toggleExerciseDetails(exerciseId) {
     });
     
     // Toggle this exercise
-    exerciseBlock.classList.toggle('expanded');
+const isExpanding = !exerciseBlock.classList.contains('expanded');
+exerciseBlock.classList.toggle('expanded');
+
+// If expanding, load any saved notes
+if (isExpanding) {
+    const notesTextarea = exerciseBlock.querySelector('.exercise-notes-textarea');
+    if (notesTextarea) {
+        const exerciseKey = exerciseId.split('-')[0]; // Extract exercise key from ID
+        const todayWorkout = WorkoutTracker.getTodayWorkout();
+        const savedNotes = todayWorkout?.exercises?.[exerciseKey]?.notes || '';
+        notesTextarea.value = savedNotes;
+    }
 }
 
 function markExerciseDone(exerciseId) {
@@ -1278,6 +1394,50 @@ function markExerciseDone(exerciseId) {
         }, 800);
     }
 }
+
+// ==================== INLINE SET LOGGING ====================
+function logSetInline(exerciseKey, exerciseName, setNumber, exerciseId) {
+    // Get input values
+    const repsInput = document.getElementById(`reps-${exerciseId}-${setNumber}`);
+    const weightInput = document.getElementById(`weight-${exerciseId}-${setNumber}`);
+    
+    const reps = parseInt(repsInput.value) || parseInt(repsInput.placeholder);
+    const weight = parseFloat(weightInput.value) || parseFloat(weightInput.placeholder);
+    
+    // Validate
+    if (!reps || !weight) {
+        alert('Please enter both reps and weight');
+        return;
+    }
+    
+    // Log the set using the workout tracker
+    WorkoutTracker.logSet(exerciseKey, exerciseName, setNumber, reps, weight, null);
+    
+    // Update UI
+    const setRow = document.getElementById(`set-row-${exerciseId}-${setNumber}`);
+    const checkBtn = document.getElementById(`check-${exerciseId}-${setNumber}`);
+    
+    setRow.classList.add('completed');
+    checkBtn.disabled = true;
+    checkBtn.innerHTML = '✓';
+    repsInput.disabled = true;
+    weightInput.disabled = true;
+    
+    // Show quick feedback
+    showQuickToast(`Set ${setNumber} logged: ${reps} reps × ${weight} lbs`);
+}
+
+function saveExerciseNotes(exerciseKey, exerciseId) {
+    const notesTextarea = document.getElementById(`notes-${exerciseId}`);
+    if (!notesTextarea) return;
+    
+    const notes = notesTextarea.value.trim();
+    if (notes) {
+        WorkoutTracker.addExerciseNotes(exerciseKey, notes);
+        showQuickToast('Notes saved');
+    }
+}
+
 
 function showQuickToast(message) {
     const toast = document.createElement('div');
