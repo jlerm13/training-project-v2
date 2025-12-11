@@ -236,47 +236,47 @@ function showExperienceScreen() {
     const screen = document.getElementById('experienceScreen');
     screen.innerHTML = `
         <div class="card">
-            <h2>What's your competency tier?</h2>
+            <h2>How experienced are you with strength training?</h2>
             <p style="color: var(--text-secondary); margin-bottom: 16px;">
-                This determines rep ranges, intensity, and exercise complexity. 
-                <strong>For demos: Pick "White" to see full programming (only tier currently built).</strong>
+                This determines your rep ranges, intensity, and exercise complexity. 
+                <strong>For demos: Pick "New to Lifting" to see full programming (only tier currently built).</strong>
             </p>
             <div class="options-grid">
                 <div class="option-card" onclick="selectTier('white')">
-                    <div class="option-title">⚪ White</div>
-                    <div class="option-desc">Learn the Shapes - Movement learning & work capacity</div>
+                    <div class="option-title">New to Lifting</div>
+                    <div class="option-desc">You're new to structured strength training or getting back after time off</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
-                        6-10 reps + holds | 30-45 min sessions
+                        6-10 reps per set | 30-45 min sessions
                     </div>
                     <div style="margin-top: 4px; font-size: 0.75rem; color: #10b981; font-weight: 600;">
                         ✓ Templates Available
                     </div>
                 </div>
                 <div class="option-card" onclick="selectTier('red')" style="opacity: 0.6;">
-                    <div class="option-title">🔴 Red</div>
-                    <div class="option-desc">Stabilize the Shapes - Technique refinement & strength building</div>
+                    <div class="option-title">Lift Regularly</div>
+                    <div class="option-desc">You train consistently and know the basic movement patterns</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
-                        6-10 reps | 40-55 min sessions
+                        6-10 reps per set | 40-55 min sessions
                     </div>
                     <div style="margin-top: 4px; font-size: 0.75rem; color: #f59e0b; font-weight: 600;">
                         ⏳ Coming Soon
                     </div>
                 </div>
                 <div class="option-card" onclick="selectTier('blue')" style="opacity: 0.6;">
-                    <div class="option-title">🔵 Blue</div>
-                    <div class="option-desc">Regulate the Shapes - Strength-speed & power development</div>
+                    <div class="option-title">Experienced Lifter</div>
+                    <div class="option-desc">You have years of training experience and can handle heavy loads</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
-                        4-6 reps @ RPE 7-8 | 45-70 min sessions
+                        4-6 reps per set | 45-70 min sessions
                     </div>
                     <div style="margin-top: 4px; font-size: 0.75rem; color: #f59e0b; font-weight: 600;">
                         ⏳ Coming Soon
                     </div>
                 </div>
                 <div class="option-card" onclick="selectTier('gold')" style="opacity: 0.6;">
-                    <div class="option-title">🟡 Gold</div>
-                    <div class="option-desc">Own the Shapes - Maximum output & optimization</div>
+                    <div class="option-title">Elite Athlete</div>
+                    <div class="option-desc">You compete or train at a high level with advanced programming needs</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
-                        3-6 reps @ RPE 8 | 50-75 min sessions
+                        3-6 reps per set | 50-75 min sessions
                     </div>
                     <div style="margin-top: 4px; font-size: 0.75rem; color: #f59e0b; font-weight: 600;">
                         ⏳ Coming Soon
