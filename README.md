@@ -49,4 +49,14 @@ Coaches have **athlete management tools** (TeamBuildr, TeamWorks, Bridge) but ne
 - Not just "do athletes want flexibility?"
 - But "will automated adaptation + optional adjustments improve completion rates?"
 
-END OF DOCUMENT
+How you measure it:
+Not downloads. Not logins. Not even completion rates.
+You measure it with one question, asked right after they finish setup:
+"Does this feel like it was built for you?"
+If that's not "hell yes," you failed.
+
+What this means for every decision:
+
+Does this speed up or slow down getting to "MY program"?
+Does this increase or decrease belief in personalization?
+Does this make them feel capable or confused?
