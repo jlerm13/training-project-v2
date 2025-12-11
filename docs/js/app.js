@@ -369,7 +369,7 @@ function showEquipmentScreen() {
             </div>
             <div class="btn-group">
                 <button class="btn btn-secondary" onclick="goBack('phase')">Back</button>
-                <button class="btn hidden" id="equipmentContinue" onclick="generateProgram()">Generate Program</button>
+                <button class="btn hidden" id="equipmentContinue" onclick="showConfirmationScreen()">Continue</button>
             </div>
         </div>
     `;
@@ -393,7 +393,7 @@ function updateProgressTracker(step) {
 
 function hideAllScreens() {
     // REMOVED contextScreen from this list
-    const screens = ['welcomeScreen', 'experienceScreen', 'phaseScreen', 'equipmentScreen', 'programScreen'];
+    const screens = ['welcomeScreen', 'experienceScreen', 'phaseScreen', 'equipmentScreen', 'confirmationScreen', 'programScreen'];
     screens.forEach(screenId => {
         const el = document.getElementById(screenId);
         if (el) el.classList.add('hidden');
@@ -415,7 +415,10 @@ function goBack(screen) {
             showPhaseScreen();
             updateProgressTracker(2);
             break;
-        // REMOVED: case 'context' - no longer needed
+        case 'equipment':
+            showEquipmentScreen();
+            updateProgressTracker(3);
+            break;
     }
 }
 
