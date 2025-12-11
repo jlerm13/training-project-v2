@@ -865,7 +865,7 @@
             indicator: { isIndicator: false }
         },
         
-        trxKneeTuck: {
+        trxKneeTucks: {
             name: "TRX Knee Tucks",
             category: "core",
             movementPattern: "hip-flexion-anti-extension",
