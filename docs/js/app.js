@@ -1116,7 +1116,6 @@ function renderScheduleTable(schedule) {
 }
 // ==================== TRACKING INTERFACE RENDERER ====================
 function renderTrackingInterface(exerciseKey, exerciseName, prescription, exerciseId) {
-    // Parse prescription (e.g., "3 × 8" or "4 × 5")
     const prescriptionMatch = prescription.match(/(\d+)\s*[×x]\s*(\d+)/);
     if (!prescriptionMatch) {
         return '<p style="color: var(--text-tertiary); font-style: italic;">Tracking not available for this exercise type</p>';
@@ -1124,21 +1123,16 @@ function renderTrackingInterface(exerciseKey, exerciseName, prescription, exerci
     
     const numSets = parseInt(prescriptionMatch[1]);
     const numReps = parseInt(prescriptionMatch[2]);
-    
-    // Get last workout data
     const lastWeight = WorkoutTracker.getLastWeight(exerciseKey);
     const suggestedWeight = WorkoutTracker.getSuggestedWeight(exerciseKey);
-    
-    // Get today's logged sets
     const todayWorkout = WorkoutTracker.getTodayWorkout();
     const loggedSets = todayWorkout?.exercises?.[exerciseKey]?.sets || [];
     
     let html = '';
     
-    // Show last workout reference if available
     if (lastWeight) {
         html += `
-            <div class="last-workout-reference">
+            <div class="last-workout-reference" onclick="event.stopPropagation()">
                 <span>💪 Last workout: <strong>${lastWeight} lbs</strong></span>
                 ${suggestedWeight && suggestedWeight > lastWeight ? `
                     <span class="suggested-weight-badge">Try ${suggestedWeight} lbs</span>
@@ -1147,9 +1141,8 @@ function renderTrackingInterface(exerciseKey, exerciseName, prescription, exerci
         `;
     }
     
-    // Tracking grid header
     html += `
-        <div class="tracking-grid-header">
+        <div class="tracking-grid-header" onclick="event.stopPropagation()">
             <div>Set</div>
             <div>Target</div>
             <div>Reps</div>
@@ -1158,13 +1151,12 @@ function renderTrackingInterface(exerciseKey, exerciseName, prescription, exerci
         </div>
     `;
     
-    // Render each set
     for (let i = 1; i <= numSets; i++) {
         const loggedSet = loggedSets.find(s => s.setNumber === i);
         const isCompleted = !!loggedSet;
         
         html += `
-            <div class="tracking-set-row ${isCompleted ? 'completed' : ''}" id="set-row-${exerciseId}-${i}">
+            <div class="tracking-set-row ${isCompleted ? 'completed' : ''}" id="set-row-${exerciseId}-${i}" onclick="event.stopPropagation()">
                 <div class="set-number-badge">${i}</div>
                 <div class="set-prescription-hint">${numReps} × __</div>
                 <input 
@@ -1175,6 +1167,8 @@ function renderTrackingInterface(exerciseKey, exerciseName, prescription, exerci
                     value="${loggedSet?.reps || ''}"
                     min="1"
                     max="50"
+                    onclick="event.stopPropagation()"
+                    onfocus="event.stopPropagation()"
                     ${isCompleted ? 'disabled' : ''}
                 />
                 <input 
@@ -1185,12 +1179,14 @@ function renderTrackingInterface(exerciseKey, exerciseName, prescription, exerci
                     value="${loggedSet?.weight || ''}"
                     min="0"
                     step="2.5"
+                    onclick="event.stopPropagation()"
+                    onfocus="event.stopPropagation()"
                     ${isCompleted ? 'disabled' : ''}
                 />
                 <button 
                     class="tracking-check-btn"
                     id="check-${exerciseId}-${i}"
-                    onclick="logSetInline('${exerciseKey}', '${exerciseName}', ${i}, '${exerciseId}')"
+                    onclick="event.stopPropagation(); logSetInline('${exerciseKey}', '${exerciseName}', ${i}, '${exerciseId}')"
                     ${isCompleted ? 'disabled' : ''}
                 >
                     ${isCompleted ? '✓' : '○'}
@@ -1340,7 +1336,7 @@ function renderWorkouts() {
                             </button>
                         </div>
                         
-<div class="exercise-details-expanded">
+<div class="exercise-details-expanded" onclick="event.stopPropagation()">
                             ${evaluatedIntensity ? `
                                 <div class="exercise-detail-row">
                                     <span class="exercise-detail-label">Intensity:</span>
@@ -1376,25 +1372,23 @@ function renderWorkouts() {
                             ` : ''}
                             
                             <!-- TRACKING SECTION -->
-                            <div class="tracking-section">
+                            <div class="tracking-section" onclick="event.stopPropagation()">
                                 <div class="tracking-header">📊 Track Your Sets</div>
                                 
                                 ${renderTrackingInterface(exercise.exercise, exerciseName, evaluatedSets, exerciseId)}
                                 
                                 <!-- Exercise Notes -->
-                                <div class="exercise-notes-area">
+                                <div class="exercise-notes-area" onclick="event.stopPropagation()">
                                     <div class="exercise-notes-label">Notes (optional)</div>
                                     <textarea 
                                         class="exercise-notes-textarea" 
                                         placeholder="How did it feel? Any adjustments needed?"
                                         id="notes-${exerciseId}"
+                                        onclick="event.stopPropagation()"
+                                        onfocus="event.stopPropagation()"
                                         onblur="saveExerciseNotes('${exercise.exercise}', '${exerciseId}')"
                                     ></textarea>
                                 </div>
-                            </div>
-                            
-                            <div class="collapse-hint">Tap anywhere to collapse</div>
-                        </div>
                         
                         ${exerciseData?.variations ? `
                             <div class="variations-dropdown hidden" id="variations-${exerciseId}">
