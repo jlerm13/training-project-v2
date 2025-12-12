@@ -877,7 +877,7 @@ function renderConditioning() {
     html += `
         <div class="workout-day" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));">
             <div class="workout-header">
-                <div class="workout-title"> Non-Impact Conditioning Overview</div>
+                <div class="workout-title">🏃 Non-Impact Conditioning Overview</div>
                 <div class="workout-badge" style="background: #10b981;">Week ${userData.currentWeek}</div>
             </div>
             <div style="padding: 16px;">
@@ -894,7 +894,7 @@ function renderConditioning() {
                         ${conditioning.overview.keyRules.map(rule => `<li style="margin-bottom: 4px;">${rule}</li>`).join('')}
                     </ul>
                 </div>
-                ${weekData.note ? `<p style="margin: 12px 0 0 0; font-style: italic; color: var(--text-secondary);"> ${weekData.note}</p>` : ''}
+                ${weekData.note ? `<p style="margin: 12px 0 0 0; font-style: italic; color: var(--text-secondary);">📝 ${weekData.note}</p>` : ''}
             </div>
         </div>
     `;
@@ -923,14 +923,14 @@ function renderConditioning() {
                     
                     <!-- Instruction Header -->
                     <div style="background: rgba(59, 130, 246, 0.1); padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #3b82f6;">
-                        <strong style="color: #3b82f6;"> Choose ONE conditioning approach:</strong>
+                        <strong style="color: #3b82f6;">✋ Choose ONE conditioning approach:</strong>
                     </div>
                     
                     <!-- OPTION A: Steady State -->
                     ${optionA ? `
                         <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05)); padding: 16px; border-radius: 12px; margin-bottom: 16px; border: 2px solid rgba(59, 130, 246, 0.3);">
                             <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                                <span style="font-size: 1.5rem; margin-right: 8px;"></span>
+                                <span style="font-size: 1.5rem; margin-right: 8px;">🚴</span>
                                 <h3 style="margin: 0; color: #2563eb; font-size: 1.2rem;">Option A: Steady State</h3>
                             </div>
                             <div style="font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; color: var(--text-primary);">
@@ -952,7 +952,7 @@ function renderConditioning() {
                     <!-- OPTION B: Intervals (Grouped) -->
                     <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05)); padding: 16px; border-radius: 12px; border: 2px solid rgba(245, 158, 11, 0.3);">
                         <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                            <span style="font-size: 1.5rem; margin-right: 8px;"></span>
+                            <span style="font-size: 1.5rem; margin-right: 8px;">⚡</span>
                             <h3 style="margin: 0; color: #d97706; font-size: 1.2rem;">Option B: Intervals (${session.totalTime} total)</h3>
                         </div>
                         
@@ -962,7 +962,7 @@ function renderConditioning() {
                         ${optionB_warmup ? `
                             <div style="background: rgba(239, 68, 68, 0.1); padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #ef4444;">
                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                                    <span style="font-size: 1.1rem;"></span>
+                                    <span style="font-size: 1.1rem;">🔥</span>
                                     <strong style="color: #dc2626;">Warmup</strong>
                                 </div>
                                 <div style="margin-left: 28px; font-size: 0.95rem;">
@@ -975,7 +975,7 @@ function renderConditioning() {
                         ${optionB_work.map(work => `
                             <div style="background: rgba(16, 185, 129, 0.15); padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #10b981;">
                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                                    <span style="font-size: 1.1rem;"></span>
+                                    <span style="font-size: 1.1rem;">💪</span>
                                     <strong style="color: #059669;">Work</strong>
                                 </div>
                                 <div style="margin-left: 28px;">
@@ -991,7 +991,7 @@ function renderConditioning() {
                         ${optionB_cooldown ? `
                             <div style="background: rgba(139, 92, 246, 0.1); padding: 12px 16px; border-radius: 8px; border-left: 3px solid #8b5cf6;">
                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                                    <span style="font-size: 1.1rem;"></span>
+                                    <span style="font-size: 1.1rem;">🧘</span>
                                     <strong style="color: #7c3aed;">Cooldown</strong>
                                 </div>
                                 <div style="margin-left: 28px; font-size: 0.95rem;">
@@ -1004,7 +1004,7 @@ function renderConditioning() {
                     <!-- Coach Note -->
                     <div style="background: rgba(245, 158, 11, 0.1); padding: 12px 16px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #f59e0b;">
                         <div style="display: flex; align-items: start; gap: 8px;">
-                            <span style="font-size: 1.1rem;"></span>
+                            <span style="font-size: 1.1rem;">💡</span>
                             <div>
                                 <strong style="color: #d97706;">Coach Note:</strong>
                                 <span style="margin-left: 4px;">${session.coachNote}</span>
@@ -1018,6 +1018,7 @@ function renderConditioning() {
     
     container.innerHTML = html;
 }
+
 // ==================== WEEKLY SCHEDULE VIEW ====================
 function showWeeklySchedule() {
     userData.currentView = 'schedule';
@@ -1043,7 +1044,7 @@ function renderWeeklySchedule() {
     let html = `
         <div class="workout-day" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));">
             <div class="workout-header">
-                <div class="workout-title"> ${templateSchedule.name}</div>
+                <div class="workout-title">📅 ${templateSchedule.name}</div>
                 <div class="workout-badge" style="background: #3b82f6;">Weekly View</div>
             </div>
             <div style="padding: 16px;">
@@ -1075,7 +1076,7 @@ function renderWeeklySchedule() {
     html += `
         <div class="workout-day">
             <div class="workout-header">
-                <div class="workout-title"> Scheduling Tips</div>
+                <div class="workout-title">💡 Scheduling Tips</div>
             </div>
             <div style="padding: 16px;">
                 <ul style="margin: 0; padding-left: 20px;">
@@ -1114,6 +1115,7 @@ function renderScheduleTable(schedule) {
     html += '</div>';
     return html;
 }
+
 // ==================== TRACKING INTERFACE RENDERER ====================
 function renderTrackingInterface(exerciseKey, exerciseName, prescription, exerciseId) {
     const prescriptionMatch = prescription.match(/(\d+)\s*[×x]\s*(\d+)/);
@@ -1196,6 +1198,186 @@ function renderTrackingInterface(exerciseKey, exerciseName, prescription, exerci
     }
     
     return html;
+}
+
+// ==================== PRIORITY 4: COMPLETION BUTTON & CELEBRATION ====================
+
+/**
+ * Checks if a workout day has been completed (all exercises marked done)
+ * @param {string} dayKey - The day key (monday, friday, etc.)
+ * @returns {boolean} - True if workout is complete
+ */
+function isWorkoutDayComplete(dayKey) {
+    const todayWorkout = WorkoutTracker.getTodayWorkout();
+    if (!todayWorkout || !todayWorkout.exercises) return false;
+    
+    // Get the workout template for this day
+    const weekKey = `week${userData.currentWeek}`;
+    const templates = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.[userData.currentTemplate];
+    const workoutDay = templates?.[weekKey]?.[dayKey];
+    
+    if (!workoutDay || !workoutDay.exercises) return false;
+    
+    // Count how many exercises should be done (excluding warmups)
+    const totalExercises = workoutDay.exercises.length;
+    
+    // Count how many have logged sets
+    let completedExercises = 0;
+    workoutDay.exercises.forEach(exercise => {
+        if (todayWorkout.exercises[exercise.exercise] && 
+            todayWorkout.exercises[exercise.exercise].sets.length > 0) {
+            completedExercises++;
+        }
+    });
+    
+    return completedExercises === totalExercises;
+}
+
+/**
+ * Completes the workout day and shows celebration screen
+ */
+function completeWorkoutDay(dayKey) {
+    // Mark workout as complete
+    WorkoutTracker.completeWorkout();
+    
+    // Get stats
+    const stats = WorkoutTracker.getStats();
+    const todayWorkout = WorkoutTracker.getTodayWorkout();
+    
+    const todayExercises = todayWorkout ? Object.keys(todayWorkout.exercises).length : 0;
+    const todayCompletedSets = todayWorkout ? 
+        Object.values(todayWorkout.exercises).reduce((sum, ex) => sum + ex.sets.filter(s => s.completed).length, 0) : 0;
+    
+    // Calculate total volume for today
+    let todayVolume = 0;
+    if (todayWorkout) {
+        Object.values(todayWorkout.exercises).forEach(exercise => {
+            exercise.sets.forEach(set => {
+                if (set.completed) {
+                    todayVolume += set.reps * set.weight;
+                }
+            });
+        });
+    }
+    
+    // Create celebration modal
+    const modal = document.createElement('div');
+    modal.id = 'completion-celebration-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        padding: 20px;
+        animation: fadeIn 0.3s ease-out;
+    `;
+    
+    modal.innerHTML = `
+        <div style="background: var(--bg-primary); border-radius: 16px; max-width: 500px; width: 100%; padding: 0; overflow: hidden; animation: slideUp 0.4s ease-out; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
+            
+            <!-- Hero Section -->
+            <div style="background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); padding: 40px 32px; text-align: center; color: white;">
+                <div style="font-size: 4rem; margin-bottom: 16px; animation: bounce 0.6s ease-out;">🔥</div>
+                <h2 style="margin: 0 0 8px 0; font-size: 2rem; font-weight: 800; letter-spacing: -0.02em;">Workout Complete!</h2>
+                <p style="margin: 0; font-size: 1.1rem; opacity: 0.95;">You just did the work. Own it.</p>
+            </div>
+            
+            <!-- Stats Grid -->
+            <div style="padding: 32px;">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                    <div style="background: linear-gradient(135deg, rgba(224, 1, 34, 0.1), rgba(224, 1, 34, 0.05)); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid rgba(224, 1, 34, 0.2);">
+                        <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary-color); margin-bottom: 4px;">${todayExercises}</div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Exercises</div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, rgba(224, 1, 34, 0.1), rgba(224, 1, 34, 0.05)); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid rgba(224, 1, 34, 0.2);">
+                        <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary-color); margin-bottom: 4px;">${todayCompletedSets}</div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Sets</div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, rgba(224, 1, 34, 0.1), rgba(224, 1, 34, 0.05)); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid rgba(224, 1, 34, 0.2);">
+                        <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary-color); margin-bottom: 4px;">${todayVolume.toLocaleString()}</div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Total Lbs</div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, rgba(224, 1, 34, 0.1), rgba(224, 1, 34, 0.05)); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid rgba(224, 1, 34, 0.2);">
+                        <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary-color); margin-bottom: 4px;">${stats.completedWorkouts}</div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Total Workouts</div>
+                    </div>
+                </div>
+                
+                <!-- Next Workout Prompt -->
+                <div style="background: var(--bg-secondary); padding: 16px; border-radius: 12px; margin-bottom: 24px; border-left: 4px solid var(--primary-color);">
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-secondary);">
+                        <strong style="color: var(--text-primary);">💪 Keep the momentum:</strong> Come back tomorrow and do it again.
+                    </p>
+                </div>
+                
+                <!-- Close Button -->
+                <button 
+                    onclick="closeCelebrationModal()"
+                    style="width: 100%; padding: 16px; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(224, 1, 34, 0.4); transition: all 0.2s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(224, 1, 34, 0.5)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 14px rgba(224, 1, 34, 0.4)'"
+                >
+                    Done →
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Add CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    document.body.appendChild(modal);
+    
+    // Mark the workout button as completed in the UI
+    const completionBtn = document.getElementById(`complete-workout-${dayKey}`);
+    if (completionBtn) {
+        completionBtn.style.background = '#10b981';
+        completionBtn.innerHTML = '✓ Workout Completed';
+        completionBtn.disabled = true;
+    }
+}
+
+/**
+ * Closes the celebration modal
+ */
+function closeCelebrationModal() {
+    const modal = document.getElementById('completion-celebration-modal');
+    if (modal) {
+        modal.style.animation = 'fadeIn 0.3s ease-out reverse';
+        setTimeout(() => modal.remove(), 300);
+    }
 }
 
 // ==================== FIXED WORKOUT RENDERING SECTION ====================
@@ -1407,6 +1589,39 @@ function renderWorkouts() {
             }); // ✅ Close exercises forEach
         }
         
+        // ==================== PRIORITY 4: COMPLETION BUTTON ====================
+        // Add the big completion button after all exercises
+        const isCompleted = isWorkoutDayComplete(dayKey);
+        
+        html += `
+            <div style="padding: 24px 16px 16px 16px;">
+                <button 
+                    id="complete-workout-${dayKey}"
+                    onclick="completeWorkoutDay('${dayKey}')"
+                    style="
+                        width: 100%;
+                        padding: 20px;
+                        background: ${isCompleted ? '#10b981' : 'linear-gradient(135deg, var(--primary-color), var(--primary-dark))'};
+                        color: white;
+                        border: none;
+                        border-radius: 12px;
+                        font-size: 1.3rem;
+                        font-weight: 800;
+                        cursor: ${isCompleted ? 'default' : 'pointer'};
+                        box-shadow: ${isCompleted ? '0 4px 14px rgba(16, 185, 129, 0.4)' : '0 4px 14px rgba(224, 1, 34, 0.4)'};
+                        transition: all 0.2s ease;
+                        letter-spacing: -0.01em;
+                        text-transform: uppercase;
+                    "
+                    ${isCompleted ? 'disabled' : ''}
+                    onmouseover="if(!this.disabled) { this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(224, 1, 34, 0.5)'; }"
+                    onmouseout="if(!this.disabled) { this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 14px rgba(224, 1, 34, 0.4)'; }"
+                >
+                    ${isCompleted ? '✓ Workout Completed' : '🔥 Complete Workout'}
+                </button>
+            </div>
+        `;
+        
         html += `</div>`; // ✅ Close workout-day div
     }); // ✅ Close day forEach (Object.entries)
     
@@ -1476,8 +1691,8 @@ function toggleExerciseDetails(exerciseId) {
     });
     
     // Toggle this exercise
-const isExpanding = !exerciseBlock.classList.contains('expanded');
-exerciseBlock.classList.toggle('expanded');
+    const isExpanding = !exerciseBlock.classList.contains('expanded');
+    exerciseBlock.classList.toggle('expanded');
 
     // If expanding, load any saved notes
     if (isExpanding) {
@@ -1556,7 +1771,6 @@ function saveExerciseNotes(exerciseKey, exerciseId) {
         showQuickToast('Notes saved');
     }
 }
-
 
 function showQuickToast(message) {
     const toast = document.createElement('div');
