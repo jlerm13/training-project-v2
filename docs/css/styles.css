@@ -1,5 +1,6 @@
 /* styles.css - Athletic Development Training System Styles */
 /* Phase 1 Enhancements: Typography, Color, Elevation, Buttons */
+/* Priority 2 Cleanup: UC Red + Neutral (no color chaos) */
 
 /* Import Inter font - Add this to your HTML <head>:
    <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -516,7 +517,9 @@ body {
     margin-bottom: 10px;
 }
 
-/* EXERCISE CATEGORY LABELS - UC RED */
+/* ==================== EXERCISE CATEGORY BADGES ==================== */
+/* ALL UC RED except warmup (amber for functional distinction) */
+
 .exercise-category {
     background: var(--primary-color);
     color: white;
@@ -527,7 +530,34 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.08em;
     display: inline-block;
+    box-shadow: 0 2px 4px rgba(224, 1, 34, 0.3);
 }
+
+/* All circuit/superset categories = UC Red (no differentiation) */
+.category-circuit-a,
+.category-circuit-b,
+.category-superset-c,
+.category-tri-set-d,
+.category-max-effort,
+.category-dynamic,
+.category-supplemental,
+.category-assistance,
+.category-repetition,
+.category-sprint,
+.category-jump,
+.category-throw { 
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 4px rgba(224, 1, 34, 0.3);
+}
+
+/* Warmup = Amber (functionally different - not part of work sets) */
+.category-warmup { 
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+}
+
+/* ==================== END EXERCISE CATEGORIES ==================== */
 
 .variation-btn {
     background: var(--bg-primary);
@@ -641,22 +671,6 @@ body {
     font-size: 14px;
 }
 
-/* CIRCUIT/SUPERSET COLORS - KEEP FOR FUNCTIONAL DIFFERENTIATION */
-/* These colors help athletes quickly identify which exercises go together */
-.category-circuit-a,
-.category-circuit-b,
-.category-superset-c,
-.category-tri-set-d { 
-    background: #e00122; /* UC Red */
-    color: white;
-    box-shadow: 0 2px 4px rgba(224, 1, 34, 0.3);
-}
-
-.category-warmup { 
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
-}
-
 .info-box {
     background: var(--bg-tertiary);
     border-left: 4px solid var(--primary-color);
@@ -755,40 +769,6 @@ body {
         opacity: 1; 
         transform: translateY(0);
     }
-}
-
-/* LEGACY CATEGORY COLORS - KEEPING FOR BACKWARDS COMPATIBILITY */
-.category-max-effort { 
-    background: linear-gradient(135deg, #dc2626, #b91c1c);
-    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
-}
-.category-dynamic { 
-    background: linear-gradient(135deg, #ea580c, #c2410c);
-    box-shadow: 0 2px 4px rgba(234, 88, 12, 0.3);
-}
-.category-repetition { 
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
-}
-.category-supplemental { 
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-    box-shadow: 0 2px 4px rgba(224, 1, 34, 0.3);
-}
-.category-assistance { 
-    background: linear-gradient(135deg, #7c3aed, #6d28d9);
-    box-shadow: 0 2px 4px rgba(124, 58, 237, 0.3);
-}
-.category-sprint { 
-    background: linear-gradient(135deg, #0891b2, #0e7490);
-    box-shadow: 0 2px 4px rgba(8, 145, 178, 0.3);
-}
-.category-jump { 
-    background: linear-gradient(135deg, #059669, #047857);
-    box-shadow: 0 2px 4px rgba(5, 150, 105, 0.3);
-}
-.category-throw { 
-    background: linear-gradient(135deg, #c026d3, #a21caf);
-    box-shadow: 0 2px 4px rgba(192, 38, 211, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -1121,7 +1101,42 @@ body {
 
 .suggested-weight-badge {
     background: #10b981;
-    color
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.exercise-notes-area {
+    margin-top: 16px;
+}
+
+.exercise-notes-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.exercise-notes-textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 2px solid var(--border-subtle);
+    background: white;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    resize: vertical;
+    transition: all 0.15s ease;
+}
+
+.exercise-notes-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(224, 1, 34, 0.1);
+}
 
 /* ==================== CONFIRMATION SCREEN ==================== */
 
