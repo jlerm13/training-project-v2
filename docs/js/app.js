@@ -1,6 +1,6 @@
 // ==================== APP.JS - FLOW ORCHESTRATION ====================
 // Main application flow and screen management
-// v2.1.0 - Refactored for clean separation of concerns
+// v2.2.0 - WORKOUT-FIRST FIX: Show workout immediately, philosophy optional
 
 // ==================== SCREEN FLOW MANAGEMENT ====================
 
@@ -202,8 +202,8 @@ function generateProgram() {
     
     const tierInfo = TIER_SYSTEM[userData.tier] || TIER_SYSTEM.white;
 
-    document.getElementById('programTitle').textContent =
-        `${tierInfo.name} Tier - ${phaseNames[userData.phase] || 'Phase'} Program`;
+    // ✅ WORKOUT-FIRST FIX: Changed from verbose title to action-oriented "Week X"
+    document.getElementById('programTitle').textContent = `Week ${userData.currentWeek}`;
 
     // Get available templates that have actual data
     const availableTemplates = getAvailableTemplatesWithData(userData.tier, userData.phase);
@@ -215,9 +215,12 @@ function generateProgram() {
         userData.currentTemplate = '2day';
     }
 
+    // ✅ Generate overview but keep it HIDDEN (athlete sees workout first)
     generateProgramOverview();
     generateTemplateTabs();
     updateWeekDisplay();
+    
+    // ✅ HERO MOMENT: Show workout immediately
     renderWorkouts();
 }
 
@@ -372,6 +375,10 @@ function selectTemplate(template) {
 function previousWeek() {
     if (userData.currentWeek > 1) {
         userData.currentWeek--;
+        
+        // Update title to reflect new week
+        document.getElementById('programTitle').textContent = `Week ${userData.currentWeek}`;
+        
         updateWeekDisplay();
         renderCurrentView();
     }
@@ -380,6 +387,10 @@ function previousWeek() {
 function nextWeek() {
     if (userData.currentWeek < 4) {
         userData.currentWeek++;
+        
+        // Update title to reflect new week
+        document.getElementById('programTitle').textContent = `Week ${userData.currentWeek}`;
+        
         updateWeekDisplay();
         renderCurrentView();
     }
@@ -398,10 +409,42 @@ function renderCurrentView() {
     }
 }
 
+// ==================== NEW: TOGGLE PROGRAM INFO ====================
+
+function toggleProgramInfo() {
+    const overview = document.getElementById('programOverview');
+    const btn = document.getElementById('programInfoBtn');
+    
+    if (!overview || !btn) {
+        console.warn('Program overview elements not found');
+        return;
+    }
+    
+    if (overview.classList.contains('hidden')) {
+        // Show the overview
+        overview.classList.remove('hidden');
+        overview.classList.add('fade-in');
+        btn.textContent = '✕ Close Info';
+        btn.style.background = 'var(--primary-color)';
+        btn.style.color = 'white';
+        
+        // Scroll to the overview so user sees it
+        setTimeout(() => {
+            overview.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    } else {
+        // Hide the overview
+        overview.classList.add('hidden');
+        btn.textContent = 'ℹ️ About This Phase';
+        btn.style.background = '';
+        btn.style.color = '';
+    }
+}
+
 // ==================== INITIALIZATION ====================
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 Athletic Development System v2.1.0 Loaded');
+    console.log('🚀 Athletic Development System v2.2.0 - WORKOUT-FIRST');
     console.log('Exercise Database:', typeof window.exerciseLibrary !== 'undefined' ? 'Loaded' : 'Not Found');
     console.log('Workout Templates:', typeof window.workoutTemplates !== 'undefined' ? 'Loaded' : 'Not Found');
     console.log('Block Periodization:', typeof window.BlockPeriodization !== 'undefined' ? 'Loaded' : 'Not Found');
@@ -421,3 +464,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('  - getPhaseRM(beginner, early-offseason, 1):', window.BlockPeriodization.getPhaseRM('beginner', 'early-offseason', 1));
     }
 });
+
+// ==================== EXPORTS ====================
+window.toggleProgramInfo = toggleProgramInfo;
+
+console.log('✅ App.js v2.2.0 loaded - Workout-First Fix Active');
