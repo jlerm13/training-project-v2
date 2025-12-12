@@ -1404,15 +1404,14 @@ function renderWorkouts() {
                         ` : ''}
                     </div>
                 `;
-            });  // Close exercises forEach
+            }); // ✅ Close exercises forEach
         }
         
-        html += `</div>`;  // ✅ Close workout-day div
-    });  // Close day forEach
+        html += `</div>`; // ✅ Close workout-day div
+    }); // ✅ Close day forEach (Object.entries)
     
-    container.innerHTML = html;  // ✅ Set HTML once after all days built
+    container.innerHTML = html; // ✅ Render everything once
 }
-
 
 // ==================== VARIATIONS FUNCTIONALITY ====================
 function showVariations(exerciseId, buttonElement) {
