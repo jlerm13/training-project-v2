@@ -47,10 +47,10 @@ function renderConditioning() {
 
 function renderConditioningOverview(conditioning, weekData) {
     return `
-        <div class="workout-day" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));">
+        <div class="workout-day">
             <div class="workout-header">
                 <div class="workout-title">🏃 Non-Impact Conditioning Overview</div>
-                <div class="workout-badge" style="background: #10b981;">Week ${userData.currentWeek}</div>
+                <div class="workout-badge">Week ${userData.currentWeek}</div>
             </div>
             <div style="padding: 16px;">
                 <p style="margin: 0 0 12px 0; font-size: 1.1rem; font-weight: 500;">${conditioning.overview.goal}</p>
@@ -60,7 +60,7 @@ function renderConditioningOverview(conditioning, weekData) {
                 <div style="margin-bottom: 12px;">
                     <strong>Equipment Options:</strong> ${conditioning.overview.equipment.join(', ')}
                 </div>
-                <div style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 8px; border-left: 4px solid #10b981;">
+                <div style="background: var(--bg-tertiary); padding: 12px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
                     <strong>Key Rules:</strong>
                     <ul style="margin: 8px 0 0 0; padding-left: 20px;">
                         ${conditioning.overview.keyRules.map(rule => `<li style="margin-bottom: 4px;">${rule}</li>`).join('')}
@@ -86,13 +86,13 @@ function renderConditioningSession(session, sessionKey, index) {
         <div class="workout-day">
             <div class="workout-header">
                 <div class="workout-title">${sessionLabels[index]} ${dayLabels[index]}</div>
-                <div class="workout-badge" style="background: #10b981;">${session.totalTime}</div>
+                <div class="workout-badge">${session.totalTime}</div>
             </div>
             <div style="padding: 16px;">
                 
                 <!-- Instruction Header -->
-                <div style="background: rgba(59, 130, 246, 0.1); padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #3b82f6;">
-                    <strong style="color: #3b82f6;">✋ Choose ONE conditioning approach:</strong>
+                <div style="background: var(--bg-tertiary); padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+                    <strong style="color: var(--text-primary);">Choose ONE conditioning approach:</strong>
                 </div>
                 
                 <!-- OPTION A: Steady State -->
@@ -109,12 +109,12 @@ function renderConditioningSession(session, sessionKey, index) {
                 ${renderOptionB(session, optionB_warmup, optionB_work, optionB_cooldown)}
                 
                 <!-- Coach Note -->
-                <div style="background: rgba(245, 158, 11, 0.1); padding: 12px 16px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #f59e0b;">
+                <div style="background: var(--bg-tertiary); padding: 12px 16px; border-radius: 8px; margin-top: 20px; border-left: 4px solid var(--border-strong);">
                     <div style="display: flex; align-items: start; gap: 8px;">
                         <span style="font-size: 1.1rem;">💡</span>
                         <div>
-                            <strong style="color: #d97706;">Coach Note:</strong>
-                            <span style="margin-left: 4px;">${session.coachNote}</span>
+                            <strong style="color: var(--text-primary);">Coach Note:</strong>
+                            <span style="margin-left: 4px; color: var(--text-secondary);">${session.coachNote}</span>
                         </div>
                     </div>
                 </div>
@@ -127,10 +127,10 @@ function renderOptionA(optionA) {
     if (!optionA) return '';
     
     return `
-        <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05)); padding: 16px; border-radius: 12px; margin-bottom: 16px; border: 2px solid rgba(59, 130, 246, 0.3);">
+        <div style="background: var(--bg-secondary); padding: 16px; border-radius: 12px; margin-bottom: 16px; border: 2px solid var(--border-subtle);">
             <div style="display: flex; align-items: center; margin-bottom: 12px;">
                 <span style="font-size: 1.5rem; margin-right: 8px;">🚴</span>
-                <h3 style="margin: 0; color: #2563eb; font-size: 1.2rem;">Option A: Steady State</h3>
+                <h3 style="margin: 0; color: var(--text-primary); font-size: 1.2rem; font-weight: 700;">Option A: Steady State</h3>
             </div>
             <div style="font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; color: var(--text-primary);">
                 ${optionA.description}
@@ -144,32 +144,32 @@ function renderOptionA(optionA) {
 
 function renderOptionB(session, warmup, work, cooldown) {
     return `
-        <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05)); padding: 16px; border-radius: 12px; border: 2px solid rgba(245, 158, 11, 0.3);">
+        <div style="background: var(--bg-secondary); padding: 16px; border-radius: 12px; border: 2px solid var(--border-subtle);">
             <div style="display: flex; align-items: center; margin-bottom: 12px;">
                 <span style="font-size: 1.5rem; margin-right: 8px;">⚡</span>
-                <h3 style="margin: 0; color: #d97706; font-size: 1.2rem;">Option B: Intervals (${session.totalTime} total)</h3>
+                <h3 style="margin: 0; color: var(--text-primary); font-size: 1.2rem; font-weight: 700;">Option B: Intervals (${session.totalTime} total)</h3>
             </div>
             
-            <div style="font-weight: 500; margin-bottom: 12px; color: var(--text-primary);">Structure:</div>
+            <div style="font-weight: 600; margin-bottom: 12px; color: var(--text-primary);">Structure:</div>
             
-            ${warmup ? renderIntervalSection('Warmup', warmup.description, '🔥', '#ef4444') : ''}
+            ${warmup ? renderIntervalSection('Warmup', warmup.description, '🔥') : ''}
             
-            ${work.map(w => renderIntervalSection('Work', w.description, '💪', '#10b981', w.detail)).join('')}
+            ${work.map(w => renderIntervalSection('Work', w.description, '💪', w.detail)).join('')}
             
-            ${cooldown ? renderIntervalSection('Cooldown', cooldown.description, '🧘', '#8b5cf6') : ''}
+            ${cooldown ? renderIntervalSection('Cooldown', cooldown.description, '🧘') : ''}
         </div>
     `;
 }
 
-function renderIntervalSection(title, description, icon, color, detail = '') {
+function renderIntervalSection(title, description, icon, detail = '') {
     return `
-        <div style="background: rgba(${color === '#ef4444' ? '239, 68, 68' : color === '#10b981' ? '16, 185, 129' : '139, 92, 246'}, 0.1); padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid ${color};">
+        <div style="background: var(--bg-tertiary); padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid var(--border-strong);">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
                 <span style="font-size: 1.1rem;">${icon}</span>
-                <strong style="color: ${color};">${title}</strong>
+                <strong style="color: var(--text-primary);">${title}</strong>
             </div>
             <div style="margin-left: 28px;">
-                <div style="font-size: ${detail ? '1rem' : '0.95rem'}; ${detail ? 'font-weight: 500; margin-bottom: 4px;' : ''}">
+                <div style="font-size: ${detail ? '1rem' : '0.95rem'}; ${detail ? 'font-weight: 500; margin-bottom: 4px;' : ''} color: var(--text-primary);">
                     ${description.replace('Option B: ', '')}
                 </div>
                 ${detail ? `<div style="font-size: 0.85rem; color: var(--text-secondary);">${detail}</div>` : ''}
@@ -202,10 +202,10 @@ function renderWeeklySchedule() {
     }
     
     let html = `
-        <div class="workout-day" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));">
+        <div class="workout-day">
             <div class="workout-header">
                 <div class="workout-title">📅 ${templateSchedule.name}</div>
-                <div class="workout-badge" style="background: #3b82f6;">Weekly View</div>
+                <div class="workout-badge">Weekly View</div>
             </div>
             <div style="padding: 16px;">
     `;
@@ -217,7 +217,7 @@ function renderWeeklySchedule() {
         templateSchedule.options.forEach((option, index) => {
             html += `
                 <div style="margin-bottom: 20px; ${index > 0 ? 'border-top: 1px solid var(--border-color); padding-top: 16px;' : ''}">
-                    <h4 style="margin: 0 0 12px 0; color: var(--primary-color);">${option.name}</h4>
+                    <h4 style="margin: 0 0 12px 0; color: var(--primary-color); font-weight: 700;">${option.name}</h4>
                     ${renderScheduleTable(option.schedule)}
                 </div>
             `;
@@ -252,21 +252,14 @@ function renderWeeklySchedule() {
 }
 
 function renderScheduleTable(schedule) {
-    const typeColors = {
-        lift: { bg: 'rgba(239, 68, 68, 0.1)', text: '#ef4444' },
-        conditioning: { bg: 'rgba(16, 185, 129, 0.1)', text: '#10b981' },
-        rest: { bg: 'rgba(156, 163, 175, 0.1)', text: '#6b7280' },
-        both: { bg: 'rgba(139, 92, 246, 0.1)', text: '#8b5cf6' }
-    };
-    
+    // ALL NEUTRAL - no color coding by type
     let html = '<div style="display: grid; gap: 8px;">';
     
     schedule.forEach(day => {
-        const colors = typeColors[day.type] || typeColors.rest;
         html += `
-            <div style="display: flex; align-items: center; background: ${colors.bg}; padding: 10px 14px; border-radius: 8px; border-left: 4px solid ${colors.text};">
-                <div style="width: 100px; font-weight: 600;">${day.day}</div>
-                <div style="flex: 1;">${day.activity}</div>
+            <div style="display: flex; align-items: center; background: var(--bg-secondary); padding: 10px 14px; border-radius: 8px; border-left: 4px solid var(--border-strong);">
+                <div style="width: 100px; font-weight: 700; color: var(--text-primary);">${day.day}</div>
+                <div style="flex: 1; color: var(--text-primary);">${day.activity}</div>
             </div>
         `;
     });
