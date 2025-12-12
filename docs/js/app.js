@@ -1294,7 +1294,8 @@ function renderWorkouts() {
                     : exercise.exercise;
                     
                 let isSubstituted = false;
-
+            
+                // Equipment adaptation logic
                 if (userData.exerciseVariations && userData.exerciseVariations[exercise.exercise]) {
                     exerciseName = userData.exerciseVariations[exercise.exercise];
                 } else if (exerciseData && exerciseData.equipmentMap) {
@@ -1308,14 +1309,14 @@ function renderWorkouts() {
                     }
                     if (exerciseName !== exerciseData.name) isSubstituted = true;
                 }
-
+            
                 const exerciseId = `${exercise.exercise}-${dayKey}-${index}`;
                 const evaluatedSets = evaluateTemplateString(exercise.sets);
                 const evaluatedIntensity = evaluateTemplateString(exercise.intensity);
                 const evaluatedNote = evaluateTemplateString(exercise.note);
                 const evaluatedTempo = evaluateTemplateString(exercise.tempo);
                 const evaluatedRest = evaluateTemplateString(exercise.rest);
-
+            
                 html += `
                     <div class="exercise-block" id="exercise-${exerciseId}" onclick="toggleExerciseDetails('${exerciseId}')">
                         <div class="exercise-header-row">
@@ -1336,7 +1337,7 @@ function renderWorkouts() {
                             </button>
                         </div>
                         
-<div class="exercise-details-expanded" onclick="event.stopPropagation()">
+                        <div class="exercise-details-expanded" onclick="event.stopPropagation()">
                             ${evaluatedIntensity ? `
                                 <div class="exercise-detail-row">
                                     <span class="exercise-detail-label">Intensity:</span>
@@ -1371,13 +1372,11 @@ function renderWorkouts() {
                                 </div>
                             ` : ''}
                             
-                            <!-- TRACKING SECTION -->
                             <div class="tracking-section" onclick="event.stopPropagation()">
                                 <div class="tracking-header">📊 Track Your Sets</div>
                                 
                                 ${renderTrackingInterface(exercise.exercise, exerciseName, evaluatedSets, exerciseId)}
                                 
-                                <!-- Exercise Notes -->
                                 <div class="exercise-notes-area" onclick="event.stopPropagation()">
                                     <div class="exercise-notes-label">Notes (optional)</div>
                                     <textarea 
@@ -1389,6 +1388,10 @@ function renderWorkouts() {
                                         onblur="saveExerciseNotes('${exercise.exercise}', '${exerciseId}')"
                                     ></textarea>
                                 </div>
+                            </div>
+                            
+                            <div class="collapse-hint">Tap anywhere to collapse</div>
+                        </div>
                         
                         ${exerciseData?.variations ? `
                             <div class="variations-dropdown hidden" id="variations-${exerciseId}">
@@ -1402,10 +1405,6 @@ function renderWorkouts() {
                     </div>
                 `;
             });
-        }
-        
-        html += `</div>`;
-    });
     
     container.innerHTML = html;
 }
