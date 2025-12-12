@@ -1,230 +1,41 @@
-// ==================== ERROR CHECKING AND UTILITIES ====================
-function checkTemplatesLoaded() {
-    if (!window.workoutTemplates || Object.keys(window.workoutTemplates).length === 0) {
-        console.error('Templates not loaded!');
-        showError('Workout templates failed to load. Please refresh the page.');
-        return false;
-    }
-    return true;
+// ==================== APP.JS - FLOW ORCHESTRATION ====================
+// Main application flow and screen management
+// v2.1.0 - Refactored for clean separation of concerns
+
+// ==================== SCREEN FLOW MANAGEMENT ====================
+
+function hideAllScreens() {
+    const screens = ['welcomeScreen', 'experienceScreen', 'phaseScreen', 'equipmentScreen', 'confirmationScreen', 'programScreen'];
+    screens.forEach(screenId => {
+        const el = document.getElementById(screenId);
+        if (el) el.classList.add('hidden');
+    });
 }
 
-function checkBlockPeriodizationLoaded() {
-    if (!window.BlockPeriodization) {
-        console.error('Block Periodization not loaded!');
-        showError('Block Periodization system failed to load. Please refresh the page.');
-        return false;
-    }
-    return true;
-}
-
-// Utility: log and display errors
-function showError(message) {
-    console.error(message);
-    const box = document.getElementById('errorBox');
-    if (box) {
-        box.classList.remove('hidden');
-        box.innerHTML += `<div class="error-message">⚠️ ${message}</div>`;
-    }
-}
-
-// ==================== STATE MANAGEMENT ====================
-let userData = {
-    tier: null,  // 'white', 'red', 'blue', 'gold' - COACH ASSIGNED
-    phase: 'early-offseason',  // Start here, expand later
-    equipment: null,  // REMOVED: context
-    currentWeek: 1,
-    currentTemplate: '2day',  // Default to 2day since it's the only one fully built
-    currentView: 'lifting',  // 'lifting', 'conditioning', 'schedule'
-    daysPerWeek: 2,
-    exerciseVariations: {},
-    maxWeeks: 4,  // 4-week blocks for early off-season
-    sessionDuration: 45
-};
-
-// ==================== TIER DEFINITIONS ====================
-// Athlete-friendly language - avoid jargon, be clear and actionable
-const TIER_SYSTEM = {
-    white: {
-        name: 'White',
-        stage: 'Learning Phase',
-        focus: 'Learn the Movements',
-        // Athlete-friendly descriptions
-        intensity: 'Light to moderate — leave a lot in the tank',
-        intensityTechnical: '<60% effort',
-        tempo: 'Slow, controlled, rhythmic  (ex: 3 sec down, 3 sec up)',
-        tempoTechnical: '3-0-3 or 2-1-2',
-        frequency: '2-4 days/week',
-        sessionLength: '30-45 min',
-        repRanges: '6-12 reps per set, some holds',
-        whatToExpect: "You'll focus on moving well before moving heavy. Expect to feel like you could do more — that's the point.",
-        color: '#10b981'
-    },
-    red: {
-        name: 'Red',
-        stage: 'Building Phase',
-        focus: 'Build the Foundation',
-        intensity: 'Moderate — should feel challenging but doable',
-        intensityTechnical: '55-70% effort',
-        tempo: 'Controlled with pauses',
-        tempoTechnical: '2-0-2 with pauses',
-        frequency: '3-4 days/week',
-        sessionLength: '40-55 min',
-        repRanges: '6-10 reps per set',
-        whatToExpect: "Now you're building strength. Weights get heavier, but form stays tight.",
-        color: '#ef4444'
-    },
-    blue: {
-        name: 'Blue',
-        stage: 'Strength Phase',
-        focus: 'Build Real Strength',
-        intensity: 'Challenging — 2-3 reps left in the tank',
-        intensityTechnical: '65-80%',
-        tempo: 'You control the speed',
-        tempoTechnical: 'Self-selected',
-        frequency: '4 days/week',
-        sessionLength: '45-70 min',
-        repRanges: '4-6 reps per set',
-        whatToExpect: "Time to push. Heavier weights, fewer reps, more rest between sets.",
-        color: '#3b82f6'
-    },
-    gold: {
-        name: 'Gold',
-        stage: 'Peak Phase',
-        focus: 'Maximize Performance',
-        intensity: 'Heavy — 1-2 reps left in the tank',
-        intensityTechnical: '70-85%',
-        tempo: 'Based on how you feel',
-        tempoTechnical: 'Autoregulated',
-        frequency: '4-5 days/week',
-        sessionLength: '50-75 min',
-        repRanges: '3-6 reps per set',
-        whatToExpect: "You know your body. Train hard, recover smart, perform when it counts.",
-        color: '#f59e0b'
-    }
-};
-
-// ==================== TIER TO EXPERIENCE MAPPING ====================
-// Maps new tier system to existing template structure for backwards compatibility
-const TIER_TO_EXPERIENCE_MAP = {
-    white: 'beginner',
-    red: 'intermediate',
-    blue: 'advanced',
-    gold: 'advanced'  // Will have separate templates later
-};
-
-// ==================== DYNAMIC TEMPLATE EVALUATION ====================
-/**
- * Evaluates template strings containing Block Periodization functions
- * Converts ${getPhaseRM()} to actual values like "5-8RM"
- */
-function evaluateTemplateString(templateString, context = {}) {
-    if (!templateString || typeof templateString !== 'string') {
-        return templateString;
-    }
-
-    if (!checkBlockPeriodizationLoaded()) {
-        return templateString; // Return original if BP not loaded
-    }
-
-    // Default context values - support both tier and experience for backwards compatibility
-    const evalContext = {
-        tier: userData.tier || 'white',
-        experience: TIER_TO_EXPERIENCE_MAP[userData.tier] || 'beginner',  // For existing templates
-        phase: userData.phase || 'early-offseason', 
-        week: userData.currentWeek || 1,
-        ...context
-    };
-
-    try {
-        // Replace Block Periodization function calls
-        let evaluated = templateString;
-
-        // ${getPhaseRM()} - gets rep range for current context
-        evaluated = evaluated.replace(/\$\{getPhaseRM\(\)\}/g, () => {
-            return window.BlockPeriodization.getPhaseRM(
-                evalContext.experience, 
-                evalContext.phase, 
-                evalContext.week
-            );
-        });
-
-        // ${getPhaseIntensity()} - gets intensity for current context  
-        evaluated = evaluated.replace(/\$\{getPhaseIntensity\(\)\}/g, () => {
-            return window.BlockPeriodization.getPhaseIntensity(
-                evalContext.experience,
-                evalContext.phase, 
-                evalContext.week
-            );
-        });
-
-        // ${getPhaseNote()} - gets phase-specific coaching note
-        evaluated = evaluated.replace(/\$\{getPhaseNote\(\)\}/g, () => {
-            return window.BlockPeriodization.getPhaseNote(
-                evalContext.experience,
-                evalContext.phase
-            );
-        });
-
-        // ${getWeeklyFocus()} - gets weekly focus description
-        evaluated = evaluated.replace(/\$\{getWeeklyFocus\(\)\}/g, () => {
-            return window.BlockPeriodization.getWeeklyFocus(
-                evalContext.phase,
-                evalContext.week  
-            );
-        });
-
-        return evaluated;
-
-    } catch (error) {
-        console.error('Error evaluating template string:', error);
-        return templateString; // Return original on error
+function goBack(screen) {
+    hideAllScreens();
+    switch (screen) {
+        case 'welcome':
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+            document.getElementById('progressTracker').classList.add('hidden');
+            break;
+        case 'experience':
+            showExperienceScreen();
+            updateProgressTracker(1);
+            break;
+        case 'phase':
+            showPhaseScreen();
+            updateProgressTracker(2);
+            break;
+        case 'equipment':
+            showEquipmentScreen();
+            updateProgressTracker(3);
+            break;
     }
 }
 
-/**
- * Enhanced week display with block periodization context
- */
-function updateWeekDisplay() {
-    const weekDisplay = document.getElementById('weekDisplay');
-    if (!weekDisplay) return;
+// ==================== ONBOARDING FLOW ====================
 
-    let displayText = `Week ${userData.currentWeek}`;
-    
-    if (checkBlockPeriodizationLoaded() && userData.phase) {
-        try {
-            const blockType = window.BlockPeriodization.getBlockWaveType(userData.phase);
-            const weeklyFocus = window.BlockPeriodization.getWeeklyFocus(userData.phase, userData.currentWeek);
-            
-            // Subtle integration - no extra color
-            displayText += ` - ${blockType.charAt(0).toUpperCase() + blockType.slice(1)} Block`;
-            
-            weekDisplay.innerHTML = `
-                <div style="text-align: center;">
-                    <div style="font-weight: 600; font-size: 1.1rem; color: var(--text-primary);">${displayText}</div>
-                    <div style="font-size: 0.8rem; color: var(--text-tertiary); margin-top: 4px; font-style: italic;">
-                        ${weeklyFocus}
-                    </div>
-                </div>
-            `;
-            return;
-        } catch (error) {
-            console.warn('Error getting block periodization info:', error);
-        }
-    }
-    
-    // Fallback to simple display
-    weekDisplay.textContent = displayText;
-}
-
-/**
- * Gets block periodization banner for workout display
- */
-function getBlockPeriodizationBanner() {
-    // Banner removed for visual clarity - block info integrated into week display
-        return '';
-}
-
-// ==================== UI FLOW (4 STEPS - NO CONTEXT SCREEN) ====================
 function startOnboarding() {
     hideAllScreens();
     document.getElementById('progressTracker').classList.remove('hidden');
@@ -341,8 +152,6 @@ function showPhaseScreen() {
     updateProgressTracker(2);
 }
 
-// REMOVED: showContextScreen() - No longer part of flow
-
 function showEquipmentScreen() {
     hideAllScreens();
     const screen = document.getElementById('equipmentScreen');
@@ -374,244 +183,15 @@ function showEquipmentScreen() {
         </div>
     `;
     screen.classList.remove('hidden');
-    updateProgressTracker(3);  // Now step 3 instead of 4
-}
-
-function updateProgressTracker(step) {
-    document.querySelectorAll('.progress-step').forEach((el, idx) => {
-        if (idx < step - 1) {
-            el.classList.add('completed');
-            el.classList.remove('active');
-        } else if (idx === step - 1) {
-            el.classList.add('active');
-            el.classList.remove('completed');
-        } else {
-            el.classList.remove('active', 'completed');
-        }
-    });
-}
-
-function hideAllScreens() {
-    // REMOVED contextScreen from this list
-    const screens = ['welcomeScreen', 'experienceScreen', 'phaseScreen', 'equipmentScreen', 'confirmationScreen', 'programScreen'];
-    screens.forEach(screenId => {
-        const el = document.getElementById(screenId);
-        if (el) el.classList.add('hidden');
-    });
-}
-
-function goBack(screen) {
-    hideAllScreens();
-    switch (screen) {
-        case 'welcome':
-            document.getElementById('welcomeScreen').classList.remove('hidden');
-            document.getElementById('progressTracker').classList.add('hidden');
-            break;
-        case 'experience':
-            showExperienceScreen();
-            updateProgressTracker(1);
-            break;
-        case 'phase':
-            showPhaseScreen();
-            updateProgressTracker(2);
-            break;
-        case 'equipment':
-            showEquipmentScreen();
-            updateProgressTracker(3);
-            break;
-    }
-}
-
-// ==================== SELECTORS ====================
-function selectTier(tier) {
-    userData.tier = tier;
-    selectCard('#experienceScreen', 'experienceContinue');
-}
-
-function selectPhase(phase) {
-    userData.phase = phase;
-    selectCard('#phaseScreen', 'phaseContinue');
-}
-
-// REMOVED: selectContext() - no longer needed
-
-function selectEquipment(equipment) {
-    userData.equipment = equipment;
-    selectCard('#equipmentScreen', 'equipmentContinue');
-}
-
-function selectCard(screenSelector, continueBtnId) {
-    document.querySelectorAll(`${screenSelector} .option-card`).forEach(opt => opt.classList.remove('selected'));
-    event.target.closest('.option-card').classList.add('selected');
-    document.getElementById(continueBtnId).classList.remove('hidden');
-}
-
-// ==================== CONFIRMATION SCREEN ====================
-function showConfirmationScreen() {
-    hideAllScreens();
-    const screen = document.getElementById('confirmationScreen');
-    const content = document.getElementById('confirmationContent');
-    
-    // Map values to friendly names
-    const tierNames = {
-        'white': 'I need clear instructions',
-        'red': 'I need some guidance',
-        'blue': "I'm pretty independent",
-        'gold': "I'm fully self-directed"
-    };
-    
-    const phaseNames = {
-        'early-offseason': 'Early Off-Season',
-        'mid-offseason': 'Mid Off-Season',
-        'preseason': 'Pre-Season',
-        'inseason': 'In-Season'
-    };
-    
-    const equipmentNames = {
-        'full': 'Full Facility',
-        'commercial': 'Commercial Gym',
-        'minimal': 'Minimal Equipment',
-        'bodyweight': 'Bodyweight Only'
-    };
-    
-    // Count how many exercises will be adapted
-    const adaptationCount = userData.equipment === 'bodyweight' ? 12 : 
-                           userData.equipment === 'minimal' ? 8 : 
-                           userData.equipment === 'commercial' ? 3 : 0;
-    
-    content.innerHTML = `
-        <div class="confirmation-hero">✓</div>
-        <div class="confirmation-title">Your Program is Ready</div>
-        <div class="confirmation-subtitle">We've customized everything based on your setup</div>
-        
-        <div class="confirmation-grid">
-            <div class="confirmation-item">
-                <div class="confirmation-icon">🎯</div>
-                <div class="confirmation-text">
-                    <div class="confirmation-label">Training Independence</div>
-                    <div class="confirmation-value">${tierNames[userData.tier]}</div>
-                </div>
-            </div>
-            
-            <div class="confirmation-item">
-                <div class="confirmation-icon">📅</div>
-                <div class="confirmation-text">
-                    <div class="confirmation-label">Training Phase</div>
-                    <div class="confirmation-value">${phaseNames[userData.phase]}</div>
-                </div>
-            </div>
-            
-            <div class="confirmation-item">
-                <div class="confirmation-icon">🏋️</div>
-                <div class="confirmation-text">
-                    <div class="confirmation-label">Equipment Access</div>
-                    <div class="confirmation-value">${equipmentNames[userData.equipment]}</div>
-                </div>
-            </div>
-        </div>
-        
-        ${adaptationCount > 0 ? `
-            <div class="adaptations-box">
-                <div class="adaptations-title">
-                    <span>⚙️</span>
-                    <span>Automatic Adaptations</span>
-                    <span class="adaptations-count">${adaptationCount}</span>
-                </div>
-                <p style="margin: 0 0 12px 0; color: var(--text-secondary); font-size: 0.95rem;">
-                    We've swapped exercises to match your equipment:
-                </p>
-                <ul class="adaptations-list">
-                    ${userData.equipment === 'bodyweight' ? `
-                        <li>Barbell Squats → Bodyweight Squats</li>
-                        <li>Bench Press → Push-ups</li>
-                        <li>DB Rows → Inverted Rows</li>
-                        <li>...and 9 more exercises adapted</li>
-                    ` : userData.equipment === 'minimal' ? `
-                        <li>Barbell Squats → DB Goblet Squats</li>
-                        <li>Bench Press → DB Bench Press</li>
-                        <li>Cable Rows → DB Rows</li>
-                        <li>...and 5 more exercises adapted</li>
-                    ` : userData.equipment === 'commercial' ? `
-                        <li>Specialty Bars → Standard Barbells</li>
-                        <li>Sleds → Cardio Machines</li>
-                        <li>...and 1 more exercise adapted</li>
-                    ` : ''}
-                </ul>
-            </div>
-        ` : `
-            <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; margin: 24px 0;">
-                <p style="margin: 0; color: var(--text-secondary);">
-                    <strong style="color: var(--text-primary);">✓ No adaptations needed</strong><br>
-                    You have full equipment access, so you'll see the program as designed.
-                </p>
-            </div>
-        `}
-        
-        <p style="margin: 32px 0 24px 0; font-size: 1.1rem; color: var(--text-primary); font-weight: 500;">
-            Everything is set. Ready to start training?
-        </p>
-        
-        <button class="btn" onclick="generateProgram()" style="width: 100%; padding: 16px; font-size: 1.1rem;">
-            Start Week 1 →
-        </button>
-        
-        <button class="btn btn-secondary" onclick="goBack('equipment')" style="width: 100%; margin-top: 12px;">
-            ← Go Back
-        </button>
-    `;
-    
-    screen.classList.remove('hidden');
-    updateProgressTracker(4);
-}
-
-// ==================== TEMPLATE AVAILABILITY CHECK ====================
-/**
- * Checks if a template has actual workout data (not just description/note)
- */
-function templateHasData(tier, phase, templateType) {
-    try {
-        const template = window.workoutTemplates?.[tier]?.[phase]?.[templateType];
-        
-        // If null, undefined, or empty object, no data
-        if (!template || template === null) return false;
-        
-        // If it's just a description object (placeholder), no data
-        if (template.description && !template.week1) return false;
-        
-        // Check if it has at least week1 with workout data
-        if (template.week1) {
-            // Check if week1 has actual day data (monday, friday, etc.)
-            const dayKeys = Object.keys(template.week1).filter(k => 
-                ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].includes(k)
-            );
-            return dayKeys.length > 0;
-        }
-        
-        return false;
-    } catch (error) {
-        console.warn(`Error checking template data for ${tier}/${phase}/${templateType}:`, error);
-        return false;
-    }
-}
-
-/**
- * Gets only templates that have actual data built
- */
-function getAvailableTemplatesWithData(tier, phase) {
-    const possibleTemplates = [
-        { key: '2day', name: '2-Day' },
-        { key: '3day', name: '3-Day' },
-        { key: '4day', name: '4-Day' }
-    ];
-    
-    return possibleTemplates.filter(t => templateHasData(tier, phase, t.key));
+    updateProgressTracker(3);
 }
 
 // ==================== PROGRAM GENERATION ====================
+
 function generateProgram() {
     hideAllScreens();
     document.getElementById('programScreen').classList.remove('hidden');
-    updateProgressTracker(4);  // Now step 4 instead of 5
+    updateProgressTracker(4);
 
     const phaseNames = {
         'early-offseason': 'Early Off-Season',
@@ -632,7 +212,7 @@ function generateProgram() {
     if (availableTemplates.length > 0) {
         userData.currentTemplate = availableTemplates[0].key;
     } else {
-        userData.currentTemplate = '2day';  // Fallback
+        userData.currentTemplate = '2day';
     }
 
     generateProgramOverview();
@@ -641,103 +221,9 @@ function generateProgram() {
     renderWorkouts();
 }
 
-/**
- * Checks if a template is marked as unavailable (coming soon)
- */
-function templateIsUnavailable(tier, phase, templateType) {
-    try {
-        const template = window.workoutTemplates?.[tier]?.[phase]?.[templateType];
-        
-        // Check if template has unavailable flag
-        if (template && template.unavailable === true) return true;
-        
-        // For white tier early-offseason, mark 3-day as unavailable
-        if (tier === 'white' && phase === 'early-offseason' && templateType === '3day') {
-            return true;
-        }
-        
-        return false;
-    } catch (error) {
-        return false;
-    }
-}
-
-/**
- * Gets all templates including unavailable ones for display purposes
- */
-function getAllTemplatesForDisplay(tier, phase) {
-    const possibleTemplates = [
-        { key: '2day', name: '2-Day' },
-        { key: '3day', name: '3-Day' },
-        { key: '4day', name: '4-Day' }
-    ];
-    
-    return possibleTemplates.map(t => ({
-        ...t,
-        hasData: templateHasData(tier, phase, t.key),
-        unavailable: templateIsUnavailable(tier, phase, t.key)
-    }));
-}
-
-function generateTemplateTabs() {
-    const container = document.querySelector('.template-tabs');
-    const allTemplates = getAllTemplatesForDisplay(userData.tier, userData.phase);
-    
-    // Filter to show: templates with data OR templates marked as unavailable (coming soon)
-    const templatesToShow = allTemplates.filter(t => t.hasData || t.unavailable);
-    
-    if (templatesToShow.length === 0) {
-        container.innerHTML = `
-            <div style="color: #f59e0b; padding: 12px; background: rgba(245, 158, 11, 0.1); border-radius: 8px;">
-                ⚠️ No templates available for this combination. Try <strong>White tier</strong> + <strong>Early Off-Season</strong>.
-            </div>
-        `;
-        return;
-    }
-    
-    let tabsHTML = '';
-    
-    // Lifting template tabs
-    templatesToShow.forEach((template, index) => {
-        const isActive = template.key === userData.currentTemplate && userData.currentView !== 'conditioning' && userData.currentView !== 'schedule' ? 'active' : '';
-        const isUnavailable = template.unavailable;
-        
-        if (isUnavailable) {
-            // Show as disabled/unavailable
-            tabsHTML += `
-                <div class="template-tab disabled">
-                    ${template.name} Lift
-                </div>
-            `;
-        } else {
-            // Show as normal clickable tab
-            tabsHTML += `<div class="template-tab ${isActive}" onclick="selectTemplate('${template.key}')">${template.name} Lift</div>`;
-        }
-    });
-    
-    // Check if conditioning exists for this tier/phase
-    const hasConditioning = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.['conditioning'];
-    
-    if (hasConditioning) {
-        // Add separator
-        tabsHTML += `<div style="width: 1px; background: var(--border-color); margin: 0 4px;"></div>`;
-        
-        // Conditioning tab
-        const conditioningActive = userData.currentView === 'conditioning' ? 'active' : '';
-        tabsHTML += `<div class="template-tab ${conditioningActive}" onclick="showConditioning()">Conditioning</div>`;
-        
-        // Schedule tab
-        const scheduleActive = userData.currentView === 'schedule' ? 'active' : '';
-        tabsHTML += `<div class="template-tab ${scheduleActive}" onclick="showWeeklySchedule()">Weekly Schedule</div>`;
-    }
-    
-    container.innerHTML = tabsHTML;
-}
-
 function generateProgramOverview() {
     const overview = document.getElementById('programOverview');
     
-    // Athlete-friendly phase descriptions (no jargon)
     const phaseGuidelines = {
         'early-offseason': {
             focus: 'Build Your Base',
@@ -775,9 +261,7 @@ function generateProgramOverview() {
 
     const phase = phaseGuidelines[userData.phase];
     const tierInfo = TIER_SYSTEM[userData.tier] || TIER_SYSTEM.white;
-    const availableTemplates = getAvailableTemplatesWithData(userData.tier, userData.phase);
     
-    // Equipment-friendly names
     const equipmentNames = {
         'full': 'Full Gym',
         'commercial': 'Commercial Gym',
@@ -788,7 +272,6 @@ function generateProgramOverview() {
     overview.innerHTML = `
         <h4>Your Training Plan</h4>
         
-        <!-- Main Phase Info -->
         <div style="background: var(--bg-tertiary); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
                 <div>
@@ -805,7 +288,6 @@ function generateProgramOverview() {
             <p style="margin: 0; font-size: 0.95rem; line-height: 1.5;">${phase.emphasis}</p>
         </div>
         
-        <!-- Goals and Setup Grid -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
             <div style="background: var(--bg-secondary); padding: 12px; border-radius: 6px;">
                 <h5 style="margin: 0 0 8px 0; font-size: 0.9rem; color: var(--text-secondary);">What You're Working On</h5>
@@ -819,7 +301,6 @@ function generateProgramOverview() {
             </div>
         </div>
         
-        <!-- How to Train -->
         <div style="background: var(--bg-secondary); padding: 12px; border-radius: 6px; margin-bottom: 12px;">
             <h5 style="margin: 0 0 8px 0; font-size: 0.9rem; color: var(--text-secondary);">How to Train</h5>
             <div style="margin: 4px 0;"><strong>Effort Level:</strong> ${tierInfo.intensity}</div>
@@ -827,7 +308,6 @@ function generateProgramOverview() {
             <div style="margin: 4px 0;"><strong>Reps:</strong> ${tierInfo.repRanges}</div>
         </div>
         
-        <!-- What to Expect -->
         <div style="background: var(--bg-tertiary); border-left: 4px solid var(--border-strong); padding: 12px; border-radius: 4px;">
             <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
                 <strong style="color: var(--text-primary);">💡 What to Expect:</strong> ${phase.whatToExpect}
@@ -836,968 +316,59 @@ function generateProgramOverview() {
     `;
 }
 
+function generateTemplateTabs() {
+    const container = document.querySelector('.template-tabs');
+    const allTemplates = getAllTemplatesForDisplay(userData.tier, userData.phase);
+    
+    const templatesToShow = allTemplates.filter(t => t.hasData || t.unavailable);
+    
+    if (templatesToShow.length === 0) {
+        container.innerHTML = `
+            <div style="color: #f59e0b; padding: 12px; background: rgba(245, 158, 11, 0.1); border-radius: 8px;">
+                ⚠️ No templates available for this combination. Try <strong>White tier</strong> + <strong>Early Off-Season</strong>.
+            </div>
+        `;
+        return;
+    }
+    
+    let tabsHTML = '';
+    
+    templatesToShow.forEach((template) => {
+        const isActive = template.key === userData.currentTemplate && userData.currentView !== 'conditioning' && userData.currentView !== 'schedule' ? 'active' : '';
+        const isUnavailable = template.unavailable;
+        
+        if (isUnavailable) {
+            tabsHTML += `<div class="template-tab disabled">${template.name} Lift</div>`;
+        } else {
+            tabsHTML += `<div class="template-tab ${isActive}" onclick="selectTemplate('${template.key}')">${template.name} Lift</div>`;
+        }
+    });
+    
+    const hasConditioning = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.['conditioning'];
+    
+    if (hasConditioning) {
+        tabsHTML += `<div style="width: 1px; background: var(--border-color); margin: 0 4px;"></div>`;
+        
+        const conditioningActive = userData.currentView === 'conditioning' ? 'active' : '';
+        tabsHTML += `<div class="template-tab ${conditioningActive}" onclick="showConditioning()">Conditioning</div>`;
+        
+        const scheduleActive = userData.currentView === 'schedule' ? 'active' : '';
+        tabsHTML += `<div class="template-tab ${scheduleActive}" onclick="showWeeklySchedule()">Weekly Schedule</div>`;
+    }
+    
+    container.innerHTML = tabsHTML;
+}
+
 function selectTemplate(template) {
     userData.currentTemplate = template;
-    userData.currentView = 'lifting';  // Reset to lifting view
-    generateTemplateTabs(); // Regenerate tabs to update active state
-    updateWeekDisplay(); // Update week display
+    userData.currentView = 'lifting';
+    generateTemplateTabs();
+    updateWeekDisplay();
     renderWorkouts();
 }
 
-// ==================== CONDITIONING VIEW ====================
-function showConditioning() {
-    userData.currentView = 'conditioning';
-    generateTemplateTabs();
-    updateWeekDisplay();
-    renderConditioning();
-}
-
-function renderConditioning() {
-    const container = document.getElementById('workoutDays');
-    const conditioning = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.['conditioning'];
-    
-    if (!conditioning) {
-        container.innerHTML = `<div class="workout-day"><p>No conditioning plan available for this phase.</p></div>`;
-        return;
-    }
-    
-    // Get the current week's conditioning (handle repeat weeks)
-    let weekKey = `week${userData.currentWeek}`;
-    let weekData = conditioning[weekKey];
-    
-    // Handle repeat weeks
-    if (weekData?.repeatWeek) {
-        const repeatKey = `week${weekData.repeatWeek}`;
-        weekData = { ...conditioning[repeatKey], note: weekData.note };
-    }
-    
-    let html = '';
-    
-    // Overview card
-    html += `
-        <div class="workout-day" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));">
-            <div class="workout-header">
-                <div class="workout-title">🏃 Non-Impact Conditioning Overview</div>
-                <div class="workout-badge" style="background: #10b981;">Week ${userData.currentWeek}</div>
-            </div>
-            <div style="padding: 16px;">
-                <p style="margin: 0 0 12px 0; font-size: 1.1rem; font-weight: 500;">${conditioning.overview.goal}</p>
-                <div style="margin-bottom: 12px;">
-                    <strong>Frequency:</strong> ${conditioning.overview.frequency}
-                </div>
-                <div style="margin-bottom: 12px;">
-                    <strong>Equipment Options:</strong> ${conditioning.overview.equipment.join(', ')}
-                </div>
-                <div style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 8px; border-left: 4px solid #10b981;">
-                    <strong>Key Rules:</strong>
-                    <ul style="margin: 8px 0 0 0; padding-left: 20px;">
-                        ${conditioning.overview.keyRules.map(rule => `<li style="margin-bottom: 4px;">${rule}</li>`).join('')}
-                    </ul>
-                </div>
-                ${weekData.note ? `<p style="margin: 12px 0 0 0; font-style: italic; color: var(--text-secondary);">📝 ${weekData.note}</p>` : ''}
-            </div>
-        </div>
-    `;
-    
-    // Session cards
-    ['sessionA', 'sessionB', 'sessionC'].forEach((sessionKey, index) => {
-        const session = weekData[sessionKey];
-        if (!session) return;
-        
-        const sessionLabels = ['Session A', 'Session B', 'Session C'];
-        const dayLabels = ['(Day 2 or Post-Lift)', '(Day 4 or Post-Lift)', '(Day 6 or Post-Lift)'];
-        
-        // Find Option A and Option B structures
-        const optionA = session.structure.find(item => item.type === 'optionA');
-        const optionB_warmup = session.structure.find(item => item.type === 'optionB-warmup');
-        const optionB_work = session.structure.filter(item => item.type === 'optionB-work' || item.type === 'optionB-work2');
-        const optionB_cooldown = session.structure.find(item => item.type === 'optionB-cooldown');
-        
-        html += `
-            <div class="workout-day">
-                <div class="workout-header">
-                    <div class="workout-title">${sessionLabels[index]} ${dayLabels[index]}</div>
-                    <div class="workout-badge" style="background: #10b981;">${session.totalTime}</div>
-                </div>
-                <div style="padding: 16px;">
-                    
-                    <!-- Instruction Header -->
-                    <div style="background: rgba(59, 130, 246, 0.1); padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #3b82f6;">
-                        <strong style="color: #3b82f6;">✋ Choose ONE conditioning approach:</strong>
-                    </div>
-                    
-                    <!-- OPTION A: Steady State -->
-                    ${optionA ? `
-                        <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05)); padding: 16px; border-radius: 12px; margin-bottom: 16px; border: 2px solid rgba(59, 130, 246, 0.3);">
-                            <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                                <span style="font-size: 1.5rem; margin-right: 8px;">🚴</span>
-                                <h3 style="margin: 0; color: #2563eb; font-size: 1.2rem;">Option A: Steady State</h3>
-                            </div>
-                            <div style="font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; color: var(--text-primary);">
-                                ${optionA.description}
-                            </div>
-                            <div style="font-size: 0.95rem; color: var(--text-secondary);">
-                                ${optionA.detail}
-                            </div>
-                        </div>
-                    ` : ''}
-                    
-                    <!-- OR Divider -->
-                    <div style="display: flex; align-items: center; margin: 24px 0; gap: 16px;">
-                        <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--border-color), transparent);"></div>
-                        <span style="font-weight: 600; color: var(--text-secondary); font-size: 0.9rem;">OR</span>
-                        <div style="flex: 1; height: 1px; background: linear-gradient(to left, transparent, var(--border-color), transparent);"></div>
-                    </div>
-                    
-                    <!-- OPTION B: Intervals (Grouped) -->
-                    <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05)); padding: 16px; border-radius: 12px; border: 2px solid rgba(245, 158, 11, 0.3);">
-                        <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                            <span style="font-size: 1.5rem; margin-right: 8px;">⚡</span>
-                            <h3 style="margin: 0; color: #d97706; font-size: 1.2rem;">Option B: Intervals (${session.totalTime} total)</h3>
-                        </div>
-                        
-                        <div style="font-weight: 500; margin-bottom: 12px; color: var(--text-primary);">Structure:</div>
-                        
-                        <!-- Warmup -->
-                        ${optionB_warmup ? `
-                            <div style="background: rgba(239, 68, 68, 0.1); padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #ef4444;">
-                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                                    <span style="font-size: 1.1rem;">🔥</span>
-                                    <strong style="color: #dc2626;">Warmup</strong>
-                                </div>
-                                <div style="margin-left: 28px; font-size: 0.95rem;">
-                                    ${optionB_warmup.description.replace('Option B: ', '')}
-                                </div>
-                            </div>
-                        ` : ''}
-                        
-                        <!-- Work Intervals -->
-                        ${optionB_work.map(work => `
-                            <div style="background: rgba(16, 185, 129, 0.15); padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid #10b981;">
-                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                                    <span style="font-size: 1.1rem;">💪</span>
-                                    <strong style="color: #059669;">Work</strong>
-                                </div>
-                                <div style="margin-left: 28px;">
-                                    <div style="font-size: 1rem; font-weight: 500; margin-bottom: 4px;">
-                                        ${work.description.replace('Option B: ', '')}
-                                    </div>
-                                    ${work.detail ? `<div style="font-size: 0.85rem; color: var(--text-secondary);">${work.detail}</div>` : ''}
-                                </div>
-                            </div>
-                        `).join('')}
-                        
-                        <!-- Cooldown -->
-                        ${optionB_cooldown ? `
-                            <div style="background: rgba(139, 92, 246, 0.1); padding: 12px 16px; border-radius: 8px; border-left: 3px solid #8b5cf6;">
-                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                                    <span style="font-size: 1.1rem;">🧘</span>
-                                    <strong style="color: #7c3aed;">Cooldown</strong>
-                                </div>
-                                <div style="margin-left: 28px; font-size: 0.95rem;">
-                                    ${optionB_cooldown.description.replace('Option B: ', '')}
-                                </div>
-                            </div>
-                        ` : ''}
-                    </div>
-                    
-                    <!-- Coach Note -->
-                    <div style="background: rgba(245, 158, 11, 0.1); padding: 12px 16px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #f59e0b;">
-                        <div style="display: flex; align-items: start; gap: 8px;">
-                            <span style="font-size: 1.1rem;">💡</span>
-                            <div>
-                                <strong style="color: #d97706;">Coach Note:</strong>
-                                <span style="margin-left: 4px;">${session.coachNote}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-    
-    container.innerHTML = html;
-}
-
-// ==================== WEEKLY SCHEDULE VIEW ====================
-function showWeeklySchedule() {
-    userData.currentView = 'schedule';
-    generateTemplateTabs();
-    renderWeeklySchedule();
-}
-
-function renderWeeklySchedule() {
-    const container = document.getElementById('workoutDays');
-    const scheduleData = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.['weeklySchedule'];
-    
-    if (!scheduleData) {
-        container.innerHTML = `<div class="workout-day"><p>No schedule available for this phase.</p></div>`;
-        return;
-    }
-    
-    const templateSchedule = scheduleData[userData.currentTemplate];
-    if (!templateSchedule) {
-        container.innerHTML = `<div class="workout-day"><p>No schedule available for ${userData.currentTemplate} template.</p></div>`;
-        return;
-    }
-    
-    let html = `
-        <div class="workout-day" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));">
-            <div class="workout-header">
-                <div class="workout-title">📅 ${templateSchedule.name}</div>
-                <div class="workout-badge" style="background: #3b82f6;">Weekly View</div>
-            </div>
-            <div style="padding: 16px;">
-    `;
-    
-    // If there are options (like for 3-day)
-    if (templateSchedule.options) {
-        html += `<p style="margin: 0 0 16px 0; font-style: italic; color: var(--text-secondary);">${templateSchedule.note || ''}</p>`;
-        
-        templateSchedule.options.forEach((option, index) => {
-            html += `
-                <div style="margin-bottom: 20px; ${index > 0 ? 'border-top: 1px solid var(--border-color); padding-top: 16px;' : ''}">
-                    <h4 style="margin: 0 0 12px 0; color: var(--primary-color);">${option.name}</h4>
-                    ${renderScheduleTable(option.schedule)}
-                </div>
-            `;
-        });
-    } else {
-        // Single schedule (like for 2-day)
-        html += renderScheduleTable(templateSchedule.schedule);
-    }
-    
-    html += `
-            </div>
-        </div>
-    `;
-    
-    // Add tips card
-    html += `
-        <div class="workout-day">
-            <div class="workout-header">
-                <div class="workout-title">💡 Scheduling Tips</div>
-            </div>
-            <div style="padding: 16px;">
-                <ul style="margin: 0; padding-left: 20px;">
-                    <li style="margin-bottom: 8px;"><strong>Rest days matter</strong> — recovery is when you get stronger</li>
-                    <li style="margin-bottom: 8px;"><strong>Don't skip conditioning</strong> — building your aerobic base helps everything else</li>
-                    <li style="margin-bottom: 8px;"><strong>Lift before conditioning</strong> if doing same day — strength first, cardio second</li>
-                    <li style="margin-bottom: 8px;"><strong>Listen to your body</strong> — if you're exhausted, take an extra rest day</li>
-                </ul>
-            </div>
-        </div>
-    `;
-    
-    container.innerHTML = html;
-}
-
-function renderScheduleTable(schedule) {
-    const typeColors = {
-        lift: { bg: 'rgba(239, 68, 68, 0.1)', text: '#ef4444' },
-        conditioning: { bg: 'rgba(16, 185, 129, 0.1)', text: '#10b981' },
-        rest: { bg: 'rgba(156, 163, 175, 0.1)', text: '#6b7280' },
-        both: { bg: 'rgba(139, 92, 246, 0.1)', text: '#8b5cf6' }
-    };
-    
-    let html = '<div style="display: grid; gap: 8px;">';
-    
-    schedule.forEach(day => {
-        const colors = typeColors[day.type] || typeColors.rest;
-        html += `
-            <div style="display: flex; align-items: center; background: ${colors.bg}; padding: 10px 14px; border-radius: 8px; border-left: 4px solid ${colors.text};">
-                <div style="width: 100px; font-weight: 600;">${day.day}</div>
-                <div style="flex: 1;">${colors.icon} ${day.activity}</div>
-            </div>
-        `;
-    });
-    
-    html += '</div>';
-    return html;
-}
-
-// ==================== TRACKING INTERFACE RENDERER ====================
-function renderTrackingInterface(exerciseKey, exerciseName, prescription, exerciseId) {
-    const prescriptionMatch = prescription.match(/(\d+)\s*[×x]\s*(\d+)/);
-    if (!prescriptionMatch) {
-        return '<p style="color: var(--text-tertiary); font-style: italic;">Tracking not available for this exercise type</p>';
-    }
-    
-    const numSets = parseInt(prescriptionMatch[1]);
-    const numReps = parseInt(prescriptionMatch[2]);
-    const lastWeight = WorkoutTracker.getLastWeight(exerciseKey);
-    const suggestedWeight = WorkoutTracker.getSuggestedWeight(exerciseKey);
-    const todayWorkout = WorkoutTracker.getTodayWorkout();
-    const loggedSets = todayWorkout?.exercises?.[exerciseKey]?.sets || [];
-    
-    let html = '';
-    
-    if (lastWeight) {
-        html += `
-            <div class="last-workout-reference" onclick="event.stopPropagation()">
-                <span>💪 Last workout: <strong>${lastWeight} lbs</strong></span>
-                ${suggestedWeight && suggestedWeight > lastWeight ? `
-                    <span class="suggested-weight-badge">Try ${suggestedWeight} lbs</span>
-                ` : ''}
-            </div>
-        `;
-    }
-    
-    html += `
-        <div class="tracking-grid-header" onclick="event.stopPropagation()">
-            <div>Set</div>
-            <div>Target</div>
-            <div>Reps</div>
-            <div>Weight</div>
-            <div></div>
-        </div>
-    `;
-    
-    for (let i = 1; i <= numSets; i++) {
-        const loggedSet = loggedSets.find(s => s.setNumber === i);
-        const isCompleted = !!loggedSet;
-        
-        html += `
-            <div class="tracking-set-row ${isCompleted ? 'completed' : ''}" id="set-row-${exerciseId}-${i}" onclick="event.stopPropagation()">
-                <div class="set-number-badge">${i}</div>
-                <div class="set-prescription-hint">${numReps} × __</div>
-                <input 
-                    type="number" 
-                    class="tracking-input"
-                    id="reps-${exerciseId}-${i}"
-                    placeholder="${numReps}"
-                    value="${loggedSet?.reps || ''}"
-                    min="1"
-                    max="50"
-                    onclick="event.stopPropagation()"
-                    onfocus="event.stopPropagation()"
-                    ${isCompleted ? 'disabled' : ''}
-                />
-                <input 
-                    type="number" 
-                    class="tracking-input"
-                    id="weight-${exerciseId}-${i}"
-                    placeholder="${suggestedWeight || lastWeight || '0'}"
-                    value="${loggedSet?.weight || ''}"
-                    min="0"
-                    step="2.5"
-                    onclick="event.stopPropagation()"
-                    onfocus="event.stopPropagation()"
-                    ${isCompleted ? 'disabled' : ''}
-                />
-                <button 
-                    class="tracking-check-btn"
-                    id="check-${exerciseId}-${i}"
-                    onclick="event.stopPropagation(); logSetInline('${exerciseKey}', '${exerciseName}', ${i}, '${exerciseId}')"
-                    ${isCompleted ? 'disabled' : ''}
-                >
-                    ${isCompleted ? '✓' : '○'}
-                </button>
-            </div>
-        `;
-    }
-    
-    return html;
-}
-
-// ==================== PRIORITY 4: COMPLETION BUTTON & CELEBRATION ====================
-
-/**
- * Checks if a workout day has been completed (all exercises marked done)
- * @param {string} dayKey - The day key (monday, friday, etc.)
- * @returns {boolean} - True if workout is complete
- */
-function isWorkoutDayComplete(dayKey) {
-    const todayWorkout = WorkoutTracker.getTodayWorkout();
-    if (!todayWorkout || !todayWorkout.exercises) return false;
-    
-    // Get the workout template for this day
-    const weekKey = `week${userData.currentWeek}`;
-    const templates = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.[userData.currentTemplate];
-    const workoutDay = templates?.[weekKey]?.[dayKey];
-    
-    if (!workoutDay || !workoutDay.exercises) return false;
-    
-    // Count how many exercises should be done (excluding warmups)
-    const totalExercises = workoutDay.exercises.length;
-    
-    // Count how many have logged sets
-    let completedExercises = 0;
-    workoutDay.exercises.forEach(exercise => {
-        if (todayWorkout.exercises[exercise.exercise] && 
-            todayWorkout.exercises[exercise.exercise].sets.length > 0) {
-            completedExercises++;
-        }
-    });
-    
-    return completedExercises === totalExercises;
-}
-
-/**
- * Completes the workout day and shows celebration screen
- */
-function completeWorkoutDay(dayKey) {
-    // Mark workout as complete
-    WorkoutTracker.completeWorkout();
-    
-    // Get stats
-    const stats = WorkoutTracker.getStats();
-    const todayWorkout = WorkoutTracker.getTodayWorkout();
-    
-    const todayExercises = todayWorkout ? Object.keys(todayWorkout.exercises).length : 0;
-    const todayCompletedSets = todayWorkout ? 
-        Object.values(todayWorkout.exercises).reduce((sum, ex) => sum + ex.sets.filter(s => s.completed).length, 0) : 0;
-    
-    // Calculate total volume for today
-    let todayVolume = 0;
-    if (todayWorkout) {
-        Object.values(todayWorkout.exercises).forEach(exercise => {
-            exercise.sets.forEach(set => {
-                if (set.completed) {
-                    todayVolume += set.reps * set.weight;
-                }
-            });
-        });
-    }
-    
-    // Create celebration modal
-    const modal = document.createElement('div');
-    modal.id = 'completion-celebration-modal';
-    modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.85);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10000;
-        padding: 20px;
-        animation: fadeIn 0.3s ease-out;
-    `;
-    
-    modal.innerHTML = `
-        <div style="background: var(--bg-primary); border-radius: 16px; max-width: 500px; width: 100%; padding: 0; overflow: hidden; animation: slideUp 0.4s ease-out; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
-            
-            <!-- Hero Section -->
-            <div style="background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); padding: 40px 32px; text-align: center; color: white;">
-                <div style="font-size: 4rem; margin-bottom: 16px; animation: bounce 0.6s ease-out;">🔥</div>
-                <h2 style="margin: 0 0 8px 0; font-size: 2rem; font-weight: 800; letter-spacing: -0.02em;">Workout Complete!</h2>
-                <p style="margin: 0; font-size: 1.1rem; opacity: 0.95;">You just did the work. Own it.</p>
-            </div>
-            
-            <!-- Stats Grid -->
-            <div style="padding: 32px;">
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
-                    <div style="background: linear-gradient(135deg, rgba(224, 1, 34, 0.1), rgba(224, 1, 34, 0.05)); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid rgba(224, 1, 34, 0.2);">
-                        <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary-color); margin-bottom: 4px;">${todayExercises}</div>
-                        <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Exercises</div>
-                    </div>
-                    
-                    <div style="background: linear-gradient(135deg, rgba(224, 1, 34, 0.1), rgba(224, 1, 34, 0.05)); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid rgba(224, 1, 34, 0.2);">
-                        <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary-color); margin-bottom: 4px;">${todayCompletedSets}</div>
-                        <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Sets</div>
-                    </div>
-                    
-                    <div style="background: linear-gradient(135deg, rgba(224, 1, 34, 0.1), rgba(224, 1, 34, 0.05)); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid rgba(224, 1, 34, 0.2);">
-                        <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary-color); margin-bottom: 4px;">${todayVolume.toLocaleString()}</div>
-                        <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Total Lbs</div>
-                    </div>
-                    
-                    <div style="background: linear-gradient(135deg, rgba(224, 1, 34, 0.1), rgba(224, 1, 34, 0.05)); padding: 20px; border-radius: 12px; text-align: center; border: 2px solid rgba(224, 1, 34, 0.2);">
-                        <div style="font-size: 2.5rem; font-weight: 800; color: var(--primary-color); margin-bottom: 4px;">${stats.completedWorkouts}</div>
-                        <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Total Workouts</div>
-                    </div>
-                </div>
-                
-                <!-- Next Workout Prompt -->
-                <div style="background: var(--bg-secondary); padding: 16px; border-radius: 12px; margin-bottom: 24px; border-left: 4px solid var(--primary-color);">
-                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-secondary);">
-                        <strong style="color: var(--text-primary);">💪 Keep the momentum:</strong> Come back tomorrow and do it again.
-                    </p>
-                </div>
-                
-                <!-- Close Button -->
-                <button 
-                    onclick="closeCelebrationModal()"
-                    style="width: 100%; padding: 16px; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(224, 1, 34, 0.4); transition: all 0.2s ease;"
-                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(224, 1, 34, 0.5)'"
-                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 14px rgba(224, 1, 34, 0.4)'"
-                >
-                    Done →
-                </button>
-            </div>
-        </div>
-    `;
-    
-    // Add CSS animations
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-    `;
-    document.head.appendChild(style);
-    
-    document.body.appendChild(modal);
-    
-    // Mark the workout button as completed in the UI
-    const completionBtn = document.getElementById(`complete-workout-${dayKey}`);
-    if (completionBtn) {
-        completionBtn.style.background = '#10b981';
-        completionBtn.innerHTML = '✓ Workout Completed';
-        completionBtn.disabled = true;
-    }
-}
-
-/**
- * Closes the celebration modal
- */
-function closeCelebrationModal() {
-    const modal = document.getElementById('completion-celebration-modal');
-    if (modal) {
-        modal.style.animation = 'fadeIn 0.3s ease-out reverse';
-        setTimeout(() => modal.remove(), 300);
-    }
-}
-
-// ==================== FIXED WORKOUT RENDERING SECTION ====================
-function renderWorkouts() {
-    if (!checkTemplatesLoaded()) {
-        const container = document.getElementById('workoutDays');
-        container.innerHTML = `
-            <div class="workout-day">
-                <p style="color: red;">Error: Templates not loaded. Please refresh the page.</p>
-            </div>
-        `;
-        return;
-    }
-
-    const container = document.getElementById('workoutDays');
-    const weekKey = `week${userData.currentWeek}`;
-    
-    const templates = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.[userData.currentTemplate];
-    
-    console.log('🔍 Template Lookup:', {
-        tier: userData.tier,
-        phase: userData.phase,
-        currentTemplate: userData.currentTemplate,
-        found: !!templates
-    });
-
-    if (!templates) {
-        container.innerHTML = `
-            <div class="workout-day">
-                <div style="padding: 20px; text-align: center;">
-                    <p style="color: #f59e0b; font-weight: 600;">No templates found for this combination.</p>
-                    <p style="color: var(--text-secondary);">Try selecting <strong>White</strong> tier and <strong>Early Off-Season</strong> phase.</p>
-                </div>
-            </div>
-        `;
-        return;
-    }
-
-    const currentWeek = templates?.[weekKey];
-    if (!currentWeek) {
-        container.innerHTML = `
-            <div class="workout-day">
-                <div style="padding: 20px; text-align: center;">
-                    <p style="color: #f59e0b;">No workouts found for ${weekKey}.</p>
-                    <p style="color: var(--text-secondary);">Try Week 1 or a different template.</p>
-                </div>
-            </div>
-        `;
-        return;
-    }
-
-    let html = getBlockPeriodizationBanner();
-    
-    Object.entries(currentWeek).forEach(([dayKey, workoutDay]) => {
-        if (dayKey === 'title' || dayKey === 'notes') return;
-        
-        html += `
-            <div class="workout-day">
-                <div class="workout-header">
-                    <div class="workout-title">${dayKey.charAt(0).toUpperCase() + dayKey.slice(1)}: ${workoutDay.title || ''}</div>
-                    <div class="workout-badge">${dayKey}</div>
-                </div>
-        `;
-        
-        // Render warmup section if it exists
-        if (workoutDay.warmup && workoutDay.warmup.length > 0) {
-            html += `<div style="padding: 16px; background: rgba(245, 158, 11, 0.05); margin: 12px; border-radius: 8px; border-left: 4px solid #f59e0b;">`;
-            html += `<h4 style="margin: 0 0 12px 0; color: #d97706;">Warm-Up</h4>`;
-            
-            workoutDay.warmup.forEach((exercise, index) => {
-                const exerciseData = window.exerciseLibrary?.[exercise.exercise];
-                let exerciseName = window.getExerciseName 
-                    ? window.getExerciseName(exercise.exercise)
-                    : exercise.exercise;
-                
-                const exerciseId = `warmup-${exercise.exercise}-${dayKey}-${index}`;
-                
-                html += `
-                    <div style="background: white; padding: 12px; border-radius: 6px; margin-bottom: 8px;">
-                        <div style="font-weight: 600; margin-bottom: 4px;">${exerciseName}</div>
-                        <div style="color: var(--text-secondary); font-size: 0.9rem;">${exercise.sets} • ${exercise.tempo}</div>
-                        <div style="color: var(--text-tertiary); font-size: 0.85rem; margin-top: 4px;">${exercise.note}</div>
-                    </div>
-                `;
-            });
-            
-            html += `</div>`;
-        }
-        
-        // Render main exercises
-        if (workoutDay.exercises) {
-            workoutDay.exercises.forEach((exercise, index) => {
-                const exerciseData = window.exerciseLibrary?.[exercise.exercise];
-                let exerciseName = window.getExerciseName 
-                    ? window.getExerciseName(exercise.exercise)
-                    : exercise.exercise;
-                    
-                let isSubstituted = false;
-            
-                // Equipment adaptation logic
-                if (userData.exerciseVariations && userData.exerciseVariations[exercise.exercise]) {
-                    exerciseName = userData.exerciseVariations[exercise.exercise];
-                } else if (exerciseData && exerciseData.equipmentMap) {
-                    if (userData.phase && exerciseData.equipmentMap[userData.phase]) {
-                        exerciseName = exerciseData.equipmentMap[userData.phase][userData.equipment] || 
-                                     exerciseData.equipmentMap[userData.phase].commercial ||
-                                     exerciseData.equipmentMap[userData.phase].minimal ||
-                                     exerciseData.equipmentMap[userData.phase].bodyweight;
-                    } else {
-                        exerciseName = exerciseData.equipmentMap[userData.equipment] || exerciseData.name;
-                    }
-                    if (exerciseName !== exerciseData.name) isSubstituted = true;
-                }
-            
-                const exerciseId = `${exercise.exercise}-${dayKey}-${index}`;
-                const evaluatedSets = evaluateTemplateString(exercise.sets);
-                const evaluatedIntensity = evaluateTemplateString(exercise.intensity);
-                const evaluatedNote = evaluateTemplateString(exercise.note);
-                const evaluatedTempo = evaluateTemplateString(exercise.tempo);
-                const evaluatedRest = evaluateTemplateString(exercise.rest);
-            
-                html += `
-                    <div class="exercise-block" id="exercise-${exerciseId}" onclick="toggleExerciseDetails('${exerciseId}')">
-                        <div class="exercise-header-row">
-                            <span class="exercise-category category-${exercise.type}">${exercise.order || exercise.type.toUpperCase()}</span>
-                            ${exerciseData?.variations ? `<button class="variation-btn" onclick="event.stopPropagation(); showVariations('${exerciseId}', this)">Variations</button>` : ''}
-                        </div>
-                        
-                        <div class="exercise-name-large" id="exercise-${exerciseId}-name">${exerciseName}</div>
-                        
-                        <div class="exercise-prescription-large">${evaluatedSets}</div>
-                        
-                        <div class="exercise-actions">
-                            <button class="exercise-btn exercise-btn-details" onclick="event.stopPropagation(); toggleExerciseDetails('${exerciseId}');">
-                                Tap for Details
-                            </button>
-                            <button class="exercise-btn exercise-btn-done" onclick="event.stopPropagation(); markExerciseDone('${exerciseId}')">
-                                ✓ Done
-                            </button>
-                        </div>
-                        
-                        <div class="exercise-details-expanded" onclick="event.stopPropagation()">
-                            ${evaluatedIntensity ? `
-                                <div class="exercise-detail-row">
-                                    <span class="exercise-detail-label">Intensity:</span>
-                                    <span class="exercise-detail-value">${evaluatedIntensity}</span>
-                                </div>
-                            ` : ''}
-                            
-                            ${evaluatedTempo ? `
-                                <div class="exercise-detail-row">
-                                    <span class="exercise-detail-label">Tempo:</span>
-                                    <span class="exercise-detail-value">${evaluatedTempo}</span>
-                                </div>
-                            ` : ''}
-                            
-                            ${evaluatedRest ? `
-                                <div class="exercise-detail-row">
-                                    <span class="exercise-detail-label">Rest:</span>
-                                    <span class="exercise-detail-value">${evaluatedRest}</span>
-                                </div>
-                            ` : ''}
-                            
-                            ${evaluatedNote ? `
-                                <div class="exercise-detail-row">
-                                    <span class="exercise-detail-label">Coach Note:</span>
-                                    <span class="exercise-detail-value">${evaluatedNote}</span>
-                                </div>
-                            ` : ''}
-                            
-                            ${isSubstituted ? `
-                                <div class="last-week-reference">
-                                    ⚙️ Adapted to your equipment: ${userData.equipment}
-                                </div>
-                            ` : ''}
-                            
-                            <div class="tracking-section" onclick="event.stopPropagation()">
-                                <div class="tracking-header">📊 Track Your Sets</div>
-                                
-                                ${renderTrackingInterface(exercise.exercise, exerciseName, evaluatedSets, exerciseId)}
-                                
-                                <div class="exercise-notes-area" onclick="event.stopPropagation()">
-                                    <div class="exercise-notes-label">Notes (optional)</div>
-                                    <textarea 
-                                        class="exercise-notes-textarea" 
-                                        placeholder="How did it feel? Any adjustments needed?"
-                                        id="notes-${exerciseId}"
-                                        onclick="event.stopPropagation()"
-                                        onfocus="event.stopPropagation()"
-                                        onblur="saveExerciseNotes('${exercise.exercise}', '${exerciseId}')"
-                                    ></textarea>
-                                </div>
-                            </div>
-                            
-                            <div class="collapse-hint">Tap anywhere to collapse</div>
-                        </div>
-                        
-                        ${exerciseData?.variations ? `
-                            <div class="variations-dropdown hidden" id="variations-${exerciseId}">
-                                <div class="variations-header">Choose Variation:</div>
-                                ${exerciseData.variations.map(variation => 
-                                    `<div class="variation-option" onclick="selectVariation('${exercise.exercise}', '${variation}', '${exerciseId}')">${variation}</div>`
-                                ).join('')}
-                                <div class="variation-option default-option" onclick="selectVariation('${exercise.exercise}', '${exerciseData.name}', '${exerciseId}')">← Back to ${exerciseData.name}</div>
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-            }); // ✅ Close exercises forEach
-        }
-        
-        // ==================== PRIORITY 4: COMPLETION BUTTON ====================
-        // Add the big completion button after all exercises
-        const isCompleted = isWorkoutDayComplete(dayKey);
-        
-        html += `
-            <div style="padding: 24px 16px 16px 16px;">
-                <button 
-                    id="complete-workout-${dayKey}"
-                    onclick="completeWorkoutDay('${dayKey}')"
-                    style="
-                        width: 100%;
-                        padding: 20px;
-                        background: ${isCompleted ? '#10b981' : 'linear-gradient(135deg, var(--primary-color), var(--primary-dark))'};
-                        color: white;
-                        border: none;
-                        border-radius: 12px;
-                        font-size: 1.3rem;
-                        font-weight: 800;
-                        cursor: ${isCompleted ? 'default' : 'pointer'};
-                        box-shadow: ${isCompleted ? '0 4px 14px rgba(16, 185, 129, 0.4)' : '0 4px 14px rgba(224, 1, 34, 0.4)'};
-                        transition: all 0.2s ease;
-                        letter-spacing: -0.01em;
-                        text-transform: uppercase;
-                    "
-                    ${isCompleted ? 'disabled' : ''}
-                    onmouseover="if(!this.disabled) { this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(224, 1, 34, 0.5)'; }"
-                    onmouseout="if(!this.disabled) { this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 14px rgba(224, 1, 34, 0.4)'; }"
-                >
-                    ${isCompleted ? '✓ Workout Completed' : '🔥 Complete Workout'}
-                </button>
-            </div>
-        `;
-        
-        html += `</div>`; // ✅ Close workout-day div
-    }); // ✅ Close day forEach (Object.entries)
-    
-    container.innerHTML = html; // ✅ Render everything once
-}
-
-// ==================== VARIATIONS FUNCTIONALITY ====================
-function showVariations(exerciseId, buttonElement) {
-    const dropdown = document.getElementById(`variations-${exerciseId}`);
-    const allDropdowns = document.querySelectorAll('.variations-dropdown');
-    
-    // Close all other dropdowns
-    allDropdowns.forEach(dd => {
-        if (dd.id !== `variations-${exerciseId}`) {
-            dd.classList.add('hidden');
-        }
-    });
-    
-    // Reset all other buttons
-    document.querySelectorAll('.variation-btn').forEach(btn => {
-        if (btn !== buttonElement) {
-            btn.textContent = 'Variations';
-        }
-    });
-    
-    // Toggle current dropdown
-    dropdown.classList.toggle('hidden');
-    
-    // Update button text
-    if (dropdown.classList.contains('hidden')) {
-        buttonElement.textContent = 'Variations';
-    } else {
-        buttonElement.textContent = 'Close';
-    }
-}
-
-function selectVariation(exerciseKey, variationName, exerciseId) {
-    const nameElement = document.getElementById(`exercise-${exerciseId}-name`);
-    const dropdown = document.getElementById(`variations-${exerciseId}`);
-    
-    // Update the displayed exercise name
-    nameElement.textContent = variationName;
-    
-    // Close the dropdown
-    dropdown.classList.add('hidden');
-    
-    // Reset button text
-    const button = dropdown.parentElement.querySelector('.variation-btn');
-    if (button) button.textContent = 'Variations';
-    
-    // Store user's selection
-    if (!userData.exerciseVariations) userData.exerciseVariations = {};
-    userData.exerciseVariations[exerciseKey] = variationName;
-}
-
-// ==================== EXERCISE EXPAND/COLLAPSE ====================
-function toggleExerciseDetails(exerciseId) {
-    const exerciseBlock = document.getElementById(`exercise-${exerciseId}`);
-    
-    if (!exerciseBlock) return;
-    
-    // Close all other expanded exercises
-    document.querySelectorAll('.exercise-block.expanded').forEach(block => {
-        if (block.id !== `exercise-${exerciseId}`) {
-            block.classList.remove('expanded');
-        }
-    });
-    
-    // Toggle this exercise
-    const isExpanding = !exerciseBlock.classList.contains('expanded');
-    exerciseBlock.classList.toggle('expanded');
-
-    // If expanding, load any saved notes
-    if (isExpanding) {
-        const notesTextarea = exerciseBlock.querySelector('.exercise-notes-textarea');
-        if (notesTextarea) {
-            const exerciseKey = exerciseId.split('-')[0];
-            const todayWorkout = WorkoutTracker.getTodayWorkout();
-            const savedNotes = todayWorkout?.exercises?.[exerciseKey]?.notes || '';
-            notesTextarea.value = savedNotes;
-        }
-    }
-}
-
-function markExerciseDone(exerciseId) {
-    const exerciseBlock = document.getElementById(`exercise-${exerciseId}`);
-    const doneButton = exerciseBlock.querySelector('.exercise-btn-done');
-    
-    if (doneButton.classList.contains('completed')) {
-        // Un-mark as done
-        doneButton.classList.remove('completed');
-        doneButton.innerHTML = '✓ Done';
-    } else {
-        // Mark as done
-        doneButton.classList.add('completed');
-        doneButton.innerHTML = '✓ Completed';
-        
-        // Optional: Show a quick toast notification
-        showQuickToast('Exercise marked complete! 💪');
-        
-        // Auto-collapse after marking done
-        setTimeout(() => {
-            exerciseBlock.classList.remove('expanded');
-        }, 800);
-    }
-}
-
-// ==================== INLINE SET LOGGING ====================
-function logSetInline(exerciseKey, exerciseName, setNumber, exerciseId) {
-    // Get input values
-    const repsInput = document.getElementById(`reps-${exerciseId}-${setNumber}`);
-    const weightInput = document.getElementById(`weight-${exerciseId}-${setNumber}`);
-    
-    const reps = parseInt(repsInput.value) || parseInt(repsInput.placeholder);
-    const weight = parseFloat(weightInput.value) || parseFloat(weightInput.placeholder);
-    
-    // Validate
-    if (!reps || !weight) {
-        alert('Please enter both reps and weight');
-        return;
-    }
-    
-    // Log the set using the workout tracker
-    WorkoutTracker.logSet(exerciseKey, exerciseName, setNumber, reps, weight, null);
-    
-    // Update UI
-    const setRow = document.getElementById(`set-row-${exerciseId}-${setNumber}`);
-    const checkBtn = document.getElementById(`check-${exerciseId}-${setNumber}`);
-    
-    setRow.classList.add('completed');
-    checkBtn.disabled = true;
-    checkBtn.innerHTML = '✓';
-    repsInput.disabled = true;
-    weightInput.disabled = true;
-    
-    // Show quick feedback
-    showQuickToast(`Set ${setNumber} logged: ${reps} reps × ${weight} lbs`);
-}
-
-function saveExerciseNotes(exerciseKey, exerciseId) {
-    const notesTextarea = document.getElementById(`notes-${exerciseId}`);
-    if (!notesTextarea) return;
-    
-    const notes = notesTextarea.value.trim();
-    if (notes) {
-        WorkoutTracker.addExerciseNotes(exerciseKey, notes);
-        showQuickToast('Notes saved');
-    }
-}
-
-function showQuickToast(message) {
-    const toast = document.createElement('div');
-    toast.textContent = message;
-    toast.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #10b981;
-        color: white;
-        padding: 12px 24px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        z-index: 10001;
-        animation: slideUp 0.3s ease-out;
-    `;
-    
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.style.animation = 'slideUp 0.3s ease-out reverse';
-        setTimeout(() => toast.remove(), 300);
-    }, 2000);
-}
-
 // ==================== WEEK NAVIGATION ====================
+
 function previousWeek() {
     if (userData.currentWeek > 1) {
         userData.currentWeek--;
@@ -1807,7 +378,7 @@ function previousWeek() {
 }
 
 function nextWeek() {
-    if (userData.currentWeek < 4) {  // Changed from 6 to 4 for 4-week blocks
+    if (userData.currentWeek < 4) {
         userData.currentWeek++;
         updateWeekDisplay();
         renderCurrentView();
@@ -1827,45 +398,17 @@ function renderCurrentView() {
     }
 }
 
-// ==================== RESET ====================
-function resetApp() {
-    if (!confirm('Start over with a new program setup?')) return;
-    userData = { 
-        tier: null,
-        phase: 'early-offseason',
-        equipment: null, 
-        currentWeek: 1, 
-        currentTemplate: '2day',
-        currentView: 'lifting',
-        daysPerWeek: 2,
-        exerciseVariations: {},
-        maxWeeks: 4,
-        sessionDuration: 45
-    };
-    hideAllScreens();
-    document.getElementById('welcomeScreen').classList.remove('hidden');
-    document.getElementById('progressTracker').classList.add('hidden');
-    document.getElementById('programOverview').innerHTML = '';
-    document.getElementById('workoutDays').innerHTML = '';
-    const errorBox = document.getElementById('errorBox');
-    if (errorBox) {
-        errorBox.innerHTML = '';
-        errorBox.classList.add('hidden');
-    }
-}
+// ==================== INITIALIZATION ====================
 
-// ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Athletic Development System v2.1.0 Loaded');
-    console.log('Exercise Database:', typeof exerciseDatabase !== 'undefined' ? 'Loaded' : 'Not Found');
+    console.log('Exercise Database:', typeof window.exerciseLibrary !== 'undefined' ? 'Loaded' : 'Not Found');
     console.log('Workout Templates:', typeof window.workoutTemplates !== 'undefined' ? 'Loaded' : 'Not Found');
     console.log('Block Periodization:', typeof window.BlockPeriodization !== 'undefined' ? 'Loaded' : 'Not Found');
     
-    // Test tier system
     console.log('✅ Tier System Loaded:', TIER_SYSTEM);
     console.log('✅ Tier Mapping:', TIER_TO_EXPERIENCE_MAP);
     
-    // Debug: Show actual template structure
     if (window.workoutTemplates) {
         console.log('📦 Template Structure:', Object.keys(window.workoutTemplates));
         Object.keys(window.workoutTemplates).forEach(tier => {
@@ -1873,7 +416,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Test block periodization integration
     if (window.BlockPeriodization) {
         console.log('✅ Testing Block Periodization functions:');
         console.log('  - getPhaseRM(beginner, early-offseason, 1):', window.BlockPeriodization.getPhaseRM('beginner', 'early-offseason', 1));
