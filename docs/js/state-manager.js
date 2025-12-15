@@ -1,21 +1,60 @@
-// ==================== STATE MANAGEMENT ====================
+// ==================== STATE MANAGER (FIXED: With Persistence) ====================
 // Central source of truth for app state
 // All state mutations happen through functions in this file
 
-let userData = {
-    tier: null,  // 'white', 'red', 'blue', 'gold' - COACH ASSIGNED
-    phase: 'early-offseason',  // Start here, expand later
+const STATE_KEY = 'ignition_apg_data_v1';
+
+// ==================== PERSISTENCE FUNCTIONS ====================
+
+function saveProgress() {
+    // Saves the current userData object to the user's browser storage
+    localStorage.setItem(STATE_KEY, JSON.stringify(userData));
+    console.log('💾 Progress Saved');
+}
+
+function loadProgress() {
+    // Loads the saved userData object from the user's browser storage
+    const saved = localStorage.getItem(STATE_KEY);
+    return saved ? JSON.parse(saved) : null;
+}
+
+function highlightCard(screenId, value) {
+    const screen = document.getElementById(screenId);
+    if (!screen) return;
+    
+    // Remove 'selected' border from all cards
+    const cards = screen.querySelectorAll('.option-card');
+    cards.forEach(card => {
+        card.style.border = '1px solid var(--border-color)';
+        card.style.background = 'var(--bg-secondary)';
+    });
+    
+    // Find the one clicked and give it the 'selected' style
+    cards.forEach(card => {
+        if (card.outerHTML.includes(`'${value}'`)) {
+            card.style.border = '2px solid var(--primary-color)';
+            card.style.background = 'var(--bg-tertiary)';
+        }
+    });
+}
+
+// ==================== INITIALIZATION ====================
+
+// 1. Initialize State: Try to load from memory, otherwise start fresh
+let userData = loadProgress() || {
+    tier: null,  // 'white', 'red', 'blue', 'gold'
+    phase: 'early-offseason',
     equipment: null,
     currentWeek: 1,
     currentTemplate: '2day',
-    currentView: 'lifting',  // 'lifting', 'conditioning', 'schedule'
+    currentView: 'lifting',
     daysPerWeek: 2,
     exerciseVariations: {},
     maxWeeks: 4,
     sessionDuration: 45
 };
 
-// ==================== TIER SYSTEM DEFINITIONS ====================
+// ==================== TIER SYSTEM DEFINITIONS (Remains Unchanged) ====================
 const TIER_SYSTEM = {
     white: {
         name: 'White',
@@ -75,7 +114,6 @@ const TIER_SYSTEM = {
     }
 };
 
-// Maps tier system to existing template structure for backwards compatibility
 const TIER_TO_EXPERIENCE_MAP = {
     white: 'beginner',
     red: 'intermediate',
@@ -83,32 +121,37 @@ const TIER_TO_EXPERIENCE_MAP = {
     gold: 'advanced'
 };
 
-// ==================== STATE MUTATION FUNCTIONS ====================
+
+// ==================== STATE MUTATION FUNCTIONS (Updated with Save) ====================
 
 function selectTier(tier) {
     userData.tier = tier;
-    selectCard('#experienceScreen', 'experienceContinue');
+    saveProgress(); // <-- CRITICAL FIX
+    highlightCard('experienceScreen', tier);
+    document.getElementById('experienceContinue').classList.remove('hidden');
 }
 
 function selectPhase(phase) {
     userData.phase = phase;
-    selectCard('#phaseScreen', 'phaseContinue');
+    saveProgress(); // <-- CRITICAL FIX
+    highlightCard('phaseScreen', phase);
+    document.getElementById('phaseContinue').classList.remove('hidden');
 }
 
 function selectEquipment(equipment) {
     userData.equipment = equipment;
-    selectCard('#equipmentScreen', 'equipmentContinue');
-}
-
-function selectCard(screenSelector, continueBtnId) {
-    document.querySelectorAll(`${screenSelector} .option-card`).forEach(opt => opt.classList.remove('selected'));
-    event.target.closest('.option-card').classList.add('selected');
-    document.getElementById(continueBtnId).classList.remove('hidden');
+    saveProgress(); // <-- CRITICAL FIX
+    highlightCard('equipmentScreen', equipment);
+    document.getElementById('equipmentContinue').classList.remove('hidden');
 }
 
 function resetApp() {
-    if (!confirm('Start over with a new program setup?')) return;
+    if (!confirm('Are you sure you want to start over? This will clear all your saved settings and you will restart from the Welcome screen.')) return;
     
+    // 1. Clear Local Storage
+    localStorage.removeItem(STATE_KEY); 
+    
+    // 2. Reset the current session data
     userData = { 
         tier: null,
         phase: 'early-offseason',
@@ -122,18 +165,31 @@ function resetApp() {
         sessionDuration: 45
     };
     
-    hideAllScreens();
-    document.getElementById('welcomeScreen').classList.remove('hidden');
-    document.getElementById('progressTracker').classList.add('hidden');
-    document.getElementById('programOverview').innerHTML = '';
-    document.getElementById('workoutDays').innerHTML = '';
-    
-    const errorBox = document.getElementById('errorBox');
-    if (errorBox) {
-        errorBox.innerHTML = '';
-        errorBox.classList.add('hidden');
-    }
+    // 3. Reload the page to trigger a clean start
+    location.reload(); 
 }
+
+// ==================== AUTO-STARTUP LOGIC ====================
+// Check if the user has completed onboarding and skip straight to the program
+document.addEventListener('DOMContentLoaded', () => {
+    // Wait for the app.js functions (like generateProgram) to load
+    setTimeout(() => {
+        // Check for required settings
+        if (userData.tier && userData.phase && userData.equipment) {
+            console.log("⚡ Resuming user session...");
+            
+            // Check if functions from app.js are available globally
+            if(typeof hideAllScreens === 'function' && typeof generateProgram === 'function') {
+                hideAllScreens();
+                document.getElementById('progressTracker').classList.remove('hidden');
+                generateProgram();
+            } else {
+                 console.error("Initialization error: 'hideAllScreens' or 'generateProgram' not found.");
+            }
+        }
+    }, 100);
+});
+
 
 // ==================== EXPORTS ====================
 // Make state and functions available globally
@@ -143,6 +199,6 @@ window.TIER_TO_EXPERIENCE_MAP = TIER_TO_EXPERIENCE_MAP;
 window.selectTier = selectTier;
 window.selectPhase = selectPhase;
 window.selectEquipment = selectEquipment;
-window.resetApp = resetApp;
+window.resetApp = resetApp; // New reset function handles localStorage clear
 
-console.log('✅ State Manager loaded');
+console.log('✅ State Manager loaded with Persistence');
