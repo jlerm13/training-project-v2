@@ -57,7 +57,6 @@ function showExperienceScreen() {
                     <div class="option-title">I need clear instructions</div>
                     <div class="option-desc">Tell me exactly what to do, how to do it, and when to do it</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
-                        6-10 reps per set | 30-45 min sessions
                     </div>
                     <div style="margin-top: 4px; font-size: 0.75rem; color: #10b981; font-weight: 600;">
                         ✓ Templates Available
@@ -67,7 +66,6 @@ function showExperienceScreen() {
                     <div class="option-title">I need some guidance</div>
                     <div class="option-desc">Give me structure, but I can adjust based on how I feel</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
-                        6-10 reps per set | 40-55 min sessions
                     </div>
                     <div style="margin-top: 4px; font-size: 0.75rem; color: #f59e0b; font-weight: 600;">
                         ⏳ Coming Soon
@@ -77,7 +75,6 @@ function showExperienceScreen() {
                     <div class="option-title">I'm pretty independent</div>
                     <div class="option-desc">I know my body and can modify exercises when needed</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
-                        4-6 reps per set | 45-70 min sessions
                     </div>
                     <div style="margin-top: 4px; font-size: 0.75rem; color: #f59e0b; font-weight: 600;">
                         ⏳ Coming Soon
@@ -87,7 +84,6 @@ function showExperienceScreen() {
                     <div class="option-title">I'm fully self-directed</div>
                     <div class="option-desc">I can modify programming on the fly and know when to push or back off</div>
                     <div style="margin-top: 8px; font-size: 0.85rem; color: var(--text-tertiary);">
-                        3-6 reps per set | 50-75 min sessions
                     </div>
                     <div style="margin-top: 4px; font-size: 0.75rem; color: #f59e0b; font-weight: 600;">
                         ⏳ Coming Soon
