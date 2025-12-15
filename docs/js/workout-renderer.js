@@ -478,7 +478,6 @@ function toggleExerciseDetails(exerciseId) {
         }
     }
 }
-
 function markExerciseDone(exerciseId) {
     const exerciseBlock = document.getElementById(`exercise-${exerciseId}`);
     const doneButton = exerciseBlock.querySelector('.exercise-btn-done');
@@ -492,7 +491,9 @@ function markExerciseDone(exerciseId) {
         
         // 📊 ANALYTICS: Track exercise completion
         if (typeof Analytics !== 'undefined') {
-            const allExercises = document.querySelectorAll('.exercise-block');
+            // FIX: Count only exercises in current workout day
+            const workoutDay = exerciseBlock.closest('.workout-day');
+            const allExercises = workoutDay ? workoutDay.querySelectorAll('.exercise-block') : document.querySelectorAll('.exercise-block');
             const currentIndex = Array.from(allExercises).indexOf(exerciseBlock) + 1;
             const totalExercises = allExercises.length;
             
