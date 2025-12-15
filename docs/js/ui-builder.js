@@ -144,6 +144,10 @@ function showConfirmationScreen() {
 function completeWorkoutDay(dayKey) {
     // Mark workout as complete
     WorkoutTracker.completeWorkout();
+    // 📊 ANALYTICS: Track workout completed
+    if (typeof Analytics !== 'undefined') {
+        Analytics.trackWorkoutCompleted(dayKey);
+    }
     
     // Get stats
     const stats = WorkoutTracker.getStats();
@@ -262,6 +266,16 @@ function completeWorkoutDay(dayKey) {
         }
     `;
     document.head.appendChild(style);
+
+    // 📊 ANALYTICS: Track celebration shown
+    if (typeof Analytics !== 'undefined') {
+        Analytics.trackCelebrationShown({
+            exercises: todayExercises,
+            sets: todayCompletedSets,
+            volume: todayVolume,
+            totalWorkouts: stats.completedWorkouts
+        });
+    }
     
     document.body.appendChild(modal);
     
@@ -278,6 +292,10 @@ function completeWorkoutDay(dayKey) {
  * Closes the celebration modal
  */
 function closeCelebrationModal() {
+    // 📊 ANALYTICS: Track celebration engagement
+    if (typeof Analytics !== 'undefined') {
+        Analytics.trackCelebrationClosed();
+    }
     const modal = document.getElementById('completion-celebration-modal');
     if (modal) {
         modal.style.animation = 'fadeIn 0.3s ease-out reverse';
