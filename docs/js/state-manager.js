@@ -3,53 +3,6 @@
 // All state mutations happen through functions in this file
 
 const STATE_KEY = 'ignition_apg_data_v1';
-// Supabase connection
-const SUPABASE_URL = 'your-project-url';
-const SUPABASE_ANON_KEY = 'your-anon-key';
-
-async function sendToSupabase(event) {
-    try {
-        // Still save to localStorage as backup
-        const stored = localStorage.getItem(ANALYTICS_STORAGE_KEY);
-        const events = stored ? JSON.parse(stored) : [];
-        events.push(event);
-        localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(events));
-        
-        // Send to Supabase
-        await fetch(`${SUPABASE_URL}/rest/v1/analytics_events`, {
-            method: 'POST',
-            headers: {
-                'apikey': SUPABASE_ANON_KEY,
-                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                'Content-Type': 'application/json',
-                'Prefer': 'return=minimal'
-            },
-            body: JSON.stringify({
-                athlete_id: getOrCreateAthleteId(), // Generate once, store in localStorage
-                session_id: event.sessionId,
-                event_name: event.eventName,
-                event_data: event,
-                tier: event.tier,
-                phase: event.phase,
-                equipment: event.equipment,
-                week: event.week,
-                template: event.template
-            })
-        });
-    } catch (error) {
-        console.warn('Analytics sync failed (offline?):', error);
-        // No problem - localStorage still has it
-    }
-}
-
-function getOrCreateAthleteId() {
-    let id = localStorage.getItem('athlete_id');
-    if (!id) {
-        id = `athlete_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        localStorage.setItem('athlete_id', id);
-    }
-    return id;
-}
 
 // ==================== PERSISTENCE FUNCTIONS ====================
 
