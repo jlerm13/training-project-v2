@@ -81,6 +81,27 @@ function renderWorkouts() {
     });
     
     container.innerHTML = html;
+
+    // 📊 ANALYTICS: Track workout started
+    if (typeof Analytics !== 'undefined') {
+        const weekKey = `week${userData.currentWeek}`;
+        const templates = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.[userData.currentTemplate];
+        const currentWeek = templates?.[weekKey];
+        
+        if (currentWeek) {
+            Object.entries(currentWeek).forEach(([dayKey, workoutDay]) => {
+                if (dayKey === 'title' || dayKey === 'notes') return;
+                
+                const totalExercises = workoutDay.exercises ? workoutDay.exercises.length : 0;
+                
+                // Only track if we haven't tracked this workout yet today
+                const session = Analytics.getCurrentSession();
+                if (!session.workoutStartTime && totalExercises > 0) {
+                    Analytics.trackWorkoutStarted(totalExercises, dayKey);
+                }
+            });
+        }
+    }
 }
 
 // ==================== WARMUP RENDERING ====================
@@ -468,6 +489,19 @@ function markExerciseDone(exerciseId) {
     } else {
         doneButton.classList.add('completed');
         doneButton.innerHTML = '✓ Completed';
+        
+        // 📊 ANALYTICS: Track exercise completion
+        if (typeof Analytics !== 'undefined') {
+            const allExercises = document.querySelectorAll('.exercise-block');
+            const currentIndex = Array.from(allExercises).indexOf(exerciseBlock) + 1;
+            const totalExercises = allExercises.length;
+            
+            const exerciseKey = exerciseId.split('-')[0];
+            const nameElement = exerciseBlock.querySelector('.exercise-name-large');
+            const exerciseName = nameElement ? nameElement.textContent : 'unknown';
+            
+            Analytics.trackExerciseCompleted(exerciseKey, exerciseName, currentIndex, totalExercises);
+        }
         showQuickToast('Exercise marked complete! 💪');
         setTimeout(() => {
             exerciseBlock.classList.remove('expanded');
@@ -476,6 +510,13 @@ function markExerciseDone(exerciseId) {
 }
 
 function showVariations(exerciseId, buttonElement) {
+        // 📊 ANALYTICS: Track variation exploration
+    if (typeof Analytics !== 'undefined') {
+        const exerciseKey = exerciseId.split('-')[0];
+        const nameElement = document.getElementById(`exercise-${exerciseId}-name`);
+        const exerciseName = nameElement ? nameElement.textContent : 'unknown';
+        Analytics.trackVariationButtonClicked(exerciseKey, exerciseName);
+    }
     const dropdown = document.getElementById(`variations-${exerciseId}`);
     const allDropdowns = document.querySelectorAll('.variations-dropdown');
     
@@ -501,6 +542,12 @@ function showVariations(exerciseId, buttonElement) {
 }
 
 function selectVariation(exerciseKey, variationName, exerciseId) {
+    // 📊 ANALYTICS: Track variation selection
+    if (typeof Analytics !== 'undefined') {
+        const exerciseData = window.exerciseLibrary[exerciseKey];
+        const originalName = exerciseData ? exerciseData.name : exerciseKey;
+        Analytics.trackVariationSelected(exerciseKey, originalName, variationName);
+    }
     const nameElement = document.getElementById(`exercise-${exerciseId}-name`);
     const dropdown = document.getElementById(`variations-${exerciseId}`);
     
@@ -529,6 +576,11 @@ function logSetInline(exerciseKey, exerciseName, setNumber, exerciseId) {
     }
     
     WorkoutTracker.logSet(exerciseKey, exerciseName, setNumber, reps, weight, null);
+
+    // 📊 ANALYTICS: Track first set logged for session start latency
+    if (setNumber === 1 && typeof Analytics !== 'undefined') {
+        Analytics.trackFirstSetLogged(exerciseKey);
+    }
     
     const setRow = document.getElementById(`set-row-${exerciseId}-${setNumber}`);
     const checkBtn = document.getElementById(`check-${exerciseId}-${setNumber}`);
