@@ -1,7 +1,7 @@
-// ==================== ANALYTICS SYSTEM ====================
+// ==================== ANALYTICS SYSTEM - PHASE 1 ENHANCED ====================
 // Behavioral tracking for pilot validation
 // Events stored in localStorage, exportable for analysis
-// v1.0 - MVP tracking for competing explanations test
+// v1.1 - PHASE 1: Complete abandonment detection with inactivity reset
 
 // ==================== STORAGE KEYS ====================
 
@@ -258,29 +258,26 @@ function trackReturnBehavior() {
     const workoutDates = Object.keys(allWorkouts).sort();
     
     if (workoutDates.length < 2) {
-        // First workout, can't calculate return yet
+        // First workout - can't calculate return behavior yet
         logEvent('first_workout_completed', {
-            date: workoutDates[0]
+            date: workoutDates[0] || new Date().toISOString().split('T')[0]
         });
         return;
     }
     
-    // Calculate gaps between sessions
+    // Calculate gaps between workouts (in hours)
     const gaps = [];
     for (let i = 1; i < workoutDates.length; i++) {
-        const prevDate = new Date(workoutDates[i - 1]);
-        const currDate = new Date(workoutDates[i]);
-        const gapHours = (currDate - prevDate) / (1000 * 60 * 60);
-        gaps.push(gapHours);
+        const prev = new Date(workoutDates[i - 1]).getTime();
+        const curr = new Date(workoutDates[i]).getTime();
+        gaps.push((curr - prev) / (1000 * 60 * 60)); // hours
     }
     
-    // Check Day 2 return specifically
-    const day2Return = gaps[0] <= 48; // Within 48 hours
+    // Day 2 return = came back within 48 hours
+    const day2Return = gaps[0] <= 48;
     
     logEvent('return_behavior', {
-        total_sessions: workoutDates.length,
-        session_dates: workoutDates,
-        gaps_between_sessions_hours: gaps,
+        total_workouts: workoutDates.length,
         returned_day_2: day2Return,
         average_gap_hours: gaps.reduce((a, b) => a + b, 0) / gaps.length,
         longest_gap_hours: Math.max(...gaps),
@@ -343,6 +340,9 @@ function trackWorkoutCompleted(dayKey) {
     
     // Track return behavior after completion
     trackReturnBehavior();
+    
+    // Stop abandonment detection on completion
+    stopAbandonmentDetection();
 }
 
 function trackWorkoutAbandoned(reason = 'unknown') {
@@ -360,42 +360,92 @@ function trackWorkoutAbandoned(reason = 'unknown') {
         time_since_last_action_ms: Date.now() - (session.lastActivity || session.startTime),
         workout_duration_before_abandon_ms: Date.now() - (session.workoutStartTime || session.startTime)
     });
+    
+    // Stop checking after abandonment is logged
+    stopAbandonmentDetection();
 }
 
-// ==================== AUTO-ABANDONMENT DETECTION ====================
+// ==================== PHASE 1: ENHANCED ABANDONMENT DETECTION ====================
 
 let abandonmentCheckInterval;
+let inactivityResetTimer;
 
 /**
- * Start checking for abandonment (5 minutes of inactivity)
+ * CRITICAL FIX: Reset inactivity on ANY user interaction
+ * This prevents false positives (marking engaged users as abandoned)
+ */
+function resetInactivityTimer() {
+    // Update session.lastActivity immediately
+    touchSession();
+    
+    // Reset the auto-abandonment check timer
+    if (inactivityResetTimer) {
+        clearTimeout(inactivityResetTimer);
+    }
+    
+    // If user is still inactive after 5 minutes, check for abandonment
+    inactivityResetTimer = setTimeout(() => {
+        checkForAbandonment();
+    }, 5 * 60 * 1000); // 5 minutes
+}
+
+/**
+ * Check if workout should be marked as abandoned
+ */
+function checkForAbandonment() {
+    const session = getCurrentSession();
+    
+    // Only check if workout was started
+    if (!session.workoutStartTime) {
+        return;
+    }
+    
+    // Check if workout was already completed
+    const todayWorkout = WorkoutTracker.getTodayWorkout();
+    if (todayWorkout?.completed) {
+        return; // Don't mark completed workouts as abandoned
+    }
+    
+    // Calculate inactivity time
+    const inactiveTime = Date.now() - session.lastActivity;
+    
+    // If more than 5 minutes inactive, mark as abandoned
+    if (inactiveTime >= 5 * 60 * 1000) {
+        trackWorkoutAbandoned('timeout');
+    }
+}
+
+/**
+ * Start checking for abandonment
+ * Called when workout screen is shown
  */
 function startAbandonmentDetection() {
-    // Check every minute
+    console.log('📊 Starting abandonment detection');
+    
+    // Start the inactivity reset timer
+    resetInactivityTimer();
+    
+    // Also check periodically (backup mechanism)
     abandonmentCheckInterval = setInterval(() => {
-        const session = getCurrentSession();
-        
-        // If more than 5 minutes since last activity
-        const inactiveTime = Date.now() - session.lastActivity;
-        
-        if (inactiveTime > 5 * 60 * 1000) {
-            // Check if workout was marked complete
-            const todayWorkout = WorkoutTracker.getTodayWorkout();
-            
-            if (!todayWorkout?.completed) {
-                trackWorkoutAbandoned('timeout');
-            }
-            
-            clearInterval(abandonmentCheckInterval);
-        }
+        checkForAbandonment();
     }, 60 * 1000); // Check every minute
 }
 
 /**
  * Stop abandonment detection
+ * Called on workout completion or manual close
  */
 function stopAbandonmentDetection() {
+    console.log('📊 Stopping abandonment detection');
+    
     if (abandonmentCheckInterval) {
         clearInterval(abandonmentCheckInterval);
+        abandonmentCheckInterval = null;
+    }
+    
+    if (inactivityResetTimer) {
+        clearTimeout(inactivityResetTimer);
+        inactivityResetTimer = null;
     }
 }
 
@@ -499,8 +549,43 @@ document.addEventListener('visibilitychange', () => {
                 trackWorkoutAbandoned('app_backgrounded');
             }
         }
+    } else {
+        // App came back to foreground - reset inactivity timer
+        resetInactivityTimer();
     }
 });
+
+// ==================== PHASE 1: INACTIVITY RESET ON USER INTERACTIONS ====================
+
+/**
+ * CRITICAL: Track ALL user interactions to prevent false abandonment
+ * This runs after DOM is ready
+ */
+function initializeInactivityTracking() {
+    // Track clicks (buttons, links, exercise cards, etc.)
+    document.addEventListener('click', resetInactivityTimer, { passive: true });
+    
+    // Track input (typing in notes, entering reps/weight)
+    document.addEventListener('input', resetInactivityTimer, { passive: true });
+    
+    // Track scrolling (browsing through workout)
+    document.addEventListener('scroll', resetInactivityTimer, { passive: true });
+    
+    // Track touch events (mobile tapping)
+    document.addEventListener('touchstart', resetInactivityTimer, { passive: true });
+    
+    // Track keyboard (arrow keys, tab navigation)
+    document.addEventListener('keydown', resetInactivityTimer, { passive: true });
+    
+    console.log('📊 Inactivity tracking initialized - monitoring user interactions');
+}
+
+// Initialize inactivity tracking when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeInactivityTracking);
+} else {
+    initializeInactivityTracking();
+}
 
 // ==================== EXPORTS ====================
 
@@ -531,9 +616,16 @@ window.Analytics = {
     
     // Session management
     startAbandonmentDetection,
-    stopAbandonmentDetection
+    stopAbandonmentDetection,
+    
+    // Phase 1: Inactivity management
+    resetInactivityTimer,
+    checkForAbandonment
 };
 
-console.log('📊 Analytics System Loaded - Pilot Instrumentation Active');
+console.log('📊 Analytics System Loaded - PHASE 1 COMPLETE');
+console.log('✅ Auto-abandonment detection (5min timeout)');
+console.log('✅ Page lifecycle tracking (close/background)');
+console.log('✅ Inactivity reset on user interactions');
 console.log('Export data: Analytics.exportAnalytics()');
 console.log('View summary: Analytics.getAnalyticsSummary()');
