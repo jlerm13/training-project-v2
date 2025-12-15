@@ -8,6 +8,50 @@
 const ANALYTICS_STORAGE_KEY = 'ignition_analytics_events';
 const SESSION_STORAGE_KEY = 'ignition_current_session';
 
+// ==================== SUPABASE CONNECTION ====================
+
+const SUPABASE_URL = 'https://your-project.supabase.co';  // You'll replace this
+const SUPABASE_ANON_KEY = 'your-anon-key-here';  // You'll replace this
+
+// Generate or retrieve athlete ID
+function getOrCreateAthleteId() {
+    let id = localStorage.getItem('athlete_id');
+    if (!id) {
+        id = `athlete_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        localStorage.setItem('athlete_id', id);
+    }
+    return id;
+}
+
+// Send event to Supabase
+async function sendToSupabase(event) {
+    try {
+        await fetch(`${SUPABASE_URL}/rest/v1/analytics_events`, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({
+                athlete_id: getOrCreateAthleteId(),
+                session_id: event.sessionId,
+                event_name: event.eventName,
+                event_data: event,
+                tier: event.tier,
+                phase: event.phase,
+                equipment: event.equipment,
+                week: event.week,
+                template: event.template
+            })
+        });
+    } catch (error) {
+        // Silently fail - localStorage still has the data
+        console.warn('📊 Analytics sync offline:', error.message);
+    }
+}
+
 // ==================== SESSION MANAGEMENT ====================
 
 /**
