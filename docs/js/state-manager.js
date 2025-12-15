@@ -140,7 +140,17 @@ function selectPhase(phase) {
 
 function selectEquipment(equipment) {
     userData.equipment = equipment;
-    saveProgress(); // <-- CRITICAL FIX
+    saveProgress();
+    
+    // Update the current session with equipment data
+    if (typeof getCurrentSession === 'function') {
+        const session = getCurrentSession();
+        session.tier = userData.tier;
+        session.equipment = userData.equipment;
+        session.phase = userData.phase;
+        localStorage.setItem('ignition_current_session', JSON.stringify(session));
+    }
+    
     highlightCard('equipmentScreen', equipment);
     document.getElementById('equipmentContinue').classList.remove('hidden');
 }
