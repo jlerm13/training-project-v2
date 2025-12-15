@@ -10,8 +10,8 @@ const SESSION_STORAGE_KEY = 'ignition_current_session';
 
 // ==================== SUPABASE CONNECTION ====================
 
-const SUPABASE_URL = 'https://your-project.supabase.co';  // You'll replace this
-const SUPABASE_ANON_KEY = 'your-anon-key-here';  // You'll replace this
+const SUPABASE_URL = 'https://qkxnwpnguwtvtpxqrggr.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_b701hMqncj7uo43rVd82tw_l3vbYRzI';
 
 // Generate or retrieve athlete ID
 function getOrCreateAthleteId() {
@@ -137,6 +137,8 @@ function logEvent(eventName, properties = {}) {
         template: session.template,
         ...properties
     };
+
+    sendToSupabase(event);
     
     // Get existing events
     const stored = localStorage.getItem(ANALYTICS_STORAGE_KEY);
