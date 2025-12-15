@@ -142,13 +142,17 @@ function selectEquipment(equipment) {
     userData.equipment = equipment;
     saveProgress();
     
-    // Update the current session with equipment data
-    if (typeof getCurrentSession === 'function') {
-        const session = getCurrentSession();
-        session.tier = userData.tier;
-        session.equipment = userData.equipment;
-        session.phase = userData.phase;
-        localStorage.setItem('ignition_current_session', JSON.stringify(session));
+    // Update analytics session with complete profile
+    // (After athlete finishes all 3 onboarding steps)
+    const sessionKey = 'ignition_current_session';
+    const stored = localStorage.getItem(sessionKey);
+    if (stored) {
+        const session = JSON.parse(stored);
+        session.tier = userData.tier;              // Autonomy level (white/red/blue/gold)
+        session.phase = userData.phase;            // Training phase
+        session.equipment = userData.equipment;    // Equipment access
+        localStorage.setItem(sessionKey, JSON.stringify(session));
+        console.log('📊 Session updated with profile:', session.tier, session.phase, session.equipment);
     }
     
     highlightCard('equipmentScreen', equipment);
