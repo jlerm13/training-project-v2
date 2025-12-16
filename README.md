@@ -1,6 +1,6 @@
 # Athletic Development Training System - Discovery & Validation Framework
 
-[![GitHub Pages](https://img.shields.io/badge/Live%20Demo-Click%20Here-blue?style=for-the-badge)](https://jlerm13.github.io/training-project-v2/ ) 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Click%20Here-blue)](https://pilot-uc.vercel.app)
 
 ---
 
