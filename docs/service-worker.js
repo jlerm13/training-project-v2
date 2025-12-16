@@ -1,56 +1,29 @@
-// service-worker.js
-// Simple service worker for PWA functionality and offline support
+// =====================================================
+// SERVICE WORKER DISABLED FOR PILOT
+// Reason: Path configuration needs deployment-specific setup
+// Will re-enable after pilot if offline access is requested
+// =====================================================
 
+/*
 const CACHE_NAME = 'athletic-training-v1';
 const urlsToCache = [
-  '/',
-  '/docs/js/app.js',
-  '/docs/js/templates/earlyOffSeason/white.js',
-  '/docs/js/templates/earlyOffSeason/red.js',
-  '/docs/js/templates/earlyOffSeason/blue.js',
-  '/docs/js/templates/earlyOffSeason/gold.js',
-  '/docs/css/styles.css',
-  '/manifest.json'
+  './',
+  './js/app.js',
+  ... etc
 ];
+*/
 
-// Install service worker and cache files
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
-      })
-  );
+// No-op service worker - just registers successfully but does nothing
+self.addEventListener('install', () => {
+  console.log('Service worker installed (no-op for pilot)');
+  self.skipWaiting();
 });
 
-// Serve from cache, fallback to network
+self.addEventListener('activate', () => {
+  console.log('Service worker activated (no-op for pilot)');
+});
+
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
-  );
-});
-
-// Update service worker
-self.addEventListener('activate', (event) => {
-  const cacheWhitelist = [CACHE_NAME];
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
+  // Just pass through to network
+  event.respondWith(fetch(event.request));
 });
