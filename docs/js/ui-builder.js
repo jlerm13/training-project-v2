@@ -191,10 +191,9 @@ function completeWorkoutDay(dayKey) {
         <div style="background: var(--bg-primary); border-radius: 16px; max-width: 500px; width: 100%; padding: 0; overflow: hidden; animation: slideUp 0.4s ease-out; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
             
             <!-- Hero Section -->
-            <div style="background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); padding: 40px 32px; text-align: center; color: white;">
-                <div style="font-size: 4rem; margin-bottom: 16px; animation: bounce 0.6s ease-out;">🔥</div>
-                <h2 style="margin: 0 0 8px 0; font-size: 2rem; font-weight: 800; letter-spacing: -0.02em;">Workout Complete!</h2>
-                <p style="margin: 0; font-size: 1.1rem; opacity: 0.95;">You just did the work. Own it.</p>
+            <div style="background: var(--bg-primary); padding: 32px; text-align: left; border-bottom: 1px solid var(--border-subtle);">
+                <h2 style="margin: 0 0 8px 0; font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">✓ Workout Logged</h2>
+                <p style="margin: 0; font-size: 0.95rem; color: var(--text-secondary);">Your progress has been saved</p>
             </div>
             
             <!-- Stats Grid -->
@@ -222,9 +221,9 @@ function completeWorkoutDay(dayKey) {
                 </div>
                 
                 <!-- Next Workout Prompt -->
-                <div style="background: var(--bg-secondary); padding: 16px; border-radius: 12px; margin-bottom: 24px; border-left: 4px solid var(--primary-color);">
+                <div style="background: var(--bg-secondary); padding: 16px; border-radius: 12px; margin-bottom: 24px;">
                     <p style="margin: 0; font-size: 0.95rem; color: var(--text-secondary);">
-                        <strong style="color: var(--text-primary);">💪 Keep the momentum:</strong> Come back tomorrow and do it again.
+                        <strong style="color: var(--text-primary);">Next workout:</strong> Return tomorrow to continue Week ${userData.currentWeek}
                     </p>
                 </div>
                 
