@@ -1,11 +1,11 @@
 {
-  "name": "Athletic Development Training System",
-  "short_name": "Athletic Training",
+  "name": "IGNITION APG",
+  "short_name": "IGNITION",
   "description": "Personalized athletic training programs with strength and conditioning",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#0a0f1a",
-  "theme_color": "#3b82f6",
+  "background_color": "#ffffff",
+  "theme_color": "#e00122",
   "orientation": "portrait-primary",
   "icons": [
     {
