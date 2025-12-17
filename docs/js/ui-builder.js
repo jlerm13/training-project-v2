@@ -24,116 +24,217 @@ function showConfirmationScreen() {
     const screen = document.getElementById('confirmationScreen');
     const content = document.getElementById('confirmationContent');
     
-    // Map values to friendly names
-    const tierNames = {
-        'white': 'I need clear instructions',
-        'red': 'I need some guidance',
-        'blue': "I'm pretty independent",
-        'gold': "I'm fully self-directed"
-    };
+    // Calculate start date (next Monday)
+    const startDate = getNextMonday();
+    const dateString = startDate.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        month: 'long', 
+        day: 'numeric' 
+    });
     
-    const phaseNames = {
-        'early-offseason': 'Early Off-Season',
-        'mid-offseason': 'Mid Off-Season',
-        'preseason': 'Pre-Season',
-        'inseason': 'In-Season'
-    };
+    // Get Monday's workout preview
+    const mondayPreview = getMondayWorkoutPreview();
     
-    const equipmentNames = {
-        'full': 'Full Facility',
-        'commercial': 'Commercial Gym',
-        'minimal': 'Minimal Equipment',
-        'bodyweight': 'Bodyweight Only'
-    };
-    
-    // Count how many exercises will be adapted
-    const adaptationCount = userData.equipment === 'bodyweight' ? 12 : 
-                           userData.equipment === 'minimal' ? 8 : 
-                           userData.equipment === 'commercial' ? 3 : 0;
+    // Count actual adaptations
+    const adaptationCount = countActualAdaptations();
     
     content.innerHTML = `
-        <div class="confirmation-hero">✓</div>
-        <div class="confirmation-title">Your Program is Ready</div>
-        <div class="confirmation-subtitle">We've customized everything based on your setup</div>
+        <!-- Start Date Hero -->
+        <div style="text-align: center; margin-bottom: 32px;">
+            <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">
+                Week 1 Starts
+            </div>
+            <div style="font-size: 2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">
+                ${dateString}
+            </div>
+            ${adaptationCount > 0 ? `
+                <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                    ${adaptationCount} exercises matched to your equipment
+                </div>
+            ` : ''}
+        </div>
         
-        <div class="confirmation-grid">
-            <div class="confirmation-item">
-                <div class="confirmation-icon">🎯</div>
-                <div class="confirmation-text">
-                    <div class="confirmation-label">Training Independence</div>
-                    <div class="confirmation-value">${tierNames[userData.tier]}</div>
-                </div>
+        <!-- Weekly Schedule Overview -->
+        <div style="background: var(--bg-secondary); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+            <div style="font-weight: 700; font-size: 1rem; color: var(--text-primary); margin-bottom: 16px;">
+                📅 Your Week
             </div>
-            
-            <div class="confirmation-item">
-                <div class="confirmation-icon">📅</div>
-                <div class="confirmation-text">
-                    <div class="confirmation-label">Training Phase</div>
-                    <div class="confirmation-value">${phaseNames[userData.phase]}</div>
-                </div>
-            </div>
-            
-            <div class="confirmation-item">
-                <div class="confirmation-icon">🏋️</div>
-                <div class="confirmation-text">
-                    <div class="confirmation-label">Equipment Access</div>
-                    <div class="confirmation-value">${equipmentNames[userData.equipment]}</div>
-                </div>
+            <div style="display: grid; gap: 8px;">
+                ${getWeeklyScheduleHTML()}
             </div>
         </div>
         
-        ${adaptationCount > 0 ? `
-            <div class="adaptations-box">
-                <div class="adaptations-title">
-                    <span>⚙️</span>
-                    <span>Automatic Adaptations</span>
-                    <span class="adaptations-count">${adaptationCount}</span>
-                </div>
-                <p style="margin: 0 0 12px 0; color: var(--text-secondary); font-size: 0.95rem;">
-                    We've swapped exercises to match your equipment:
-                </p>
-                <ul class="adaptations-list">
-                    ${userData.equipment === 'bodyweight' ? `
-                        <li>Barbell Squats → Bodyweight Squats</li>
-                        <li>Bench Press → Push-ups</li>
-                        <li>DB Rows → Inverted Rows</li>
-                        <li>...and 9 more exercises adapted</li>
-                    ` : userData.equipment === 'minimal' ? `
-                        <li>Barbell Squats → DB Goblet Squats</li>
-                        <li>Bench Press → DB Bench Press</li>
-                        <li>Cable Rows → DB Rows</li>
-                        <li>...and 5 more exercises adapted</li>
-                    ` : userData.equipment === 'commercial' ? `
-                        <li>Specialty Bars → Standard Barbells</li>
-                        <li>Sleds → Cardio Machines</li>
-                        <li>...and 1 more exercise adapted</li>
-                    ` : ''}
-                </ul>
+        <!-- Monday's Workout Preview -->
+        <div style="background: var(--bg-secondary); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+            <div style="font-weight: 700; font-size: 1rem; color: var(--text-primary); margin-bottom: 16px;">
+                💪 Monday's Workout
             </div>
-        ` : `
-            <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; margin: 24px 0;">
-                <p style="margin: 0; color: var(--text-secondary);">
-                    <strong style="color: var(--text-primary);">✓ No adaptations needed</strong><br>
-                    You have full equipment access, so you'll see the program as designed.
-                </p>
-            </div>
-        `}
+            ${mondayPreview.html}
+        </div>
         
-        <p style="margin: 32px 0 24px 0; font-size: 1.1rem; color: var(--text-primary); font-weight: 500;">
-            Everything is set. Ready to start training?
-        </p>
-        
-        <button class="btn" onclick="generateProgram()" style="width: 100%; padding: 16px; font-size: 1.1rem;">
-            Start Week 1 →
+        <!-- Action Buttons -->
+        <button class="btn" onclick="generateProgramAndShowMonday()" style="width: 100%; padding: 16px; font-size: 1.1rem; margin-bottom: 12px;">
+            Start Monday's Workout →
         </button>
         
-        <button class="btn btn-secondary" onclick="goBack('equipment')" style="width: 100%; margin-top: 12px;">
+        <button class="btn btn-secondary" onclick="goBack('equipment')" style="width: 100%;">
             ← Go Back
         </button>
     `;
     
     screen.classList.remove('hidden');
     updateProgressTracker(4);
+}
+
+// ==================== HELPER: Calculate Next Monday ====================
+
+function getNextMonday() {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ...
+    
+    // If today is Monday, return today
+    if (dayOfWeek === 1) {
+        return today;
+    }
+    
+    // Calculate days until next Monday
+    const daysUntilMonday = dayOfWeek === 0 ? 1 : (8 - dayOfWeek);
+    
+    const nextMonday = new Date(today);
+    nextMonday.setDate(today.getDate() + daysUntilMonday);
+    
+    return nextMonday;
+}
+
+// ==================== HELPER: Get Weekly Schedule HTML ====================
+
+function getWeeklyScheduleHTML() {
+    const schedule = [
+        { day: 'Monday', activity: 'Full Body Workout', type: 'lift' },
+        { day: 'Tuesday', activity: 'Rest or Conditioning', type: 'rest' },
+        { day: 'Wednesday', activity: 'Rest or Conditioning', type: 'rest' },
+        { day: 'Thursday', activity: 'Rest or Conditioning', type: 'rest' },
+        { day: 'Friday', activity: 'Full Body Workout', type: 'lift' },
+        { day: 'Saturday', activity: 'Rest', type: 'rest' },
+        { day: 'Sunday', activity: 'Rest', type: 'rest' }
+    ];
+    
+    return schedule.map(item => {
+        const isLift = item.type === 'lift';
+        return `
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: ${isLift ? 'rgba(224, 1, 34, 0.05)' : 'var(--bg-tertiary)'}; border-radius: 8px; border-left: 3px solid ${isLift ? 'var(--primary-color)' : 'var(--border-strong)'};">
+                <span style="font-weight: 600; color: var(--text-primary);">${item.day}</span>
+                <span style="color: var(--text-secondary); font-size: 0.9rem;">${item.activity}</span>
+            </div>
+        `;
+    }).join('');
+}
+
+// ==================== HELPER: Get Monday Workout Preview ====================
+
+function getMondayWorkoutPreview() {
+    try {
+        const templates = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.['2day'];
+        const mondayWorkout = templates?.week1?.monday;
+        
+        if (!mondayWorkout || !mondayWorkout.exercises) {
+            return { html: '<p style="color: var(--text-secondary);">Workout preview unavailable</p>' };
+        }
+        
+        // Get first 5 exercises
+        const exercisesToShow = mondayWorkout.exercises.slice(0, 5);
+        const remainingCount = mondayWorkout.exercises.length - 5;
+        
+        let html = '<div style="display: grid; gap: 10px;">';
+        
+        exercisesToShow.forEach(ex => {
+            const exerciseName = window.getExerciseName ? window.getExerciseName(ex.exercise) : ex.exercise;
+            const isAdapted = checkIfAdapted(ex.exercise);
+            
+            html += `
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--bg-tertiary); border-radius: 8px;">
+                    <div>
+                        <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 2px;">
+                            ${ex.order} ${exerciseName} ${isAdapted ? '<span style="color: var(--text-secondary); font-size: 0.85rem;">⚙️</span>' : ''}
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                            ${ex.sets}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        if (remainingCount > 0) {
+            html += `
+                <div style="padding: 12px; text-align: center; color: var(--text-secondary); font-size: 0.9rem;">
+                    +${remainingCount} more exercises
+                </div>
+            `;
+        }
+        
+        html += '</div>';
+        
+        return { html };
+        
+    } catch (error) {
+        console.error('Error generating Monday preview:', error);
+        return { html: '<p style="color: var(--text-secondary);">Workout preview unavailable</p>' };
+    }
+}
+
+// ==================== HELPER: Check If Exercise Is Adapted ====================
+
+function checkIfAdapted(exerciseKey) {
+    try {
+        const exerciseData = window.exerciseLibrary?.[exerciseKey];
+        if (!exerciseData || !exerciseData.equipmentMap) {
+            return false;
+        }
+        
+        const adaptedName = exerciseData.equipmentMap[userData.equipment];
+        const originalName = exerciseData.name;
+        
+        return adaptedName && adaptedName !== originalName;
+        
+    } catch (error) {
+        return false;
+    }
+}
+
+// ==================== HELPER: Count Actual Adaptations ====================
+
+function countActualAdaptations() {
+    try {
+        const templates = window.workoutTemplates?.[userData.tier]?.[userData.phase]?.['2day'];
+        const week1 = templates?.week1;
+        
+        if (!week1) return 0;
+        
+        let adaptedCount = 0;
+        const seenExercises = new Set();
+        
+        // Check all days in week 1
+        Object.values(week1).forEach(day => {
+            if (day.exercises) {
+                day.exercises.forEach(ex => {
+                    // Only count each unique exercise once
+                    if (!seenExercises.has(ex.exercise)) {
+                        seenExercises.add(ex.exercise);
+                        if (checkIfAdapted(ex.exercise)) {
+                            adaptedCount++;
+                        }
+                    }
+                });
+            }
+        });
+        
+        return adaptedCount;
+        
+    } catch (error) {
+        console.error('Error counting adaptations:', error);
+        return 0;
+    }
 }
 
 // ==================== CELEBRATION MODAL ====================
