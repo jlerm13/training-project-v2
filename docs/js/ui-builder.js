@@ -155,7 +155,7 @@ function getMondayWorkoutPreview() {
                 <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--bg-tertiary); border-radius: 8px;">
                     <div>
                         <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 2px;">
-                            ${ex.order} ${exerciseName} ${isAdapted ? '<span style="color: var(--text-secondary); font-size: 0.85rem;">⚙️</span>' : ''}
+                            ${ex.order} ${exerciseName}
                         </div>
                         <div style="font-size: 0.85rem; color: var(--text-secondary);">
                             ${ex.sets}
