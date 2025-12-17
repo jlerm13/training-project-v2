@@ -1245,3 +1245,12 @@ body {
     color: var(--primary-color);
     font-weight: 700;
 }
+
+/* Welcome screen - hide global header */
+#welcomeScreen ~ .header {
+    display: none;
+}
+
+body:has(#welcomeScreen:not(.hidden)) .header {
+    display: none;
+}
