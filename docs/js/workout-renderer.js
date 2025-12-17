@@ -251,14 +251,6 @@ function renderExerciseDetails(evaluatedIntensity, evaluatedTempo, evaluatedRest
         `;
     }
     
-    if (isSubstituted) {
-        html += `
-            <div class="last-week-reference">
-                ⚙️ Adapted to your equipment: ${userData.equipment}
-            </div>
-        `;
-    }
-    
     return html;
 }
 
