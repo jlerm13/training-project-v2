@@ -24,21 +24,24 @@
     
 <body>
 
-    <div class="container">
-        <div class="header">
-            <h1>IGNITION APG</h1>
-            <p>Your training. Your way.</p>
-        </div>
-
-        <!-- Welcome Screen -->
-        <div id="welcomeScreen">
-            <div class="card" style="text-align: center;">
-                <h2>Your training. Your way.</h2>
-                <button class="btn" onclick="startOnboarding()" style="width: 100%; padding: 16px; font-size: 1.1rem; margin-top: 24px;">
-                    Start Training
-                </button>
+<div class="container">
+        
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen">
+        <div class="card" style="text-align: center; padding: 48px 32px; max-width: 600px; margin: 40px auto;">
+            <h1 style="font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin: 0 0 32px 0; color: var(--text-primary); letter-spacing: -0.02em;">
+                Your training.<br>Your way.
+            </h1>
+            
+            <button class="btn" onclick="startOnboarding()" style="width: 100%; padding: 18px; font-size: 1.15rem; font-weight: 700;">
+                Start Training
+            </button>
+            
+            <div style="margin-top: 32px; font-size: 0.85rem; color: var(--text-tertiary); font-weight: 500; letter-spacing: 0.02em;">
+                IGNITION APG
             </div>
         </div>
+    </div>
 
         <!-- Progress Tracker -->
         <div id="progressTracker" class="hidden">
